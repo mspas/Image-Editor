@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./App.module.sass";
 import Switch from "./components/Switch";
-import Downloader from "./components/Downloader";
+import Converter from "./components/Converter";
 
 class App extends React.Component {
   constructor() {
@@ -49,7 +49,7 @@ class App extends React.Component {
           onOptionClick={this.handleOptionClick}
         />
         <div className={styles.downloaderWrap}>
-          <Downloader
+          <Converter
             data={this.state.options[this.state.activeOption]}
             key={this.state.options[this.state.activeOption].type}
           />

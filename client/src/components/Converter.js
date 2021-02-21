@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import styles from "./downloader.module.sass";
+import styles from "./converter.module.sass";
 import Loader from "react-loader-spinner";
 import ApiService from "../api.service";
 
-function Downloader(props) {
+function Converter(props) {
   const [isLoading, setIsLoading] = useState(false);
   const [alertText, setAlertText] = useState("Error");
   const [showAlert, setShowAlert] = useState(false);
@@ -97,4 +97,4 @@ function Downloader(props) {
     </div>
   );
 }
-export default Downloader;
+export default Converter;
