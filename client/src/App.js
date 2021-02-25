@@ -1,62 +1,44 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./App.module.sass";
 import Switch from "./components/Switch";
 import Converter from "./components/Converter";
 
-class App extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      activeOption: 0,
-      options: [
-        {
-          type: "twitch-clip",
-          exampleURL: "https://clips.twitch.tv/WonderfulSpikyLlamaWTRuck",
-          title: "Share JS-Lib",
-        },
-        {
-          type: "youtube",
-          exampleURL: "https://www.youtube.com/watch?v=lU0U3gogyOM",
-          title: "Wasm",
-        },
-      ],
-    };
-    this.handleOptionClick = this.handleOptionClick.bind(this);
-  }
+const options = [
+  {
+    type: "twitch-clip",
+    title: "Share JS-Lib",
+  },
+  {
+    type: "youtube",
+    title: "Wasm",
+  },
+];
 
-  handleOptionClick(data, index) {
-    this.setState(
-      {
-        activeOption: index,
-      },
-      () => {
-        document.querySelector("html").style.backgroundColor =
-          this.state.activeOption === 0 ? "#cfb0ff" : "#ffbdbd";
-      }
-    );
-  }
+function App() {
+  const [activeOption, setActiveOption] = useState(0);
 
-  render() {
-    return (
-      <main
-        className={
-          this.state.activeOption === 0 ? styles.twitch : styles.youtube
-        }
-      >
-        <Switch
-          activeOption={this.state.activeOption}
-          options={this.state.options}
-          onOptionClick={this.handleOptionClick}
+  const handleOptionClick = (data, index) => {
+    setActiveOption(index);
+    document.querySelector("html").style.backgroundColor =
+      activeOption === 0 ? "#cfb0ff" : "#ffbdbd";
+  };
+
+  return (
+    <main className={activeOption === 0 ? styles.twitch : styles.youtube}>
+      <Switch
+        activeOption={activeOption}
+        options={options}
+        onOptionClick={handleOptionClick}
+      />
+      <div className={styles.downloaderWrap}>
+        <Converter
+          activeOption={activeOption}
+          data={options[activeOption]}
+          key={options[activeOption].type}
         />
-        <div className={styles.downloaderWrap}>
-          <Converter
-            data={this.state.options[this.state.activeOption]}
-            key={this.state.options[this.state.activeOption].type}
-          />
-        </div>
-      </main>
-    );
-  }
+      </div>
+    </main>
+  );
 }
 
 export default App;
