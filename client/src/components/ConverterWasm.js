@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import styles from "./styles/converter.module.sass";
 import Loader from "react-loader-spinner";
+import worker from "../worker.js";
+import WebWorker from "../workerSetup";
+import LongerSubSequenceGlue from "../lss.mjs";
 
 function ConverterWasm(props) {
   const [isLoading, setIsLoading] = useState(false);
@@ -8,6 +11,8 @@ function ConverterWasm(props) {
   const [showAlert, setShowAlert] = useState(false);
   const [editedImageData, setEditedImageData] = useState();
   const [instance, setInstance] = useState(null);
+
+  var worker1;
 
   const memory = new WebAssembly.Memory({ initial: 256, maximum: 256 });
   const heap = new Uint8Array(memory.buffer);
@@ -54,8 +59,56 @@ function ConverterWasm(props) {
   };
 
   useEffect(() => {
+    let module = undefined;
+    const mmoduleBuffer = LongerSubSequenceGlue({
+      noInitialRun: true,
+      noExitRuntime: true,
+    }).then((response) => {
+      module = response;
+      console.log(module);
+
+      let length = 5;
+      const memory = module._malloc(length); // Allocating WASM memory
+      module.HEAPU8.set([1, 2, 3, 4, 5], memory); // Copying JS image data to WASM memory
+      module._test2(memory); // Calling WASM method
+      const filteredImageData = module.HEAPU8.subarray(memory, memory + length); // Converting WASM data to JS Image data
+      console.log(filteredImageData);
+    });
+
+    /*worker1 = new WebWorker(worker);
+
+    let instance = undefined;
+    let module = undefined;
+
+    worker1.addEventListener("message", (event) => {
+      module = event.data;
+      instance = WebAssembly.instantiate(module, importObject);
+      console.log(module);
+
+      var result = Module.ccall(
+        "test3", // name of C function
+        "number", // return type
+        ["number"], // argument types
+        [5]
+      ); // arguments
+      console.log(result);
+    });
+
     const fetchData = async () => {
-      let response = undefined;
+      const fetchAndInstantiateTask = async () => {
+        const wasmArrayBuffer = await fetch("editor.wasm")
+          .then((response) => response.arrayBuffer())
+          .then((bytes) => {
+            worker1.postMessage(bytes);
+          });
+      };
+      await fetchAndInstantiateTask();
+    };
+    fetchData();*/
+    /*let instance = undefined;
+    let response = undefined;
+
+    const fetchData = async () => {
       if (WebAssembly.instantiateStreaming) {
         response = await WebAssembly.instantiateStreaming(
           fetch("editor.wasm"),
@@ -69,12 +122,51 @@ function ConverterWasm(props) {
           return WebAssembly.instantiate(wasmArrayBuffer, importObject);
         };
         response = await fetchAndInstantiateTask();
-      }
-      const wasmModule = response;
-      setInstance(wasmModule.instance);
-      console.log(wasmModule.instance.exports.test3([1, 2, 3, 4, 5, 6]));
+        instance = response.instance;
+
+        const module = Module();
+
+        var result = module.ccall(
+          "test3", // name of C function
+          "number", // return type
+          ["number"], // argument types
+          [5]
+        ); // arguments
+        console.log(result);
+      }*/
+
+    /*let instance = undefined;
+      let module = undefined;
+
+      const fetchAndInstantiateTask = async () => {
+        const wasmArrayBuffer = await fetch("editor.wasm")
+          .then((response) => response.arrayBuffer())
+          .then((bytes) => {
+            module = WebAssembly.Module(bytes);
+            instance = WebAssembly.instantiate(module, importObject);
+          });
+      };
+      await fetchAndInstantiateTask();
+
+      let length = 5;
+
+      console.log(module);
+
+      var result = module.ccall(
+        "test3", // name of C function
+        "number", // return type
+        ["number"], // argument types
+        [5]
+      ); // arguments
+      console.log(result);*/
+
+    /*const memory = instance.exports.malloc(length); // Allocating WASM memory
+      module.HEAPU8.set([1, 2, 3, 4, 5], memory); // Copying JS image data to WASM memory
+      instance.exports.test2(memory); // Calling WASM method
+      const filteredImageData = module.HEAPU8.subarray(memory, memory + length); // Converting WASM data to JS Image data
+      console.log(filteredImageData);
     };
-    fetchData();
+    fetchData();*/
   }, []);
 
   const imageConvertHandler = async () => {
