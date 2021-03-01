@@ -5,9 +5,9 @@ import ConverterWasm from "./ConverterWasm";
 
 function Converter(props) {
   const [imageData, setImageData] = useState();
+  const [imageDataCanvas, setImageDataCanvas] = useState();
   const [imageDataURL, setImageDataURL] = useState();
   const [imageArraySize, setImageArraySize] = useState(0);
-  const channels = 3;
 
   const prepareImageData = async (fileData, type) => {
     const file = fileData;
@@ -33,20 +33,31 @@ function Converter(props) {
     });
   };
 
+  const toCanvas = (source) => {
+    if (source instanceof HTMLCanvasElement) {
+      return source;
+    }
+    const canvas = document.createElement("canvas");
+    canvas.width = source.videoWidth || source.naturalWidth || source.width;
+    canvas.height = source.videoHeight || source.naturalHeight || source.height;
+    canvas
+      .getContext("2d")
+      .drawImage(source, 0, 0, canvas.width, canvas.height);
+    return canvas;
+  };
+
+  const onImgLoad = ({ target: img }) => {
+    var canvas = toCanvas(img);
+    let ctx = canvas.getContext("2d");
+    ctx.globalAlpha = 1.0;
+    let dataImg = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    setImageDataCanvas(dataImg.data);
+    setImageArraySize({ height: dataImg.height, width: dataImg.width });
+  };
+
   const imageSelectHandler = async (event) => {
     let file = event.target.files[0];
-
-    let img = new Image();
-    var objectUrl = URL.createObjectURL(file);
-    setImageDataURL(objectUrl);
-
-    img.onload = () => {
-      //setImageArraySize(this.width * this.height * channels);
-    };
-    img.onerror = () => {
-      alert("not a valid file: " + file.type);
-    };
-    img.src = objectUrl;
+    setImageDataURL(URL.createObjectURL(file));
 
     let imageBuffer = await prepareImageData(file, "arraybuffer");
     setImageData(new Uint8Array(imageBuffer));
@@ -67,7 +78,11 @@ function Converter(props) {
           <span>+ Select image...</span>
         </label>
       </div>
-      {imageData ? <img src={imageDataURL} alt="Select" /> : "Select image"}
+      {imageData ? (
+        <img src={imageDataURL} onLoad={onImgLoad} alt="Select" />
+      ) : (
+        "Select image"
+      )}
       {props.activeOption === 0 ? (
         <ConverterJS
           prepareImageData={prepareImageData}
@@ -79,7 +94,7 @@ function Converter(props) {
       {props.activeOption === 1 ? (
         <ConverterWasm
           prepareImageData={prepareImageData}
-          imageData={imageData}
+          imageData={imageDataCanvas}
           imageArraySize={imageArraySize}
         />
       ) : (
