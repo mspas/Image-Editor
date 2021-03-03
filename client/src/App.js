@@ -1,30 +1,34 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import styles from "./App.module.sass";
 import Switch from "./components/Switch";
 import Converter from "./components/Converter";
 
 const options = [
   {
-    type: "twitch-clip",
-    title: "Share JS-Lib",
+    title: "JS",
+    color: "#cfb0ff",
   },
   {
-    type: "youtube",
+    title: "Share JS-Lib",
+    color: "#E6DF91",
+  },
+  {
     title: "Wasm",
+    color: "#ffbdbd",
   },
 ];
 
 function App() {
   const [activeOption, setActiveOption] = useState(0);
+  const mainRef = useRef(null);
 
   const handleOptionClick = (data, index) => {
     setActiveOption(index);
-    document.querySelector("html").style.backgroundColor =
-      activeOption === 0 ? "#cfb0ff" : "#ffbdbd";
+    mainRef.current.style.backgroundColor = options[index].color;
   };
 
   return (
-    <main className={activeOption === 0 ? styles.twitch : styles.youtube}>
+    <main ref={mainRef}>
       <Switch
         activeOption={activeOption}
         options={options}

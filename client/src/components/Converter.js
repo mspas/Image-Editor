@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import styles from "./styles/converter.module.sass";
 import ConverterJS from "./ConverterJS";
 import ConverterWasm from "./ConverterWasm";
+import ConverterShareLib from "./ConverterShareLib";
 
 function Converter(props) {
   const [imageData, setImageData] = useState();
@@ -61,6 +62,19 @@ function Converter(props) {
 
     let imageBuffer = await prepareImageData(file, "arraybuffer");
     setImageData(new Uint8Array(imageBuffer));
+
+    scrollBottom();
+  };
+
+  const scrollBottom = () => {
+    setTimeout(() => {
+      let element = document.body;
+      element.scrollIntoView({
+        alignToTop: false,
+        behavior: "smooth",
+        block: "end",
+      });
+    }, 100);
   };
 
   return (
@@ -86,16 +100,28 @@ function Converter(props) {
       {props.activeOption === 0 ? (
         <ConverterJS
           prepareImageData={prepareImageData}
-          imageData={imageData}
+          imageData={imageDataCanvas}
+          imageArraySize={imageArraySize}
+          scrollBottom={scrollBottom}
         />
       ) : (
         ""
       )}
       {props.activeOption === 1 ? (
+        <ConverterShareLib
+          prepareImageData={prepareImageData}
+          imageData={imageData}
+          scrollBottom={scrollBottom}
+        />
+      ) : (
+        ""
+      )}
+      {props.activeOption === 2 ? (
         <ConverterWasm
           prepareImageData={prepareImageData}
           imageData={imageDataCanvas}
           imageArraySize={imageArraySize}
+          scrollBottom={scrollBottom}
         />
       ) : (
         ""

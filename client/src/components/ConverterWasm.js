@@ -8,7 +8,7 @@ function ConverterWasm(props) {
   const [isModuleLoading, setIsModuleLoading] = useState(false);
   const [alertText, setAlertText] = useState("Error");
   const [showAlert, setShowAlert] = useState(false);
-  const [editedImageData, setEditedImageData] = useState();
+  const [editedImageData, setEditedImageData] = useState(null);
   const [wasmModule, setWasmModule] = useState(null);
 
   useEffect(() => {
@@ -22,13 +22,31 @@ function ConverterWasm(props) {
     });
   }, []);
 
+  const createCanvas = (u8a) => {
+    const canvas = document.createElement("canvas");
+    canvas.width = props.imageArraySize.width;
+    canvas.height = props.imageArraySize.height;
+
+    var context = canvas.getContext("2d");
+    var imageData = context.createImageData(
+      props.imageArraySize.width,
+      props.imageArraySize.height
+    );
+    imageData.data.set(u8a);
+    context.putImageData(imageData, 0, 0);
+
+    setEditedImageData(canvas.toDataURL());
+    setIsLoading(false);
+    window.scrollTo(0, document.body.scrollHeight);
+  };
+
   const imageConvertHandler = async () => {
     if (!props.imageData || !wasmModule) return true;
 
     setIsLoading(true);
+    window.scrollTo(0, document.body.scrollHeight);
 
-    const channels = 4;
-    //const length = props.imageArraySize.height * props.imageArraySize.width * channels;
+    const channels = 4; //RGBA
     const length = props.imageData.length;
 
     return new Promise((resolve, reject) => {
@@ -40,26 +58,24 @@ function ConverterWasm(props) {
         memory + length
       );
       resolve(filteredImageData);
-    }).then((filteredImageData) => {
-      const canvas = document.createElement("canvas");
-      canvas.width = props.imageArraySize.width;
-      canvas.height = props.imageArraySize.height;
-
-      var context = canvas.getContext("2d");
-      var imageData = context.createImageData(
-        props.imageArraySize.width,
-        props.imageArraySize.height
-      );
-      imageData.data.set(filteredImageData);
-      context.putImageData(imageData, 0, 0);
-
-      setEditedImageData(canvas.toDataURL());
-      setIsLoading(false);
-    });
+    })
+      .then((filteredImageData) => {
+        createCanvas(filteredImageData);
+      })
+      .then(() => {
+        setTimeout(() => {
+          var element = document.getElementById("result");
+          element.scrollIntoView({
+            alignToTop: false,
+            behavior: "smooth",
+            block: "end",
+          });
+        });
+      }, 100);
   };
 
   return (
-    <div id="resultBox">
+    <div className={styles.resultBox} id="result">
       {!isModuleLoading ? (
         <button className={styles.button} onClick={imageConvertHandler}>
           Convert but wasm

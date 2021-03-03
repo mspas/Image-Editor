@@ -17,20 +17,23 @@ void rotate(unsigned char *data, int len, int channels)
 			data[i + j] = temp;
 		}
 	}*/
-	char r, g, b;
+	char r, g, b, a;
 	for (int i = 0; i < len / 2; i += channels)
 	{
-		r = data[len - 3 - i];
-		g = data[len - 2 - i];
-		b = data[len - 1 - i];
+		r = data[len - 4 - i];
+		g = data[len - 3 - i];
+		b = data[len - 2 - i];
+		a = data[len - 1 - i];
 
-		data[len - 3 - i] = data[i];
-		data[len - 2 - i] = data[i + 1];
-		data[len - 1 - i] = data[i + 2];
+		data[len - 4 - i] = data[i];
+		data[len - 3 - i] = data[i + 1];
+		data[len - 2 - i] = data[i + 2];
+		data[len - 1 - i] = data[i + 3];
 
 		data[i] = r;
 		data[i + 1] = g;
 		data[i + 2] = b;
+		data[i + 3] = a;
 	}
 }
 
