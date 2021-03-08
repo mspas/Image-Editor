@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import styles from "./styles/converter.module.sass";
 import Loader from "react-loader-spinner";
-import EditorGlue from "../editor.mjs";
+import EditorGlue from "../editorasm.js";
 
-function ConverterWasm(props) {
+function ConverterAsmJS(props) {
   const [isLoading, setIsLoading] = useState(false);
   const [isModuleLoading, setIsModuleLoading] = useState(false);
   const [alertText, setAlertText] = useState("Error");
@@ -12,7 +12,6 @@ function ConverterWasm(props) {
   const [wasmModule, setWasmModule] = useState(null);
 
   useEffect(() => {
-    setIsModuleLoading(true);
     const mmoduleBuffer = EditorGlue({
       noInitialRun: true,
       noExitRuntime: true,
@@ -89,4 +88,4 @@ function ConverterWasm(props) {
     </div>
   );
 }
-export default ConverterWasm;
+export default ConverterAsmJS;

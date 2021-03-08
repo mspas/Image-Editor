@@ -13,6 +13,10 @@ const options = [
     color: "#E6DF91",
   },
   {
+    title: "asm.js",
+    color: "#BBCCFF",
+  },
+  {
     title: "Wasm",
     color: "#ffbdbd",
   },

@@ -14,6 +14,8 @@ function ConverterJS(props) {
     setIsLoading(true);
     window.scrollTo(0, document.body.scrollHeight);
 
+    const t0 = performance.now();
+
     let rotated = [];
     let length = props.imageData.length;
 
@@ -28,6 +30,9 @@ function ConverterJS(props) {
       rotated.push(b);
       rotated.push(a);
     }
+
+    const t1 = performance.now();
+    console.log(`Call to rotate took ${t1 - t0} milliseconds.`);
 
     createCanvas(rotated).then(() => {
       props.scrollBottom();

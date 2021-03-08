@@ -15,6 +15,7 @@ function ConverterShareLib(props) {
     if (!props.imageData) return true;
 
     setIsLoading(true);
+    const t0 = performance.now();
 
     _api
       .fetch("/api/rotate-image", {
@@ -29,6 +30,8 @@ function ConverterShareLib(props) {
         setIsLoading(false);
       })
       .then(() => {
+        const t1 = performance.now();
+        console.log(`Call to rotate took ${t1 - t0} milliseconds.`);
         props.scrollBottom();
       });
   };
