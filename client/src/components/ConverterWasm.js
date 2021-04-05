@@ -24,13 +24,13 @@ function ConverterWasm(props) {
 
   const createCanvas = (u8a) => {
     const canvas = document.createElement("canvas");
-    canvas.width = props.imageArraySize.width;
-    canvas.height = props.imageArraySize.height;
+    canvas.height = props.imageArraySize.width; //dumb for rotate90, fix it asap
+    canvas.width = props.imageArraySize.height;
 
     var context = canvas.getContext("2d");
     var imageData = context.createImageData(
-      props.imageArraySize.width,
-      props.imageArraySize.height
+      props.imageArraySize.height, //dumb for rotate90, fix it asap
+      props.imageArraySize.width
     );
     imageData.data.set(u8a);
     context.putImageData(imageData, 0, 0);
@@ -51,16 +51,29 @@ function ConverterWasm(props) {
 
     const t0 = performance.now();
     return new Promise((resolve, reject) => {
+      console.log(props.imageData);
+
       const memory = wasmModule._malloc(length); // Allocating WASM memory
       wasmModule.HEAPU8.set(props.imageData, memory); // Copying JS image data to WASM memory
-      wasmModule._rotate2(memory, length, channels); // Calling WASM method
-      const filteredImageData = wasmModule.HEAPU8.subarray(
+      const memoryfindsiara = wasmModule._malloc(length); // Allocating WASM memory
+      wasmModule.HEAPU8.set(props.imageData, memoryfindsiara); // Copying JS image data to WASM memory
+      //wasmModule._rotate(memory, length, channels); // Calling WASM method
+      wasmModule._rotate90(
         memory,
-        memory + length
+        memoryfindsiara,
+        length,
+        props.imageArraySize.width,
+        props.imageArraySize.height,
+        channels
+      ); // Calling WASM method
+      const filteredImageData = wasmModule.HEAPU8.subarray(
+        memoryfindsiara,
+        memoryfindsiara + length
       );
       resolve(filteredImageData);
     })
       .then((filteredImageData) => {
+        console.log(filteredImageData);
         const t1 = performance.now();
         console.log(`Call to rotate took ${t1 - t0} milliseconds.`);
         createCanvas(filteredImageData);

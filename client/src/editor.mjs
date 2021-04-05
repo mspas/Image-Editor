@@ -1,4 +1,4 @@
-/* eslint-disable */
+/* eslint-disable */ 
 var Editor = (function() {
   var _scriptDir = '/editor.wasm';
   
@@ -468,7 +468,7 @@ function createWasm() {
   Module["asm"] = exports;
   wasmMemory = Module["asm"]["k"];
   updateGlobalBufferAndViews(wasmMemory.buffer);
-  wasmTable = Module["asm"]["t"];
+  wasmTable = Module["asm"]["u"];
   removeRunDependency("wasm-instantiate");
  }
  addRunDependency("wasm-instantiate");
@@ -1141,40 +1141,44 @@ var ___wasm_call_ctors = Module["___wasm_call_ctors"] = function() {
  return (___wasm_call_ctors = Module["___wasm_call_ctors"] = Module["asm"]["l"]).apply(null, arguments);
 };
 
-var _doubler = Module["_doubler"] = function() {
- return (_doubler = Module["_doubler"] = Module["asm"]["m"]).apply(null, arguments);
+var _rotate180 = Module["_rotate180"] = function() {
+ return (_rotate180 = Module["_rotate180"] = Module["asm"]["m"]).apply(null, arguments);
 };
 
-var _rotate = Module["_rotate"] = function() {
- return (_rotate = Module["_rotate"] = Module["asm"]["n"]).apply(null, arguments);
+var _mirror_reflection = Module["_mirror_reflection"] = function() {
+ return (_mirror_reflection = Module["_mirror_reflection"] = Module["asm"]["n"]).apply(null, arguments);
 };
 
-var _rotate2 = Module["_rotate2"] = function() {
- return (_rotate2 = Module["_rotate2"] = Module["asm"]["o"]).apply(null, arguments);
+var _rotate90 = Module["_rotate90"] = function() {
+ return (_rotate90 = Module["_rotate90"] = Module["asm"]["o"]).apply(null, arguments);
 };
 
-var _test2 = Module["_test2"] = function() {
- return (_test2 = Module["_test2"] = Module["asm"]["p"]).apply(null, arguments);
+var _invert = Module["_invert"] = function() {
+ return (_invert = Module["_invert"] = Module["asm"]["p"]).apply(null, arguments);
 };
 
-var _test3 = Module["_test3"] = function() {
- return (_test3 = Module["_test3"] = Module["asm"]["q"]).apply(null, arguments);
+var _brighten = Module["_brighten"] = function() {
+ return (_brighten = Module["_brighten"] = Module["asm"]["q"]).apply(null, arguments);
+};
+
+var _gray_scale = Module["_gray_scale"] = function() {
+ return (_gray_scale = Module["_gray_scale"] = Module["asm"]["r"]).apply(null, arguments);
 };
 
 var ___getTypeName = Module["___getTypeName"] = function() {
- return (___getTypeName = Module["___getTypeName"] = Module["asm"]["r"]).apply(null, arguments);
+ return (___getTypeName = Module["___getTypeName"] = Module["asm"]["s"]).apply(null, arguments);
 };
 
 var ___embind_register_native_and_builtin_types = Module["___embind_register_native_and_builtin_types"] = function() {
- return (___embind_register_native_and_builtin_types = Module["___embind_register_native_and_builtin_types"] = Module["asm"]["s"]).apply(null, arguments);
+ return (___embind_register_native_and_builtin_types = Module["___embind_register_native_and_builtin_types"] = Module["asm"]["t"]).apply(null, arguments);
 };
 
 var _malloc = Module["_malloc"] = function() {
- return (_malloc = Module["_malloc"] = Module["asm"]["u"]).apply(null, arguments);
+ return (_malloc = Module["_malloc"] = Module["asm"]["v"]).apply(null, arguments);
 };
 
 var _free = Module["_free"] = function() {
- return (_free = Module["_free"] = Module["asm"]["v"]).apply(null, arguments);
+ return (_free = Module["_free"] = Module["asm"]["w"]).apply(null, arguments);
 };
 
 var calledRun;
