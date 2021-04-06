@@ -22,16 +22,14 @@ function ConverterWasm(props) {
     });
   }, []);
 
-  const createCanvas = (u8a) => {
+  const createCanvas = (u8a, width, height) => {
+    console.log(width, height);
     const canvas = document.createElement("canvas");
-    canvas.height = props.imageArraySize.width; //dumb for rotate90, fix it asap
-    canvas.width = props.imageArraySize.height;
+    canvas.height = height;
+    canvas.width = width;
 
     var context = canvas.getContext("2d");
-    var imageData = context.createImageData(
-      props.imageArraySize.height, //dumb for rotate90, fix it asap
-      props.imageArraySize.width
-    );
+    var imageData = context.createImageData(width, height);
     imageData.data.set(u8a);
     context.putImageData(imageData, 0, 0);
 
@@ -40,7 +38,7 @@ function ConverterWasm(props) {
     window.scrollTo(0, document.body.scrollHeight);
   };
 
-  const imageConvertHandler = async () => {
+  const imageConvertHandler = async (option) => {
     if (!props.imageData || !wasmModule) return true;
 
     setIsLoading(true);
@@ -51,32 +49,75 @@ function ConverterWasm(props) {
 
     const t0 = performance.now();
     return new Promise((resolve, reject) => {
-      console.log(props.imageData);
+      const memory = wasmModule._malloc(length);
+      wasmModule.HEAPU8.set(props.imageData, memory);
 
-      const memory = wasmModule._malloc(length); // Allocating WASM memory
-      wasmModule.HEAPU8.set(props.imageData, memory); // Copying JS image data to WASM memory
-      const memoryfindsiara = wasmModule._malloc(length); // Allocating WASM memory
-      wasmModule.HEAPU8.set(props.imageData, memoryfindsiara); // Copying JS image data to WASM memory
-      //wasmModule._rotate(memory, length, channels); // Calling WASM method
-      wasmModule._rotate90(
-        memory,
-        memoryfindsiara,
-        length,
-        props.imageArraySize.width,
-        props.imageArraySize.height,
-        channels
-      ); // Calling WASM method
-      const filteredImageData = wasmModule.HEAPU8.subarray(
-        memoryfindsiara,
-        memoryfindsiara + length
+      let width = props.imageArraySize.width;
+      let height = props.imageArraySize.height;
+      let outputPointer = memory;
+      let memoryOutput = null;
+
+      switch (option) {
+        case "rotate180":
+          wasmModule._rotate180(memory, length, channels);
+          break;
+        case "rotate90":
+          memoryOutput = wasmModule._malloc(length);
+          wasmModule.HEAPU8.set(props.imageData, memoryOutput);
+          wasmModule._rotate90(
+            memory,
+            memoryOutput,
+            length,
+            width,
+            height,
+            channels
+          );
+          outputPointer = memoryOutput;
+          width = props.imageArraySize.height;
+          height = props.imageArraySize.width;
+          break;
+        case "mirror":
+          wasmModule._mirror_reflection(
+            memory,
+            length,
+            width,
+            height,
+            channels
+          );
+          break;
+        case "invert":
+          wasmModule._invert(memory, length, channels);
+          break;
+        case "brighten":
+          wasmModule._brighten(memory, length, props.brightnessValue, channels);
+          break;
+        case "gray":
+          wasmModule._gray_scale(memory, length, channels);
+          break;
+        default:
+          break;
+      }
+
+      const editedImage = wasmModule.HEAPU8.subarray(
+        outputPointer,
+        outputPointer + length
       );
-      resolve(filteredImageData);
+
+      const resultData = {
+        data: editedImage,
+        width: width,
+        height: height,
+      };
+
+      wasmModule._free(memory);
+      if (memoryOutput) wasmModule._free(memory);
+
+      resolve(resultData);
     })
-      .then((filteredImageData) => {
-        console.log(filteredImageData);
+      .then((resultData) => {
         const t1 = performance.now();
         console.log(`Call to rotate took ${t1 - t0} milliseconds.`);
-        createCanvas(filteredImageData);
+        createCanvas(resultData.data, resultData.width, resultData.height);
       })
       .then(() => {
         props.scrollBottom();
@@ -86,9 +127,44 @@ function ConverterWasm(props) {
   return (
     <div className={styles.resultBox} id="result">
       {!isModuleLoading ? (
-        <button className={styles.button} onClick={imageConvertHandler}>
-          Convert but wasm
-        </button>
+        <div className={styles.buttonWrap}>
+          <button
+            className={styles.button}
+            onClick={() => imageConvertHandler("rotate180")}
+          >
+            Rotate180
+          </button>
+          <button
+            className={styles.button}
+            onClick={() => imageConvertHandler("rotate90")}
+          >
+            Rotate90
+          </button>
+          <button
+            className={styles.button}
+            onClick={() => imageConvertHandler("mirror")}
+          >
+            Mirror
+          </button>
+          <button
+            className={styles.button}
+            onClick={() => imageConvertHandler("invert")}
+          >
+            Invert colors
+          </button>
+          <button
+            className={styles.button}
+            onClick={() => imageConvertHandler("brighten")}
+          >
+            Brighten
+          </button>
+          <button
+            className={styles.button}
+            onClick={() => imageConvertHandler("gray")}
+          >
+            Gray scale
+          </button>
+        </div>
       ) : (
         <Loader type="TailSpin" color="#00BFFF" height={50} width={50} />
       )}

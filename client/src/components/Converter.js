@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import styles from "./styles/converter.module.sass";
 import ConverterJS from "./ConverterJS";
 import ConverterWasm from "./ConverterWasm";
-import ConverterShareLib from "./ConverterShareLib";
 import ConverterAsmJS from "./ConverterAsmJS";
 
 function Converter(props) {
@@ -10,6 +9,7 @@ function Converter(props) {
   const [imageDataCanvas, setImageDataCanvas] = useState();
   const [imageDataURL, setImageDataURL] = useState();
   const [imageArraySize, setImageArraySize] = useState(0);
+  const [brightnessValue, setBrightnessValue] = useState(0);
 
   const prepareImageData = async (fileData, type) => {
     const file = fileData;
@@ -81,7 +81,7 @@ function Converter(props) {
   return (
     <div className={styles.downloaderContainer}>
       <h1 className={styles.heading}>
-        {props.data.title} <span>Converter</span>
+        {props.data.title} <span>Editor</span>
       </h1>
       <div className={styles.box}>
         <input
@@ -94,7 +94,23 @@ function Converter(props) {
         </label>
       </div>
       {imageData ? (
-        <img src={imageDataURL} onLoad={onImgLoad} alt="Select" />
+        <div>
+          <img src={imageDataURL} onLoad={onImgLoad} alt="Select" />
+          <div className={styles.rangeInput}>
+            <p style={{ marginBottom: 5 }}>
+              Set brightness (use "Brighten" button to apply):
+            </p>
+            <input
+              className={styles.slider}
+              type="range"
+              min="-100"
+              max="100"
+              defaultValue={0}
+              onChange={(e) => setBrightnessValue(e.target.value)}
+            />
+            {brightnessValue}
+          </div>
+        </div>
       ) : (
         "Select image"
       )}
@@ -103,35 +119,29 @@ function Converter(props) {
           prepareImageData={prepareImageData}
           imageData={imageDataCanvas}
           imageArraySize={imageArraySize}
+          brightnessValue={brightnessValue}
           scrollBottom={scrollBottom}
         />
       ) : (
         ""
       )}
       {props.activeOption === 1 ? (
-        <ConverterShareLib
+        <ConverterAsmJS
           prepareImageData={prepareImageData}
-          imageData={imageData}
+          imageData={imageDataCanvas}
+          imageArraySize={imageArraySize}
+          brightnessValue={brightnessValue}
           scrollBottom={scrollBottom}
         />
       ) : (
         ""
       )}
       {props.activeOption === 2 ? (
-        <ConverterAsmJS
-          prepareImageData={prepareImageData}
-          imageData={imageDataCanvas}
-          imageArraySize={imageArraySize}
-          scrollBottom={scrollBottom}
-        />
-      ) : (
-        ""
-      )}
-      {props.activeOption === 3 ? (
         <ConverterWasm
           prepareImageData={prepareImageData}
           imageData={imageDataCanvas}
           imageArraySize={imageArraySize}
+          brightnessValue={brightnessValue}
           scrollBottom={scrollBottom}
         />
       ) : (

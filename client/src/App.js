@@ -6,12 +6,12 @@ import Converter from "./components/Converter";
 const options = [
   {
     title: "JS",
-    color: "#cfb0ff",
-  },
-  {
-    title: "Share JS-Lib",
     color: "#E6DF91",
   },
+  /*{
+    title: "Share JS-Lib",
+    color: "#cfb0ff",
+  },*/
   {
     title: "asm.js",
     color: "#BBCCFF",
@@ -23,7 +23,7 @@ const options = [
 ];
 
 function App() {
-  const [activeOption, setActiveOption] = useState(0);
+  const [activeOption, setActiveOption] = useState(2);
   const mainRef = useRef(null);
 
   const handleOptionClick = (data, index) => {
