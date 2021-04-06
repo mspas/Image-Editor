@@ -23,7 +23,7 @@ const options = [
 ];
 
 function App() {
-  const [activeOption, setActiveOption] = useState(2);
+  const [activeOption, setActiveOption] = useState(0);
   const mainRef = useRef(null);
 
   const handleOptionClick = (data, index) => {

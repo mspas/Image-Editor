@@ -30,39 +30,51 @@ Module['ready'] = new Promise(function(resolve, reject) {
   readyPromiseReject = reject;
 });
 
-      if (!Object.getOwnPropertyDescriptor(Module['ready'], '_doubler')) {
-        Object.defineProperty(Module['ready'], '_doubler', { configurable: true, get: function() { abort('You are getting _doubler on the Promise object, instead of the instance. Use .then() to get called back with the instance, see the MODULARIZE docs in src/settings.js') } });
-        Object.defineProperty(Module['ready'], '_doubler', { configurable: true, set: function() { abort('You are setting _doubler on the Promise object, instead of the instance. Use .then() to get called back with the instance, see the MODULARIZE docs in src/settings.js') } });
+      if (!Object.getOwnPropertyDescriptor(Module['ready'], '_rotate180')) {
+        Object.defineProperty(Module['ready'], '_rotate180', { configurable: true, get: function() { abort('You are getting _rotate180 on the Promise object, instead of the instance. Use .then() to get called back with the instance, see the MODULARIZE docs in src/settings.js') } });
+        Object.defineProperty(Module['ready'], '_rotate180', { configurable: true, set: function() { abort('You are setting _rotate180 on the Promise object, instead of the instance. Use .then() to get called back with the instance, see the MODULARIZE docs in src/settings.js') } });
       }
     
 
-      if (!Object.getOwnPropertyDescriptor(Module['ready'], '_test2')) {
-        Object.defineProperty(Module['ready'], '_test2', { configurable: true, get: function() { abort('You are getting _test2 on the Promise object, instead of the instance. Use .then() to get called back with the instance, see the MODULARIZE docs in src/settings.js') } });
-        Object.defineProperty(Module['ready'], '_test2', { configurable: true, set: function() { abort('You are setting _test2 on the Promise object, instead of the instance. Use .then() to get called back with the instance, see the MODULARIZE docs in src/settings.js') } });
+      if (!Object.getOwnPropertyDescriptor(Module['ready'], '_mirror_reflection')) {
+        Object.defineProperty(Module['ready'], '_mirror_reflection', { configurable: true, get: function() { abort('You are getting _mirror_reflection on the Promise object, instead of the instance. Use .then() to get called back with the instance, see the MODULARIZE docs in src/settings.js') } });
+        Object.defineProperty(Module['ready'], '_mirror_reflection', { configurable: true, set: function() { abort('You are setting _mirror_reflection on the Promise object, instead of the instance. Use .then() to get called back with the instance, see the MODULARIZE docs in src/settings.js') } });
       }
     
 
-      if (!Object.getOwnPropertyDescriptor(Module['ready'], '_test3')) {
-        Object.defineProperty(Module['ready'], '_test3', { configurable: true, get: function() { abort('You are getting _test3 on the Promise object, instead of the instance. Use .then() to get called back with the instance, see the MODULARIZE docs in src/settings.js') } });
-        Object.defineProperty(Module['ready'], '_test3', { configurable: true, set: function() { abort('You are setting _test3 on the Promise object, instead of the instance. Use .then() to get called back with the instance, see the MODULARIZE docs in src/settings.js') } });
+      if (!Object.getOwnPropertyDescriptor(Module['ready'], '_rotate90')) {
+        Object.defineProperty(Module['ready'], '_rotate90', { configurable: true, get: function() { abort('You are getting _rotate90 on the Promise object, instead of the instance. Use .then() to get called back with the instance, see the MODULARIZE docs in src/settings.js') } });
+        Object.defineProperty(Module['ready'], '_rotate90', { configurable: true, set: function() { abort('You are setting _rotate90 on the Promise object, instead of the instance. Use .then() to get called back with the instance, see the MODULARIZE docs in src/settings.js') } });
       }
     
 
-      if (!Object.getOwnPropertyDescriptor(Module['ready'], '_rotate2')) {
-        Object.defineProperty(Module['ready'], '_rotate2', { configurable: true, get: function() { abort('You are getting _rotate2 on the Promise object, instead of the instance. Use .then() to get called back with the instance, see the MODULARIZE docs in src/settings.js') } });
-        Object.defineProperty(Module['ready'], '_rotate2', { configurable: true, set: function() { abort('You are setting _rotate2 on the Promise object, instead of the instance. Use .then() to get called back with the instance, see the MODULARIZE docs in src/settings.js') } });
+      if (!Object.getOwnPropertyDescriptor(Module['ready'], '_invert')) {
+        Object.defineProperty(Module['ready'], '_invert', { configurable: true, get: function() { abort('You are getting _invert on the Promise object, instead of the instance. Use .then() to get called back with the instance, see the MODULARIZE docs in src/settings.js') } });
+        Object.defineProperty(Module['ready'], '_invert', { configurable: true, set: function() { abort('You are setting _invert on the Promise object, instead of the instance. Use .then() to get called back with the instance, see the MODULARIZE docs in src/settings.js') } });
       }
     
 
-      if (!Object.getOwnPropertyDescriptor(Module['ready'], '_rotate')) {
-        Object.defineProperty(Module['ready'], '_rotate', { configurable: true, get: function() { abort('You are getting _rotate on the Promise object, instead of the instance. Use .then() to get called back with the instance, see the MODULARIZE docs in src/settings.js') } });
-        Object.defineProperty(Module['ready'], '_rotate', { configurable: true, set: function() { abort('You are setting _rotate on the Promise object, instead of the instance. Use .then() to get called back with the instance, see the MODULARIZE docs in src/settings.js') } });
+      if (!Object.getOwnPropertyDescriptor(Module['ready'], '_brighten')) {
+        Object.defineProperty(Module['ready'], '_brighten', { configurable: true, get: function() { abort('You are getting _brighten on the Promise object, instead of the instance. Use .then() to get called back with the instance, see the MODULARIZE docs in src/settings.js') } });
+        Object.defineProperty(Module['ready'], '_brighten', { configurable: true, set: function() { abort('You are setting _brighten on the Promise object, instead of the instance. Use .then() to get called back with the instance, see the MODULARIZE docs in src/settings.js') } });
+      }
+    
+
+      if (!Object.getOwnPropertyDescriptor(Module['ready'], '_gray_scale')) {
+        Object.defineProperty(Module['ready'], '_gray_scale', { configurable: true, get: function() { abort('You are getting _gray_scale on the Promise object, instead of the instance. Use .then() to get called back with the instance, see the MODULARIZE docs in src/settings.js') } });
+        Object.defineProperty(Module['ready'], '_gray_scale', { configurable: true, set: function() { abort('You are setting _gray_scale on the Promise object, instead of the instance. Use .then() to get called back with the instance, see the MODULARIZE docs in src/settings.js') } });
       }
     
 
       if (!Object.getOwnPropertyDescriptor(Module['ready'], '_malloc')) {
         Object.defineProperty(Module['ready'], '_malloc', { configurable: true, get: function() { abort('You are getting _malloc on the Promise object, instead of the instance. Use .then() to get called back with the instance, see the MODULARIZE docs in src/settings.js') } });
         Object.defineProperty(Module['ready'], '_malloc', { configurable: true, set: function() { abort('You are setting _malloc on the Promise object, instead of the instance. Use .then() to get called back with the instance, see the MODULARIZE docs in src/settings.js') } });
+      }
+    
+
+      if (!Object.getOwnPropertyDescriptor(Module['ready'], '_free')) {
+        Object.defineProperty(Module['ready'], '_free', { configurable: true, get: function() { abort('You are getting _free on the Promise object, instead of the instance. Use .then() to get called back with the instance, see the MODULARIZE docs in src/settings.js') } });
+        Object.defineProperty(Module['ready'], '_free', { configurable: true, set: function() { abort('You are setting _free on the Promise object, instead of the instance. Use .then() to get called back with the instance, see the MODULARIZE docs in src/settings.js') } });
       }
     
 
@@ -181,7 +193,7 @@ var read_,
 // ENVIRONMENT_IS_NODE.
 if (ENVIRONMENT_IS_WEB || ENVIRONMENT_IS_WORKER) {
   if (ENVIRONMENT_IS_WORKER) { // Check worker, not web, since window could be polyfilled
-    scriptDirectory = window.self.location.href;
+    scriptDirectory = self.location.href;
   } else if (typeof document !== 'undefined' && document.currentScript) { // web
     scriptDirectory = document.currentScript.src;
   }
@@ -618,6 +630,7 @@ function initActiveSegments(imports) {
 function asmFunc(env) {
  var memory = env.memory;
  var buffer = memory.buffer;
+ memory.grow = __wasm_memory_grow;
  var HEAP8 = new Int8Array(buffer);
  var HEAP16 = new Int16Array(buffer);
  var HEAP32 = new Int32Array(buffer);
@@ -647,49 +660,10 @@ function asmFunc(env) {
  // EMSCRIPTEN_START_FUNCS
 ;
  function $0() {
-  $9();
+  $12();
  }
  
- function $1($0_1) {
-  $0_1 = $0_1 | 0;
-  var $3_1 = 0;
-  $3_1 = global$0 - 16 | 0;
-  HEAP32[($3_1 + 12 | 0) >> 2] = $0_1;
-  return (HEAP32[($3_1 + 12 | 0) >> 2] | 0) << 1 | 0 | 0;
- }
- 
- function $2($0_1, $1_1, $2_1) {
-  $0_1 = $0_1 | 0;
-  $1_1 = $1_1 | 0;
-  $2_1 = $2_1 | 0;
-  var $5_1 = 0;
-  $5_1 = global$0 - 32 | 0;
-  HEAP32[($5_1 + 28 | 0) >> 2] = $0_1;
-  HEAP32[($5_1 + 24 | 0) >> 2] = $1_1;
-  HEAP32[($5_1 + 20 | 0) >> 2] = $2_1;
-  HEAP32[($5_1 + 12 | 0) >> 2] = 0;
-  label$1 : {
-   label$2 : while (1) {
-    if (!((HEAP32[($5_1 + 12 | 0) >> 2] | 0 | 0) < ((HEAP32[($5_1 + 24 | 0) >> 2] | 0 | 0) / (2 | 0) | 0 | 0) & 1 | 0)) {
-     break label$1
-    }
-    HEAP8[($5_1 + 19 | 0) >> 0] = HEAPU8[((HEAP32[($5_1 + 28 | 0) >> 2] | 0) + (((HEAP32[($5_1 + 24 | 0) >> 2] | 0) - 3 | 0) - (HEAP32[($5_1 + 12 | 0) >> 2] | 0) | 0) | 0) >> 0] | 0;
-    HEAP8[($5_1 + 18 | 0) >> 0] = HEAPU8[((HEAP32[($5_1 + 28 | 0) >> 2] | 0) + (((HEAP32[($5_1 + 24 | 0) >> 2] | 0) - 2 | 0) - (HEAP32[($5_1 + 12 | 0) >> 2] | 0) | 0) | 0) >> 0] | 0;
-    HEAP8[($5_1 + 17 | 0) >> 0] = HEAPU8[((HEAP32[($5_1 + 28 | 0) >> 2] | 0) + (((HEAP32[($5_1 + 24 | 0) >> 2] | 0) - 1 | 0) - (HEAP32[($5_1 + 12 | 0) >> 2] | 0) | 0) | 0) >> 0] | 0;
-    HEAP8[((HEAP32[($5_1 + 28 | 0) >> 2] | 0) + (((HEAP32[($5_1 + 24 | 0) >> 2] | 0) - 3 | 0) - (HEAP32[($5_1 + 12 | 0) >> 2] | 0) | 0) | 0) >> 0] = HEAPU8[((HEAP32[($5_1 + 28 | 0) >> 2] | 0) + (HEAP32[($5_1 + 12 | 0) >> 2] | 0) | 0) >> 0] | 0;
-    HEAP8[((HEAP32[($5_1 + 28 | 0) >> 2] | 0) + (((HEAP32[($5_1 + 24 | 0) >> 2] | 0) - 2 | 0) - (HEAP32[($5_1 + 12 | 0) >> 2] | 0) | 0) | 0) >> 0] = HEAPU8[((HEAP32[($5_1 + 28 | 0) >> 2] | 0) + ((HEAP32[($5_1 + 12 | 0) >> 2] | 0) + 1 | 0) | 0) >> 0] | 0;
-    HEAP8[((HEAP32[($5_1 + 28 | 0) >> 2] | 0) + (((HEAP32[($5_1 + 24 | 0) >> 2] | 0) - 1 | 0) - (HEAP32[($5_1 + 12 | 0) >> 2] | 0) | 0) | 0) >> 0] = HEAPU8[((HEAP32[($5_1 + 28 | 0) >> 2] | 0) + ((HEAP32[($5_1 + 12 | 0) >> 2] | 0) + 2 | 0) | 0) >> 0] | 0;
-    HEAP8[((HEAP32[($5_1 + 28 | 0) >> 2] | 0) + (HEAP32[($5_1 + 12 | 0) >> 2] | 0) | 0) >> 0] = HEAPU8[($5_1 + 19 | 0) >> 0] | 0;
-    HEAP8[((HEAP32[($5_1 + 28 | 0) >> 2] | 0) + ((HEAP32[($5_1 + 12 | 0) >> 2] | 0) + 1 | 0) | 0) >> 0] = HEAPU8[($5_1 + 18 | 0) >> 0] | 0;
-    HEAP8[((HEAP32[($5_1 + 28 | 0) >> 2] | 0) + ((HEAP32[($5_1 + 12 | 0) >> 2] | 0) + 2 | 0) | 0) >> 0] = HEAPU8[($5_1 + 17 | 0) >> 0] | 0;
-    HEAP32[($5_1 + 12 | 0) >> 2] = (HEAP32[($5_1 + 12 | 0) >> 2] | 0) + (HEAP32[($5_1 + 20 | 0) >> 2] | 0) | 0;
-    continue label$2;
-   };
-  }
-  return;
- }
- 
- function $3($0_1, $1_1, $2_1) {
+ function $1($0_1, $1_1, $2_1) {
   $0_1 = $0_1 | 0;
   $1_1 = $1_1 | 0;
   $2_1 = $2_1 | 0;
@@ -723,36 +697,258 @@ function asmFunc(env) {
   return;
  }
  
- function $4($0_1) {
+ function $2($0_1, $1_1, $2_1, $3_1, $4_1) {
   $0_1 = $0_1 | 0;
-  var $3_1 = 0;
-  $3_1 = global$0 - 16 | 0;
-  HEAP32[($3_1 + 12 | 0) >> 2] = $0_1;
-  HEAP8[((HEAP32[($3_1 + 12 | 0) >> 2] | 0) + 1 | 0) >> 0] = 97;
+  $1_1 = $1_1 | 0;
+  $2_1 = $2_1 | 0;
+  $3_1 = $3_1 | 0;
+  $4_1 = $4_1 | 0;
+  var $7_1 = 0;
+  $7_1 = global$0 - 48 | 0;
+  HEAP32[($7_1 + 44 | 0) >> 2] = $0_1;
+  HEAP32[($7_1 + 40 | 0) >> 2] = $1_1;
+  HEAP32[($7_1 + 36 | 0) >> 2] = $2_1;
+  HEAP32[($7_1 + 32 | 0) >> 2] = $3_1;
+  HEAP32[($7_1 + 28 | 0) >> 2] = $4_1;
+  HEAP32[($7_1 + 12 | 0) >> 2] = 0;
+  label$1 : {
+   label$2 : while (1) {
+    if (!((HEAP32[($7_1 + 12 | 0) >> 2] | 0 | 0) < (HEAP32[($7_1 + 32 | 0) >> 2] | 0 | 0) & 1 | 0)) {
+     break label$1
+    }
+    HEAP32[($7_1 + 8 | 0) >> 2] = 0;
+    label$3 : {
+     label$4 : while (1) {
+      if (!((HEAP32[($7_1 + 8 | 0) >> 2] | 0 | 0) < ((Math_imul(HEAP32[($7_1 + 36 | 0) >> 2] | 0, HEAP32[($7_1 + 28 | 0) >> 2] | 0) | 0) / (2 | 0) | 0 | 0) & 1 | 0)) {
+       break label$3
+      }
+      HEAP32[($7_1 + 20 | 0) >> 2] = Math_imul(Math_imul(HEAP32[($7_1 + 36 | 0) >> 2] | 0, HEAP32[($7_1 + 12 | 0) >> 2] | 0), HEAP32[($7_1 + 28 | 0) >> 2] | 0) + (HEAP32[($7_1 + 8 | 0) >> 2] | 0) | 0;
+      HEAP32[($7_1 + 16 | 0) >> 2] = Math_imul(Math_imul(HEAP32[($7_1 + 36 | 0) >> 2] | 0, (HEAP32[($7_1 + 12 | 0) >> 2] | 0) + 1 | 0), HEAP32[($7_1 + 28 | 0) >> 2] | 0) - (HEAP32[($7_1 + 8 | 0) >> 2] | 0) | 0;
+      HEAP8[($7_1 + 27 | 0) >> 0] = HEAPU8[((HEAP32[($7_1 + 44 | 0) >> 2] | 0) + (HEAP32[($7_1 + 20 | 0) >> 2] | 0) | 0) >> 0] | 0;
+      HEAP8[($7_1 + 26 | 0) >> 0] = HEAPU8[((HEAP32[($7_1 + 44 | 0) >> 2] | 0) + ((HEAP32[($7_1 + 20 | 0) >> 2] | 0) + 1 | 0) | 0) >> 0] | 0;
+      HEAP8[($7_1 + 25 | 0) >> 0] = HEAPU8[((HEAP32[($7_1 + 44 | 0) >> 2] | 0) + ((HEAP32[($7_1 + 20 | 0) >> 2] | 0) + 2 | 0) | 0) >> 0] | 0;
+      HEAP8[($7_1 + 24 | 0) >> 0] = HEAPU8[((HEAP32[($7_1 + 44 | 0) >> 2] | 0) + ((HEAP32[($7_1 + 20 | 0) >> 2] | 0) + 3 | 0) | 0) >> 0] | 0;
+      HEAP8[((HEAP32[($7_1 + 44 | 0) >> 2] | 0) + (HEAP32[($7_1 + 20 | 0) >> 2] | 0) | 0) >> 0] = HEAPU8[((HEAP32[($7_1 + 44 | 0) >> 2] | 0) + ((HEAP32[($7_1 + 16 | 0) >> 2] | 0) - 4 | 0) | 0) >> 0] | 0;
+      HEAP8[((HEAP32[($7_1 + 44 | 0) >> 2] | 0) + ((HEAP32[($7_1 + 20 | 0) >> 2] | 0) + 1 | 0) | 0) >> 0] = HEAPU8[((HEAP32[($7_1 + 44 | 0) >> 2] | 0) + ((HEAP32[($7_1 + 16 | 0) >> 2] | 0) - 3 | 0) | 0) >> 0] | 0;
+      HEAP8[((HEAP32[($7_1 + 44 | 0) >> 2] | 0) + ((HEAP32[($7_1 + 20 | 0) >> 2] | 0) + 2 | 0) | 0) >> 0] = HEAPU8[((HEAP32[($7_1 + 44 | 0) >> 2] | 0) + ((HEAP32[($7_1 + 16 | 0) >> 2] | 0) - 2 | 0) | 0) >> 0] | 0;
+      HEAP8[((HEAP32[($7_1 + 44 | 0) >> 2] | 0) + ((HEAP32[($7_1 + 20 | 0) >> 2] | 0) + 3 | 0) | 0) >> 0] = HEAPU8[((HEAP32[($7_1 + 44 | 0) >> 2] | 0) + ((HEAP32[($7_1 + 16 | 0) >> 2] | 0) - 1 | 0) | 0) >> 0] | 0;
+      HEAP8[((HEAP32[($7_1 + 44 | 0) >> 2] | 0) + ((HEAP32[($7_1 + 16 | 0) >> 2] | 0) - 4 | 0) | 0) >> 0] = HEAPU8[($7_1 + 27 | 0) >> 0] | 0;
+      HEAP8[((HEAP32[($7_1 + 44 | 0) >> 2] | 0) + ((HEAP32[($7_1 + 16 | 0) >> 2] | 0) - 3 | 0) | 0) >> 0] = HEAPU8[($7_1 + 26 | 0) >> 0] | 0;
+      HEAP8[((HEAP32[($7_1 + 44 | 0) >> 2] | 0) + ((HEAP32[($7_1 + 16 | 0) >> 2] | 0) - 2 | 0) | 0) >> 0] = HEAPU8[($7_1 + 25 | 0) >> 0] | 0;
+      HEAP8[((HEAP32[($7_1 + 44 | 0) >> 2] | 0) + ((HEAP32[($7_1 + 16 | 0) >> 2] | 0) - 1 | 0) | 0) >> 0] = HEAPU8[($7_1 + 24 | 0) >> 0] | 0;
+      HEAP32[($7_1 + 8 | 0) >> 2] = (HEAP32[($7_1 + 8 | 0) >> 2] | 0) + (HEAP32[($7_1 + 28 | 0) >> 2] | 0) | 0;
+      continue label$4;
+     };
+    }
+    HEAP32[($7_1 + 12 | 0) >> 2] = (HEAP32[($7_1 + 12 | 0) >> 2] | 0) + 1 | 0;
+    continue label$2;
+   };
+  }
+  return;
+ }
+ 
+ function $3($0_1, $1_1, $2_1, $3_1, $4_1, $5_1) {
+  $0_1 = $0_1 | 0;
+  $1_1 = $1_1 | 0;
+  $2_1 = $2_1 | 0;
+  $3_1 = $3_1 | 0;
+  $4_1 = $4_1 | 0;
+  $5_1 = $5_1 | 0;
+  var $8_1 = 0;
+  $8_1 = global$0 - 64 | 0;
+  HEAP32[($8_1 + 60 | 0) >> 2] = $0_1;
+  HEAP32[($8_1 + 56 | 0) >> 2] = $1_1;
+  HEAP32[($8_1 + 52 | 0) >> 2] = $2_1;
+  HEAP32[($8_1 + 48 | 0) >> 2] = $3_1;
+  HEAP32[($8_1 + 44 | 0) >> 2] = $4_1;
+  HEAP32[($8_1 + 40 | 0) >> 2] = $5_1;
+  HEAP32[($8_1 + 36 | 0) >> 2] = 0;
+  HEAP32[($8_1 + 32 | 0) >> 2] = 0;
+  HEAP32[($8_1 + 28 | 0) >> 2] = HEAP32[($8_1 + 48 | 0) >> 2] | 0;
+  HEAP32[($8_1 + 24 | 0) >> 2] = HEAP32[($8_1 + 44 | 0) >> 2] | 0;
+  HEAP32[($8_1 + 20 | 0) >> 2] = 0;
+  label$1 : {
+   label$2 : while (1) {
+    if (!((HEAP32[($8_1 + 20 | 0) >> 2] | 0 | 0) < (HEAP32[($8_1 + 28 | 0) >> 2] | 0 | 0) & 1 | 0)) {
+     break label$1
+    }
+    HEAP32[($8_1 + 16 | 0) >> 2] = 0;
+    HEAP32[($8_1 + 12 | 0) >> 2] = 0;
+    label$3 : {
+     label$4 : while (1) {
+      if (!((HEAP32[($8_1 + 16 | 0) >> 2] | 0 | 0) < (Math_imul(HEAP32[($8_1 + 24 | 0) >> 2] | 0, HEAP32[($8_1 + 40 | 0) >> 2] | 0) | 0) & 1 | 0)) {
+       break label$3
+      }
+      label$5 : {
+       if ((HEAP32[($8_1 + 16 | 0) >> 2] | 0 | 0) % (HEAP32[($8_1 + 40 | 0) >> 2] | 0 | 0) | 0) {
+        break label$5
+       }
+       HEAP32[($8_1 + 12 | 0) >> 2] = (HEAP32[($8_1 + 12 | 0) >> 2] | 0) + 1 | 0;
+      }
+      HEAP32[($8_1 + 32 | 0) >> 2] = Math_imul(Math_imul(HEAP32[($8_1 + 48 | 0) >> 2] | 0, HEAP32[($8_1 + 40 | 0) >> 2] | 0), (HEAP32[($8_1 + 44 | 0) >> 2] | 0) - (HEAP32[($8_1 + 12 | 0) >> 2] | 0) | 0) + Math_imul(HEAP32[($8_1 + 20 | 0) >> 2] | 0, HEAP32[($8_1 + 40 | 0) >> 2] | 0) | 0;
+      HEAP8[((HEAP32[($8_1 + 56 | 0) >> 2] | 0) + (HEAP32[($8_1 + 36 | 0) >> 2] | 0) | 0) >> 0] = HEAPU8[((HEAP32[($8_1 + 60 | 0) >> 2] | 0) + (HEAP32[($8_1 + 32 | 0) >> 2] | 0) | 0) >> 0] | 0;
+      HEAP8[((HEAP32[($8_1 + 56 | 0) >> 2] | 0) + ((HEAP32[($8_1 + 36 | 0) >> 2] | 0) + 1 | 0) | 0) >> 0] = HEAPU8[((HEAP32[($8_1 + 60 | 0) >> 2] | 0) + ((HEAP32[($8_1 + 32 | 0) >> 2] | 0) + 1 | 0) | 0) >> 0] | 0;
+      HEAP8[((HEAP32[($8_1 + 56 | 0) >> 2] | 0) + ((HEAP32[($8_1 + 36 | 0) >> 2] | 0) + 2 | 0) | 0) >> 0] = HEAPU8[((HEAP32[($8_1 + 60 | 0) >> 2] | 0) + ((HEAP32[($8_1 + 32 | 0) >> 2] | 0) + 2 | 0) | 0) >> 0] | 0;
+      HEAP8[((HEAP32[($8_1 + 56 | 0) >> 2] | 0) + ((HEAP32[($8_1 + 36 | 0) >> 2] | 0) + 3 | 0) | 0) >> 0] = HEAPU8[((HEAP32[($8_1 + 60 | 0) >> 2] | 0) + ((HEAP32[($8_1 + 32 | 0) >> 2] | 0) + 3 | 0) | 0) >> 0] | 0;
+      HEAP32[($8_1 + 36 | 0) >> 2] = (HEAP32[($8_1 + 36 | 0) >> 2] | 0) + (HEAP32[($8_1 + 40 | 0) >> 2] | 0) | 0;
+      HEAP32[($8_1 + 16 | 0) >> 2] = (HEAP32[($8_1 + 16 | 0) >> 2] | 0) + (HEAP32[($8_1 + 40 | 0) >> 2] | 0) | 0;
+      continue label$4;
+     };
+    }
+    HEAP32[($8_1 + 20 | 0) >> 2] = (HEAP32[($8_1 + 20 | 0) >> 2] | 0) + 1 | 0;
+    continue label$2;
+   };
+  }
+  return;
+ }
+ 
+ function $4($0_1, $1_1, $2_1) {
+  $0_1 = $0_1 | 0;
+  $1_1 = $1_1 | 0;
+  $2_1 = $2_1 | 0;
+  var $5_1 = 0;
+  $5_1 = global$0 - 16 | 0;
+  HEAP32[($5_1 + 12 | 0) >> 2] = $0_1;
+  HEAP32[($5_1 + 8 | 0) >> 2] = $1_1;
+  HEAP32[($5_1 + 4 | 0) >> 2] = $2_1;
+  HEAP32[$5_1 >> 2] = 0;
+  label$1 : {
+   label$2 : while (1) {
+    if (!((HEAP32[$5_1 >> 2] | 0 | 0) < (HEAP32[($5_1 + 8 | 0) >> 2] | 0 | 0) & 1 | 0)) {
+     break label$1
+    }
+    HEAP8[((HEAP32[($5_1 + 12 | 0) >> 2] | 0) + (HEAP32[$5_1 >> 2] | 0) | 0) >> 0] = 255 - ((HEAPU8[((HEAP32[($5_1 + 12 | 0) >> 2] | 0) + (HEAP32[$5_1 >> 2] | 0) | 0) >> 0] | 0) & 255 | 0) | 0;
+    HEAP8[((HEAP32[($5_1 + 12 | 0) >> 2] | 0) + ((HEAP32[$5_1 >> 2] | 0) + 1 | 0) | 0) >> 0] = 255 - ((HEAPU8[((HEAP32[($5_1 + 12 | 0) >> 2] | 0) + ((HEAP32[$5_1 >> 2] | 0) + 1 | 0) | 0) >> 0] | 0) & 255 | 0) | 0;
+    HEAP8[((HEAP32[($5_1 + 12 | 0) >> 2] | 0) + ((HEAP32[$5_1 >> 2] | 0) + 2 | 0) | 0) >> 0] = 255 - ((HEAPU8[((HEAP32[($5_1 + 12 | 0) >> 2] | 0) + ((HEAP32[$5_1 >> 2] | 0) + 2 | 0) | 0) >> 0] | 0) & 255 | 0) | 0;
+    HEAP32[$5_1 >> 2] = (HEAP32[$5_1 >> 2] | 0) + (HEAP32[($5_1 + 4 | 0) >> 2] | 0) | 0;
+    continue label$2;
+   };
+  }
   return;
  }
  
  function $5($0_1) {
   $0_1 = $0_1 | 0;
-  var $3_1 = 0, $12_1 = 0, $14_1 = 0;
+  var $3_1 = 0;
   $3_1 = global$0 - 16 | 0;
-  global$0 = $3_1;
-  HEAP32[($3_1 + 12 | 0) >> 2] = $0_1;
-  HEAP32[($3_1 + 8 | 0) >> 2] = $7((HEAP32[($3_1 + 12 | 0) >> 2] | 0) << 0 | 0 | 0) | 0;
-  HEAP8[(HEAP32[($3_1 + 8 | 0) >> 2] | 0) >> 0] = 7;
-  $12_1 = 24;
-  $14_1 = ((HEAPU8[(HEAP32[($3_1 + 8 | 0) >> 2] | 0) >> 0] | 0) << $12_1 | 0) >> $12_1 | 0;
-  global$0 = $3_1 + 16 | 0;
-  return $14_1 | 0;
+  HEAP32[($3_1 + 8 | 0) >> 2] = $0_1;
+  label$1 : {
+   label$2 : {
+    if (!((HEAP32[($3_1 + 8 | 0) >> 2] | 0 | 0) > (255 | 0) & 1 | 0)) {
+     break label$2
+    }
+    HEAP32[($3_1 + 12 | 0) >> 2] = 255;
+    break label$1;
+   }
+   label$3 : {
+    if (!((HEAP32[($3_1 + 8 | 0) >> 2] | 0 | 0) < (0 | 0) & 1 | 0)) {
+     break label$3
+    }
+    HEAP32[($3_1 + 12 | 0) >> 2] = 0;
+    break label$1;
+   }
+   HEAP32[($3_1 + 12 | 0) >> 2] = HEAP32[($3_1 + 8 | 0) >> 2] | 0;
+  }
+  return HEAP32[($3_1 + 12 | 0) >> 2] | 0 | 0;
  }
  
- function $6() {
+ function $6($0_1, $1_1, $2_1, $3_1) {
+  $0_1 = $0_1 | 0;
+  $1_1 = $1_1 | 0;
+  $2_1 = $2_1 | 0;
+  $3_1 = $3_1 | 0;
+  var $6_1 = 0, $23_1 = 0, $37 = 0, $53 = 0;
+  $6_1 = global$0 - 32 | 0;
+  global$0 = $6_1;
+  HEAP32[($6_1 + 28 | 0) >> 2] = $0_1;
+  HEAP32[($6_1 + 24 | 0) >> 2] = $1_1;
+  HEAP32[($6_1 + 20 | 0) >> 2] = $2_1;
+  HEAP32[($6_1 + 16 | 0) >> 2] = $3_1;
+  HEAP32[($6_1 + 12 | 0) >> 2] = 0;
+  label$1 : {
+   label$2 : while (1) {
+    if (!((HEAP32[($6_1 + 12 | 0) >> 2] | 0 | 0) < (HEAP32[($6_1 + 24 | 0) >> 2] | 0 | 0) & 1 | 0)) {
+     break label$1
+    }
+    $23_1 = $5(((HEAPU8[((HEAP32[($6_1 + 28 | 0) >> 2] | 0) + (HEAP32[($6_1 + 12 | 0) >> 2] | 0) | 0) >> 0] | 0) & 255 | 0) + (HEAP32[($6_1 + 20 | 0) >> 2] | 0) | 0 | 0) | 0;
+    HEAP8[((HEAP32[($6_1 + 28 | 0) >> 2] | 0) + (HEAP32[($6_1 + 12 | 0) >> 2] | 0) | 0) >> 0] = $23_1;
+    $37 = $5(((HEAPU8[((HEAP32[($6_1 + 28 | 0) >> 2] | 0) + ((HEAP32[($6_1 + 12 | 0) >> 2] | 0) + 1 | 0) | 0) >> 0] | 0) & 255 | 0) + (HEAP32[($6_1 + 20 | 0) >> 2] | 0) | 0 | 0) | 0;
+    HEAP8[((HEAP32[($6_1 + 28 | 0) >> 2] | 0) + ((HEAP32[($6_1 + 12 | 0) >> 2] | 0) + 1 | 0) | 0) >> 0] = $37;
+    $53 = $5(((HEAPU8[((HEAP32[($6_1 + 28 | 0) >> 2] | 0) + ((HEAP32[($6_1 + 12 | 0) >> 2] | 0) + 2 | 0) | 0) >> 0] | 0) & 255 | 0) + (HEAP32[($6_1 + 20 | 0) >> 2] | 0) | 0 | 0) | 0;
+    HEAP8[((HEAP32[($6_1 + 28 | 0) >> 2] | 0) + ((HEAP32[($6_1 + 12 | 0) >> 2] | 0) + 2 | 0) | 0) >> 0] = $53;
+    HEAP32[($6_1 + 12 | 0) >> 2] = (HEAP32[($6_1 + 12 | 0) >> 2] | 0) + (HEAP32[($6_1 + 16 | 0) >> 2] | 0) | 0;
+    continue label$2;
+   };
+  }
+  global$0 = $6_1 + 32 | 0;
+  return;
+ }
+ 
+ function $7($0_1, $1_1, $2_1) {
+  $0_1 = $0_1 | 0;
+  $1_1 = $1_1 | 0;
+  $2_1 = $2_1 | 0;
+  var $5_1 = 0;
+  $5_1 = global$0 - 32 | 0;
+  HEAP32[($5_1 + 28 | 0) >> 2] = $0_1;
+  HEAP32[($5_1 + 24 | 0) >> 2] = $1_1;
+  HEAP32[($5_1 + 20 | 0) >> 2] = $2_1;
+  HEAP32[($5_1 + 16 | 0) >> 2] = 0;
+  label$1 : {
+   label$2 : while (1) {
+    if (!((HEAP32[($5_1 + 16 | 0) >> 2] | 0 | 0) < (HEAP32[($5_1 + 24 | 0) >> 2] | 0 | 0) & 1 | 0)) {
+     break label$1
+    }
+    HEAP32[($5_1 + 12 | 0) >> 2] = (HEAPU8[((HEAP32[($5_1 + 28 | 0) >> 2] | 0) + (HEAP32[($5_1 + 16 | 0) >> 2] | 0) | 0) >> 0] | 0) & 255 | 0;
+    HEAP32[($5_1 + 8 | 0) >> 2] = (HEAPU8[((HEAP32[($5_1 + 28 | 0) >> 2] | 0) + ((HEAP32[($5_1 + 16 | 0) >> 2] | 0) + 3 | 0) | 0) >> 0] | 0) & 255 | 0;
+    HEAP8[((HEAP32[($5_1 + 28 | 0) >> 2] | 0) + (HEAP32[($5_1 + 16 | 0) >> 2] | 0) | 0) >> 0] = HEAP32[($5_1 + 12 | 0) >> 2] | 0;
+    HEAP8[((HEAP32[($5_1 + 28 | 0) >> 2] | 0) + ((HEAP32[($5_1 + 16 | 0) >> 2] | 0) + 1 | 0) | 0) >> 0] = HEAP32[($5_1 + 12 | 0) >> 2] | 0;
+    HEAP8[((HEAP32[($5_1 + 28 | 0) >> 2] | 0) + ((HEAP32[($5_1 + 16 | 0) >> 2] | 0) + 2 | 0) | 0) >> 0] = HEAP32[($5_1 + 12 | 0) >> 2] | 0;
+    HEAP8[((HEAP32[($5_1 + 28 | 0) >> 2] | 0) + ((HEAP32[($5_1 + 16 | 0) >> 2] | 0) + 3 | 0) | 0) >> 0] = HEAP32[($5_1 + 8 | 0) >> 2] | 0;
+    HEAP32[($5_1 + 16 | 0) >> 2] = (HEAP32[($5_1 + 16 | 0) >> 2] | 0) + (HEAP32[($5_1 + 20 | 0) >> 2] | 0) | 0;
+    continue label$2;
+   };
+  }
+  return;
+ }
+ 
+ function $8() {
   return 1028 | 0;
  }
  
- function $7($0_1) {
+ function $9($0_1) {
   $0_1 = $0_1 | 0;
-  var $4_1 = 0, $6_1 = 0, $5_1 = 0, $3_1 = 0, $8_1 = 0, $2_1 = 0, $12_1 = 0, $9_1 = 0, $7_1 = 0, i64toi32_i32$0 = 0, i64toi32_i32$1 = 0, i64toi32_i32$2 = 0, $10_1 = 0, $11_1 = 0, $1_1 = 0, $83 = 0, $96 = 0, $107 = 0, $115 = 0, $123 = 0, $217 = 0, $228 = 0, $236 = 0, $244 = 0, $279 = 0, $354 = 0, $361 = 0, $368 = 0, $459 = 0, $470 = 0, $478 = 0, $486 = 0, $1194 = 0, $1201 = 0, $1208 = 0, $1330 = 0, $1332 = 0, $1393 = 0, $1400 = 0, $1407 = 0, $1640 = 0, $1647 = 0, $1654 = 0;
+  var $1_1 = 0, $2_1 = 0, wasm2js_i32$0 = 0, wasm2js_i32$1 = 0;
+  $1_1 = HEAP32[(0 + 1024 | 0) >> 2] | 0;
+  $2_1 = ($0_1 + 3 | 0) & -4 | 0;
+  $0_1 = $1_1 + $2_1 | 0;
+  label$1 : {
+   label$2 : {
+    if (($2_1 | 0) < (1 | 0)) {
+     break label$2
+    }
+    if ($0_1 >>> 0 <= $1_1 >>> 0) {
+     break label$1
+    }
+   }
+   label$3 : {
+    if ($0_1 >>> 0 <= (__wasm_memory_size() << 16 | 0) >>> 0) {
+     break label$3
+    }
+    if (!(fimport$0($0_1 | 0) | 0)) {
+     break label$1
+    }
+   }
+   HEAP32[(0 + 1024 | 0) >> 2] = $0_1;
+   return $1_1 | 0;
+  }
+  (wasm2js_i32$0 = $8() | 0, wasm2js_i32$1 = 48), HEAP32[wasm2js_i32$0 >> 2] = wasm2js_i32$1;
+  return -1 | 0;
+ }
+ 
+ function $10($0_1) {
+  $0_1 = $0_1 | 0;
+  var $4_1 = 0, $6_1 = 0, $5_1 = 0, $3_1 = 0, $8_1 = 0, $2_1 = 0, $12_1 = 0, $9_1 = 0, $7_1 = 0, i64toi32_i32$0 = 0, i64toi32_i32$1 = 0, i64toi32_i32$2 = 0, $10_1 = 0, $11_1 = 0, $1_1 = 0, $83 = 0, $96 = 0, $107 = 0, $115 = 0, $123 = 0, $217 = 0, $228 = 0, $236 = 0, $244 = 0, $279 = 0, $354 = 0, $361 = 0, $368 = 0, $459 = 0, $470 = 0, $478 = 0, $486 = 0, $1194 = 0, $1201 = 0, $1208 = 0, $1330 = 0, $1332 = 0, $1393 = 0, $1400 = 0, $1407 = 0, $1640 = 0, $1647 = 0, $1654 = 0, wasm2js_i32$0 = 0, wasm2js_i32$1 = 0;
   $1_1 = global$0 - 16 | 0;
   global$0 = $1_1;
   label$1 : {
@@ -790,9 +986,10 @@ function asmFunc(env) {
                   if (($6_1 | 0) != ($5_1 | 0)) {
                    break label$16
                   }
-                  HEAP32[(0 + 1032 | 0) >> 2] = $2_1 & (__wasm_rotl_i32(-2 | 0, $3_1 | 0) | 0) | 0;
+                  (wasm2js_i32$0 = 0, wasm2js_i32$1 = $2_1 & (__wasm_rotl_i32(-2 | 0, $3_1 | 0) | 0) | 0), HEAP32[(wasm2js_i32$0 + 1032 | 0) >> 2] = wasm2js_i32$1;
                   break label$15;
                  }
+                 HEAP32[(0 + 1048 | 0) >> 2] | 0;
                  HEAP32[($6_1 + 12 | 0) >> 2] = $5_1;
                  HEAP32[($5_1 + 8 | 0) >> 2] = $6_1;
                 }
@@ -841,6 +1038,7 @@ function asmFunc(env) {
                   HEAP32[(0 + 1032 | 0) >> 2] = $2_1;
                   break label$18;
                  }
+                 HEAP32[(0 + 1048 | 0) >> 2] | 0;
                  HEAP32[($0_1 + 12 | 0) >> 2] = $5_1;
                  HEAP32[($5_1 + 8 | 0) >> 2] = $0_1;
                 }
@@ -936,6 +1134,7 @@ function asmFunc(env) {
                  if ((HEAP32[(0 + 1048 | 0) >> 2] | 0) >>> 0 > $0_1 >>> 0) {
                   break label$27
                  }
+                 HEAP32[($0_1 + 12 | 0) >> 2] | 0;
                 }
                 HEAP32[($0_1 + 12 | 0) >> 2] = $8_1;
                 HEAP32[($8_1 + 8 | 0) >> 2] = $0_1;
@@ -1109,6 +1308,7 @@ function asmFunc(env) {
                 if ((HEAP32[(0 + 1048 | 0) >> 2] | 0) >>> 0 > $0_1 >>> 0) {
                  break label$41
                 }
+                HEAP32[($0_1 + 12 | 0) >> 2] | 0;
                }
                HEAP32[($0_1 + 12 | 0) >> 2] = $5_1;
                HEAP32[($5_1 + 8 | 0) >> 2] = $0_1;
@@ -1260,7 +1460,7 @@ function asmFunc(env) {
                  break label$54;
                 };
                }
-               $5_1 = $8(0 | 0) | 0;
+               $5_1 = $9(0 | 0) | 0;
                if (($5_1 | 0) == (-1 | 0)) {
                 break label$7
                }
@@ -1293,7 +1493,7 @@ function asmFunc(env) {
                  break label$7
                 }
                }
-               $0_1 = $8($2_1 | 0) | 0;
+               $0_1 = $9($2_1 | 0) | 0;
                if (($0_1 | 0) != ($5_1 | 0)) {
                 break label$51
                }
@@ -1303,7 +1503,7 @@ function asmFunc(env) {
               if ($2_1 >>> 0 > 2147483646 >>> 0) {
                break label$7
               }
-              $5_1 = $8($2_1 | 0) | 0;
+              $5_1 = $9($2_1 | 0) | 0;
               if (($5_1 | 0) == ((HEAP32[$0_1 >> 2] | 0) + (HEAP32[($0_1 + 4 | 0) >> 2] | 0) | 0 | 0)) {
                break label$8
               }
@@ -1326,13 +1526,14 @@ function asmFunc(env) {
                break label$5;
               }
               label$60 : {
-               if (($8($4_1 | 0) | 0 | 0) == (-1 | 0)) {
+               if (($9($4_1 | 0) | 0 | 0) == (-1 | 0)) {
                 break label$60
                }
                $2_1 = $4_1 + $2_1 | 0;
                $5_1 = $0_1;
                break label$5;
               }
+              $9(0 - $2_1 | 0 | 0) | 0;
               break label$7;
              }
              $5_1 = $0_1;
@@ -1358,8 +1559,8 @@ function asmFunc(env) {
        if ($8_1 >>> 0 > 2147483646 >>> 0) {
         break label$4
        }
-       $5_1 = $8($8_1 | 0) | 0;
-       $0_1 = $8(0 | 0) | 0;
+       $5_1 = $9($8_1 | 0) | 0;
+       $0_1 = $9(0 | 0) | 0;
        if ($5_1 >>> 0 >= $0_1 >>> 0) {
         break label$4
        }
@@ -1565,7 +1766,7 @@ function asmFunc(env) {
                if (($4_1 | 0) != ($5_1 | 0)) {
                 break label$87
                }
-               HEAP32[(0 + 1032 | 0) >> 2] = (HEAP32[(0 + 1032 | 0) >> 2] | 0) & (__wasm_rotl_i32(-2 | 0, $9_1 | 0) | 0) | 0;
+               (wasm2js_i32$0 = 0, wasm2js_i32$1 = (HEAP32[(0 + 1032 | 0) >> 2] | 0) & (__wasm_rotl_i32(-2 | 0, $9_1 | 0) | 0) | 0), HEAP32[(wasm2js_i32$0 + 1032 | 0) >> 2] = wasm2js_i32$1;
                break label$84;
               }
               label$88 : {
@@ -1589,6 +1790,7 @@ function asmFunc(env) {
                 if ($8_1 >>> 0 > $0_1 >>> 0) {
                  break label$91
                 }
+                HEAP32[($0_1 + 12 | 0) >> 2] | 0;
                }
                HEAP32[($0_1 + 12 | 0) >> 2] = $5_1;
                HEAP32[($5_1 + 8 | 0) >> 2] = $0_1;
@@ -1639,7 +1841,7 @@ function asmFunc(env) {
                if ($5_1) {
                 break label$94
                }
-               HEAP32[(0 + 1036 | 0) >> 2] = (HEAP32[(0 + 1036 | 0) >> 2] | 0) & (__wasm_rotl_i32(-2 | 0, $4_1 | 0) | 0) | 0;
+               (wasm2js_i32$0 = 0, wasm2js_i32$1 = (HEAP32[(0 + 1036 | 0) >> 2] | 0) & (__wasm_rotl_i32(-2 | 0, $4_1 | 0) | 0) | 0), HEAP32[(wasm2js_i32$0 + 1036 | 0) >> 2] = wasm2js_i32$1;
                break label$84;
               }
               HEAP32[($9_1 + ((HEAP32[($9_1 + 16 | 0) >> 2] | 0 | 0) == ($2_1 | 0) ? 16 : 20) | 0) >> 2] = $5_1;
@@ -1913,7 +2115,7 @@ function asmFunc(env) {
       $0_1 = $0_1 + 8 | 0;
       break label$1;
      }
-     HEAP32[($6() | 0) >> 2] = 48;
+     (wasm2js_i32$0 = $8() | 0, wasm2js_i32$1 = 48), HEAP32[wasm2js_i32$0 >> 2] = wasm2js_i32$1;
      $0_1 = 0;
      break label$1;
     }
@@ -2079,7 +2281,7 @@ function asmFunc(env) {
       if ($8_1) {
        break label$127
       }
-      HEAP32[(0 + 1036 | 0) >> 2] = $9_1 & (__wasm_rotl_i32(-2 | 0, $6_1 | 0) | 0) | 0;
+      (wasm2js_i32$0 = 0, wasm2js_i32$1 = $9_1 & (__wasm_rotl_i32(-2 | 0, $6_1 | 0) | 0) | 0), HEAP32[(wasm2js_i32$0 + 1036 | 0) >> 2] = wasm2js_i32$1;
       break label$126;
      }
      HEAP32[($11_1 + ((HEAP32[($11_1 + 16 | 0) >> 2] | 0 | 0) == ($5_1 | 0) ? 16 : 20) | 0) >> 2] = $8_1;
@@ -2150,59 +2352,450 @@ function asmFunc(env) {
   return $0_1 | 0;
  }
  
- function $8($0_1) {
+ function $11($0_1) {
   $0_1 = $0_1 | 0;
-  var $1_1 = 0, $2_1 = 0;
-  $1_1 = HEAP32[(0 + 1024 | 0) >> 2] | 0;
-  $2_1 = ($0_1 + 3 | 0) & -4 | 0;
-  $0_1 = $1_1 + $2_1 | 0;
+  var $2_1 = 0, $5_1 = 0, $1_1 = 0, $4_1 = 0, $3_1 = 0, $7_1 = 0, $6_1 = 0, $399 = 0, $406 = 0, $413 = 0, wasm2js_i32$0 = 0, wasm2js_i32$1 = 0;
   label$1 : {
+   if (!$0_1) {
+    break label$1
+   }
+   $1_1 = $0_1 + -8 | 0;
+   $2_1 = HEAP32[($0_1 + -4 | 0) >> 2] | 0;
+   $0_1 = $2_1 & -8 | 0;
+   $3_1 = $1_1 + $0_1 | 0;
    label$2 : {
-    if (($2_1 | 0) < (1 | 0)) {
+    if ($2_1 & 1 | 0) {
      break label$2
     }
-    if ($0_1 >>> 0 <= $1_1 >>> 0) {
+    if (!($2_1 & 3 | 0)) {
      break label$1
     }
-   }
-   label$3 : {
-    if ($0_1 >>> 0 <= (__wasm_memory_size() << 16 | 0) >>> 0) {
-     break label$3
-    }
-    if (!(fimport$0($0_1 | 0) | 0)) {
+    $2_1 = HEAP32[$1_1 >> 2] | 0;
+    $1_1 = $1_1 - $2_1 | 0;
+    $4_1 = HEAP32[(0 + 1048 | 0) >> 2] | 0;
+    if ($1_1 >>> 0 < $4_1 >>> 0) {
      break label$1
     }
+    $0_1 = $2_1 + $0_1 | 0;
+    label$3 : {
+     if ((HEAP32[(0 + 1052 | 0) >> 2] | 0 | 0) == ($1_1 | 0)) {
+      break label$3
+     }
+     label$4 : {
+      if ($2_1 >>> 0 > 255 >>> 0) {
+       break label$4
+      }
+      $5_1 = HEAP32[($1_1 + 12 | 0) >> 2] | 0;
+      label$5 : {
+       $6_1 = HEAP32[($1_1 + 8 | 0) >> 2] | 0;
+       $7_1 = $2_1 >>> 3 | 0;
+       $2_1 = ($7_1 << 3 | 0) + 1072 | 0;
+       if (($6_1 | 0) == ($2_1 | 0)) {
+        break label$5
+       }
+      }
+      label$6 : {
+       if (($5_1 | 0) != ($6_1 | 0)) {
+        break label$6
+       }
+       (wasm2js_i32$0 = 0, wasm2js_i32$1 = (HEAP32[(0 + 1032 | 0) >> 2] | 0) & (__wasm_rotl_i32(-2 | 0, $7_1 | 0) | 0) | 0), HEAP32[(wasm2js_i32$0 + 1032 | 0) >> 2] = wasm2js_i32$1;
+       break label$2;
+      }
+      label$7 : {
+       if (($5_1 | 0) == ($2_1 | 0)) {
+        break label$7
+       }
+      }
+      HEAP32[($6_1 + 12 | 0) >> 2] = $5_1;
+      HEAP32[($5_1 + 8 | 0) >> 2] = $6_1;
+      break label$2;
+     }
+     $7_1 = HEAP32[($1_1 + 24 | 0) >> 2] | 0;
+     label$8 : {
+      label$9 : {
+       $5_1 = HEAP32[($1_1 + 12 | 0) >> 2] | 0;
+       if (($5_1 | 0) == ($1_1 | 0)) {
+        break label$9
+       }
+       label$10 : {
+        $2_1 = HEAP32[($1_1 + 8 | 0) >> 2] | 0;
+        if ($4_1 >>> 0 > $2_1 >>> 0) {
+         break label$10
+        }
+        HEAP32[($2_1 + 12 | 0) >> 2] | 0;
+       }
+       HEAP32[($2_1 + 12 | 0) >> 2] = $5_1;
+       HEAP32[($5_1 + 8 | 0) >> 2] = $2_1;
+       break label$8;
+      }
+      label$11 : {
+       $2_1 = $1_1 + 20 | 0;
+       $4_1 = HEAP32[$2_1 >> 2] | 0;
+       if ($4_1) {
+        break label$11
+       }
+       $2_1 = $1_1 + 16 | 0;
+       $4_1 = HEAP32[$2_1 >> 2] | 0;
+       if ($4_1) {
+        break label$11
+       }
+       $5_1 = 0;
+       break label$8;
+      }
+      label$12 : while (1) {
+       $6_1 = $2_1;
+       $5_1 = $4_1;
+       $2_1 = $5_1 + 20 | 0;
+       $4_1 = HEAP32[$2_1 >> 2] | 0;
+       if ($4_1) {
+        continue label$12
+       }
+       $2_1 = $5_1 + 16 | 0;
+       $4_1 = HEAP32[($5_1 + 16 | 0) >> 2] | 0;
+       if ($4_1) {
+        continue label$12
+       }
+       break label$12;
+      };
+      HEAP32[$6_1 >> 2] = 0;
+     }
+     if (!$7_1) {
+      break label$2
+     }
+     label$13 : {
+      label$14 : {
+       $4_1 = HEAP32[($1_1 + 28 | 0) >> 2] | 0;
+       $2_1 = ($4_1 << 2 | 0) + 1336 | 0;
+       if ((HEAP32[$2_1 >> 2] | 0 | 0) != ($1_1 | 0)) {
+        break label$14
+       }
+       HEAP32[$2_1 >> 2] = $5_1;
+       if ($5_1) {
+        break label$13
+       }
+       (wasm2js_i32$0 = 0, wasm2js_i32$1 = (HEAP32[(0 + 1036 | 0) >> 2] | 0) & (__wasm_rotl_i32(-2 | 0, $4_1 | 0) | 0) | 0), HEAP32[(wasm2js_i32$0 + 1036 | 0) >> 2] = wasm2js_i32$1;
+       break label$2;
+      }
+      HEAP32[($7_1 + ((HEAP32[($7_1 + 16 | 0) >> 2] | 0 | 0) == ($1_1 | 0) ? 16 : 20) | 0) >> 2] = $5_1;
+      if (!$5_1) {
+       break label$2
+      }
+     }
+     HEAP32[($5_1 + 24 | 0) >> 2] = $7_1;
+     label$15 : {
+      $2_1 = HEAP32[($1_1 + 16 | 0) >> 2] | 0;
+      if (!$2_1) {
+       break label$15
+      }
+      HEAP32[($5_1 + 16 | 0) >> 2] = $2_1;
+      HEAP32[($2_1 + 24 | 0) >> 2] = $5_1;
+     }
+     $2_1 = HEAP32[($1_1 + 20 | 0) >> 2] | 0;
+     if (!$2_1) {
+      break label$2
+     }
+     HEAP32[($5_1 + 20 | 0) >> 2] = $2_1;
+     HEAP32[($2_1 + 24 | 0) >> 2] = $5_1;
+     break label$2;
+    }
+    $2_1 = HEAP32[($3_1 + 4 | 0) >> 2] | 0;
+    if (($2_1 & 3 | 0 | 0) != (3 | 0)) {
+     break label$2
+    }
+    HEAP32[(0 + 1040 | 0) >> 2] = $0_1;
+    HEAP32[($3_1 + 4 | 0) >> 2] = $2_1 & -2 | 0;
+    HEAP32[($1_1 + 4 | 0) >> 2] = $0_1 | 1 | 0;
+    HEAP32[($1_1 + $0_1 | 0) >> 2] = $0_1;
+    return;
    }
-   HEAP32[(0 + 1024 | 0) >> 2] = $0_1;
-   return $1_1 | 0;
+   if ($3_1 >>> 0 <= $1_1 >>> 0) {
+    break label$1
+   }
+   $2_1 = HEAP32[($3_1 + 4 | 0) >> 2] | 0;
+   if (!($2_1 & 1 | 0)) {
+    break label$1
+   }
+   label$16 : {
+    label$17 : {
+     if ($2_1 & 2 | 0) {
+      break label$17
+     }
+     label$18 : {
+      if ((HEAP32[(0 + 1056 | 0) >> 2] | 0 | 0) != ($3_1 | 0)) {
+       break label$18
+      }
+      HEAP32[(0 + 1056 | 0) >> 2] = $1_1;
+      $0_1 = (HEAP32[(0 + 1044 | 0) >> 2] | 0) + $0_1 | 0;
+      HEAP32[(0 + 1044 | 0) >> 2] = $0_1;
+      HEAP32[($1_1 + 4 | 0) >> 2] = $0_1 | 1 | 0;
+      if (($1_1 | 0) != (HEAP32[(0 + 1052 | 0) >> 2] | 0 | 0)) {
+       break label$1
+      }
+      HEAP32[(0 + 1040 | 0) >> 2] = 0;
+      HEAP32[(0 + 1052 | 0) >> 2] = 0;
+      return;
+     }
+     label$19 : {
+      if ((HEAP32[(0 + 1052 | 0) >> 2] | 0 | 0) != ($3_1 | 0)) {
+       break label$19
+      }
+      HEAP32[(0 + 1052 | 0) >> 2] = $1_1;
+      $0_1 = (HEAP32[(0 + 1040 | 0) >> 2] | 0) + $0_1 | 0;
+      HEAP32[(0 + 1040 | 0) >> 2] = $0_1;
+      HEAP32[($1_1 + 4 | 0) >> 2] = $0_1 | 1 | 0;
+      HEAP32[($1_1 + $0_1 | 0) >> 2] = $0_1;
+      return;
+     }
+     $0_1 = ($2_1 & -8 | 0) + $0_1 | 0;
+     label$20 : {
+      label$21 : {
+       if ($2_1 >>> 0 > 255 >>> 0) {
+        break label$21
+       }
+       $4_1 = HEAP32[($3_1 + 12 | 0) >> 2] | 0;
+       label$22 : {
+        $5_1 = HEAP32[($3_1 + 8 | 0) >> 2] | 0;
+        $3_1 = $2_1 >>> 3 | 0;
+        $2_1 = ($3_1 << 3 | 0) + 1072 | 0;
+        if (($5_1 | 0) == ($2_1 | 0)) {
+         break label$22
+        }
+        HEAP32[(0 + 1048 | 0) >> 2] | 0;
+       }
+       label$23 : {
+        if (($4_1 | 0) != ($5_1 | 0)) {
+         break label$23
+        }
+        (wasm2js_i32$0 = 0, wasm2js_i32$1 = (HEAP32[(0 + 1032 | 0) >> 2] | 0) & (__wasm_rotl_i32(-2 | 0, $3_1 | 0) | 0) | 0), HEAP32[(wasm2js_i32$0 + 1032 | 0) >> 2] = wasm2js_i32$1;
+        break label$20;
+       }
+       label$24 : {
+        if (($4_1 | 0) == ($2_1 | 0)) {
+         break label$24
+        }
+        HEAP32[(0 + 1048 | 0) >> 2] | 0;
+       }
+       HEAP32[($5_1 + 12 | 0) >> 2] = $4_1;
+       HEAP32[($4_1 + 8 | 0) >> 2] = $5_1;
+       break label$20;
+      }
+      $7_1 = HEAP32[($3_1 + 24 | 0) >> 2] | 0;
+      label$25 : {
+       label$26 : {
+        $5_1 = HEAP32[($3_1 + 12 | 0) >> 2] | 0;
+        if (($5_1 | 0) == ($3_1 | 0)) {
+         break label$26
+        }
+        label$27 : {
+         $2_1 = HEAP32[($3_1 + 8 | 0) >> 2] | 0;
+         if ((HEAP32[(0 + 1048 | 0) >> 2] | 0) >>> 0 > $2_1 >>> 0) {
+          break label$27
+         }
+         HEAP32[($2_1 + 12 | 0) >> 2] | 0;
+        }
+        HEAP32[($2_1 + 12 | 0) >> 2] = $5_1;
+        HEAP32[($5_1 + 8 | 0) >> 2] = $2_1;
+        break label$25;
+       }
+       label$28 : {
+        $2_1 = $3_1 + 20 | 0;
+        $4_1 = HEAP32[$2_1 >> 2] | 0;
+        if ($4_1) {
+         break label$28
+        }
+        $2_1 = $3_1 + 16 | 0;
+        $4_1 = HEAP32[$2_1 >> 2] | 0;
+        if ($4_1) {
+         break label$28
+        }
+        $5_1 = 0;
+        break label$25;
+       }
+       label$29 : while (1) {
+        $6_1 = $2_1;
+        $5_1 = $4_1;
+        $2_1 = $5_1 + 20 | 0;
+        $4_1 = HEAP32[$2_1 >> 2] | 0;
+        if ($4_1) {
+         continue label$29
+        }
+        $2_1 = $5_1 + 16 | 0;
+        $4_1 = HEAP32[($5_1 + 16 | 0) >> 2] | 0;
+        if ($4_1) {
+         continue label$29
+        }
+        break label$29;
+       };
+       HEAP32[$6_1 >> 2] = 0;
+      }
+      if (!$7_1) {
+       break label$20
+      }
+      label$30 : {
+       label$31 : {
+        $4_1 = HEAP32[($3_1 + 28 | 0) >> 2] | 0;
+        $2_1 = ($4_1 << 2 | 0) + 1336 | 0;
+        if ((HEAP32[$2_1 >> 2] | 0 | 0) != ($3_1 | 0)) {
+         break label$31
+        }
+        HEAP32[$2_1 >> 2] = $5_1;
+        if ($5_1) {
+         break label$30
+        }
+        (wasm2js_i32$0 = 0, wasm2js_i32$1 = (HEAP32[(0 + 1036 | 0) >> 2] | 0) & (__wasm_rotl_i32(-2 | 0, $4_1 | 0) | 0) | 0), HEAP32[(wasm2js_i32$0 + 1036 | 0) >> 2] = wasm2js_i32$1;
+        break label$20;
+       }
+       HEAP32[($7_1 + ((HEAP32[($7_1 + 16 | 0) >> 2] | 0 | 0) == ($3_1 | 0) ? 16 : 20) | 0) >> 2] = $5_1;
+       if (!$5_1) {
+        break label$20
+       }
+      }
+      HEAP32[($5_1 + 24 | 0) >> 2] = $7_1;
+      label$32 : {
+       $2_1 = HEAP32[($3_1 + 16 | 0) >> 2] | 0;
+       if (!$2_1) {
+        break label$32
+       }
+       HEAP32[($5_1 + 16 | 0) >> 2] = $2_1;
+       HEAP32[($2_1 + 24 | 0) >> 2] = $5_1;
+      }
+      $2_1 = HEAP32[($3_1 + 20 | 0) >> 2] | 0;
+      if (!$2_1) {
+       break label$20
+      }
+      HEAP32[($5_1 + 20 | 0) >> 2] = $2_1;
+      HEAP32[($2_1 + 24 | 0) >> 2] = $5_1;
+     }
+     HEAP32[($1_1 + 4 | 0) >> 2] = $0_1 | 1 | 0;
+     HEAP32[($1_1 + $0_1 | 0) >> 2] = $0_1;
+     if (($1_1 | 0) != (HEAP32[(0 + 1052 | 0) >> 2] | 0 | 0)) {
+      break label$16
+     }
+     HEAP32[(0 + 1040 | 0) >> 2] = $0_1;
+     return;
+    }
+    HEAP32[($3_1 + 4 | 0) >> 2] = $2_1 & -2 | 0;
+    HEAP32[($1_1 + 4 | 0) >> 2] = $0_1 | 1 | 0;
+    HEAP32[($1_1 + $0_1 | 0) >> 2] = $0_1;
+   }
+   label$33 : {
+    if ($0_1 >>> 0 > 255 >>> 0) {
+     break label$33
+    }
+    $2_1 = $0_1 >>> 3 | 0;
+    $0_1 = ($2_1 << 3 | 0) + 1072 | 0;
+    label$34 : {
+     label$35 : {
+      $4_1 = HEAP32[(0 + 1032 | 0) >> 2] | 0;
+      $2_1 = 1 << $2_1 | 0;
+      if ($4_1 & $2_1 | 0) {
+       break label$35
+      }
+      HEAP32[(0 + 1032 | 0) >> 2] = $4_1 | $2_1 | 0;
+      $2_1 = $0_1;
+      break label$34;
+     }
+     $2_1 = HEAP32[($0_1 + 8 | 0) >> 2] | 0;
+    }
+    HEAP32[($0_1 + 8 | 0) >> 2] = $1_1;
+    HEAP32[($2_1 + 12 | 0) >> 2] = $1_1;
+    HEAP32[($1_1 + 12 | 0) >> 2] = $0_1;
+    HEAP32[($1_1 + 8 | 0) >> 2] = $2_1;
+    return;
+   }
+   $2_1 = 31;
+   label$36 : {
+    if ($0_1 >>> 0 > 16777215 >>> 0) {
+     break label$36
+    }
+    $2_1 = $0_1 >>> 8 | 0;
+    $399 = $2_1;
+    $2_1 = (($2_1 + 1048320 | 0) >>> 16 | 0) & 8 | 0;
+    $4_1 = $399 << $2_1 | 0;
+    $406 = $4_1;
+    $4_1 = (($4_1 + 520192 | 0) >>> 16 | 0) & 4 | 0;
+    $5_1 = $406 << $4_1 | 0;
+    $413 = $5_1;
+    $5_1 = (($5_1 + 245760 | 0) >>> 16 | 0) & 2 | 0;
+    $2_1 = (($413 << $5_1 | 0) >>> 15 | 0) - ($2_1 | $4_1 | 0 | $5_1 | 0) | 0;
+    $2_1 = ($2_1 << 1 | 0 | (($0_1 >>> ($2_1 + 21 | 0) | 0) & 1 | 0) | 0) + 28 | 0;
+   }
+   HEAP32[($1_1 + 16 | 0) >> 2] = 0;
+   HEAP32[($1_1 + 20 | 0) >> 2] = 0;
+   HEAP32[($1_1 + 28 | 0) >> 2] = $2_1;
+   $4_1 = ($2_1 << 2 | 0) + 1336 | 0;
+   label$37 : {
+    label$38 : {
+     label$39 : {
+      label$40 : {
+       $5_1 = HEAP32[(0 + 1036 | 0) >> 2] | 0;
+       $3_1 = 1 << $2_1 | 0;
+       if ($5_1 & $3_1 | 0) {
+        break label$40
+       }
+       HEAP32[(0 + 1036 | 0) >> 2] = $5_1 | $3_1 | 0;
+       HEAP32[$4_1 >> 2] = $1_1;
+       HEAP32[($1_1 + 24 | 0) >> 2] = $4_1;
+       break label$39;
+      }
+      $2_1 = $0_1 << (($2_1 | 0) == (31 | 0) ? 0 : 25 - ($2_1 >>> 1 | 0) | 0) | 0;
+      $5_1 = HEAP32[$4_1 >> 2] | 0;
+      label$41 : while (1) {
+       $4_1 = $5_1;
+       if (((HEAP32[($5_1 + 4 | 0) >> 2] | 0) & -8 | 0 | 0) == ($0_1 | 0)) {
+        break label$38
+       }
+       $5_1 = $2_1 >>> 29 | 0;
+       $2_1 = $2_1 << 1 | 0;
+       $3_1 = ($4_1 + ($5_1 & 4 | 0) | 0) + 16 | 0;
+       $5_1 = HEAP32[$3_1 >> 2] | 0;
+       if ($5_1) {
+        continue label$41
+       }
+       break label$41;
+      };
+      HEAP32[$3_1 >> 2] = $1_1;
+      HEAP32[($1_1 + 24 | 0) >> 2] = $4_1;
+     }
+     HEAP32[($1_1 + 12 | 0) >> 2] = $1_1;
+     HEAP32[($1_1 + 8 | 0) >> 2] = $1_1;
+     break label$37;
+    }
+    $0_1 = HEAP32[($4_1 + 8 | 0) >> 2] | 0;
+    HEAP32[($0_1 + 12 | 0) >> 2] = $1_1;
+    HEAP32[($4_1 + 8 | 0) >> 2] = $1_1;
+    HEAP32[($1_1 + 24 | 0) >> 2] = 0;
+    HEAP32[($1_1 + 12 | 0) >> 2] = $4_1;
+    HEAP32[($1_1 + 8 | 0) >> 2] = $0_1;
+   }
+   $1_1 = (HEAP32[(0 + 1064 | 0) >> 2] | 0) + -1 | 0;
+   HEAP32[(0 + 1064 | 0) >> 2] = $1_1 ? $1_1 : -1;
   }
-  HEAP32[($6() | 0) >> 2] = 48;
-  return -1 | 0;
  }
  
- function $9() {
+ function $12() {
   global$2 = 5244432;
   global$1 = (1544 + 15 | 0) & -16 | 0;
  }
  
- function $10() {
+ function $13() {
   return global$0 - global$1 | 0 | 0;
  }
  
- function $11() {
+ function $14() {
   return global$1 | 0;
  }
  
- function $12() {
+ function $15() {
   return global$0 | 0;
  }
  
- function $13($0_1) {
+ function $16($0_1) {
   $0_1 = $0_1 | 0;
   global$0 = $0_1;
  }
  
- function $14($0_1) {
+ function $17($0_1) {
   $0_1 = $0_1 | 0;
   var $1_1 = 0;
   $1_1 = (global$0 - $0_1 | 0) & -16 | 0;
@@ -2210,33 +2803,33 @@ function asmFunc(env) {
   return $1_1 | 0;
  }
  
- function $15($0_1) {
+ function $18($0_1) {
   $0_1 = $0_1 | 0;
   return 1 | 0;
  }
  
- function $16($0_1) {
+ function $19($0_1) {
   $0_1 = $0_1 | 0;
  }
  
- function $17($0_1) {
+ function $20($0_1) {
   $0_1 = $0_1 | 0;
- }
- 
- function $18($0_1) {
-  $0_1 = $0_1 | 0;
- }
- 
- function $19() {
-  $17(1528 | 0);
-  return 1536 | 0;
- }
- 
- function $20() {
-  $18(1528 | 0);
  }
  
  function $21($0_1) {
+  $0_1 = $0_1 | 0;
+ }
+ 
+ function $22() {
+  $20(1528 | 0);
+  return 1536 | 0;
+ }
+ 
+ function $23() {
+  $21(1528 | 0);
+ }
+ 
+ function $24($0_1) {
   $0_1 = $0_1 | 0;
   var $2_1 = 0, $1_1 = 0;
   label$1 : {
@@ -2248,14 +2841,14 @@ function asmFunc(env) {
      if ((HEAP32[($0_1 + 76 | 0) >> 2] | 0 | 0) > (-1 | 0)) {
       break label$3
      }
-     return $22($0_1 | 0) | 0 | 0;
+     return $25($0_1 | 0) | 0 | 0;
     }
-    $1_1 = $15($0_1 | 0) | 0;
-    $2_1 = $22($0_1 | 0) | 0;
+    $1_1 = $18($0_1 | 0) | 0;
+    $2_1 = $25($0_1 | 0) | 0;
     if (!$1_1) {
      break label$1
     }
-    $16($0_1 | 0);
+    $19($0_1 | 0);
     return $2_1 | 0;
    }
    $2_1 = 0;
@@ -2263,10 +2856,10 @@ function asmFunc(env) {
     if (!(HEAP32[(0 + 1540 | 0) >> 2] | 0)) {
      break label$4
     }
-    $2_1 = $21(HEAP32[(0 + 1540 | 0) >> 2] | 0 | 0) | 0;
+    $2_1 = $24(HEAP32[(0 + 1540 | 0) >> 2] | 0 | 0) | 0;
    }
    label$5 : {
-    $0_1 = HEAP32[($19() | 0) >> 2] | 0;
+    $0_1 = HEAP32[($22() | 0) >> 2] | 0;
     if (!$0_1) {
      break label$5
     }
@@ -2276,19 +2869,19 @@ function asmFunc(env) {
       if ((HEAP32[($0_1 + 76 | 0) >> 2] | 0 | 0) < (0 | 0)) {
        break label$7
       }
-      $1_1 = $15($0_1 | 0) | 0;
+      $1_1 = $18($0_1 | 0) | 0;
      }
      label$8 : {
       if ((HEAP32[($0_1 + 20 | 0) >> 2] | 0) >>> 0 <= (HEAP32[($0_1 + 28 | 0) >> 2] | 0) >>> 0) {
        break label$8
       }
-      $2_1 = $22($0_1 | 0) | 0 | $2_1 | 0;
+      $2_1 = $25($0_1 | 0) | 0 | $2_1 | 0;
      }
      label$9 : {
       if (!$1_1) {
        break label$9
       }
-      $16($0_1 | 0);
+      $19($0_1 | 0);
      }
      $0_1 = HEAP32[($0_1 + 56 | 0) >> 2] | 0;
      if ($0_1) {
@@ -2297,18 +2890,19 @@ function asmFunc(env) {
      break label$6;
     };
    }
-   $20();
+   $23();
   }
   return $2_1 | 0;
  }
  
- function $22($0_1) {
+ function $25($0_1) {
   $0_1 = $0_1 | 0;
   var i64toi32_i32$1 = 0, i64toi32_i32$0 = 0, $1_1 = 0, $2_1 = 0;
   label$1 : {
    if ((HEAP32[($0_1 + 20 | 0) >> 2] | 0) >>> 0 <= (HEAP32[($0_1 + 28 | 0) >> 2] | 0) >>> 0) {
     break label$1
    }
+   FUNCTION_TABLE[HEAP32[($0_1 + 36 | 0) >> 2] | 0 | 0]($0_1, 0, 0) | 0;
    if (HEAP32[($0_1 + 20 | 0) >> 2] | 0) {
     break label$1
    }
@@ -2355,22 +2949,47 @@ function asmFunc(env) {
   return buffer.byteLength / 65536 | 0;
  }
  
+ function __wasm_memory_grow(pagesToAdd) {
+  pagesToAdd = pagesToAdd | 0;
+  var oldPages = __wasm_memory_size() | 0;
+  var newPages = oldPages + pagesToAdd | 0;
+  if ((oldPages < newPages) && (newPages < 65536)) {
+   var newBuffer = new ArrayBuffer(Math_imul(newPages, 65536));
+   var newHEAP8 = new Int8Array(newBuffer);
+   newHEAP8.set(HEAP8);
+   HEAP8 = new Int8Array(newBuffer);
+   HEAP16 = new Int16Array(newBuffer);
+   HEAP32 = new Int32Array(newBuffer);
+   HEAPU8 = new Uint8Array(newBuffer);
+   HEAPU16 = new Uint16Array(newBuffer);
+   HEAPU32 = new Uint32Array(newBuffer);
+   HEAPF32 = new Float32Array(newBuffer);
+   HEAPF64 = new Float64Array(newBuffer);
+   buffer = newBuffer;
+   memory.buffer = buffer;
+   bufferView = HEAPU8;
+  }
+  return oldPages;
+ }
+ 
  return {
   "__wasm_call_ctors": $0, 
-  "doubler": $1, 
-  "rotate": $2, 
-  "rotate2": $3, 
-  "test2": $4, 
-  "test3": $5, 
-  "malloc": $7, 
-  "__errno_location": $6, 
-  "fflush": $21, 
-  "stackSave": $12, 
-  "stackRestore": $13, 
-  "stackAlloc": $14, 
-  "emscripten_stack_init": $9, 
-  "emscripten_stack_get_free": $10, 
-  "emscripten_stack_get_end": $11, 
+  "rotate180": $1, 
+  "mirror_reflection": $2, 
+  "rotate90": $3, 
+  "invert": $4, 
+  "brighten": $6, 
+  "gray_scale": $7, 
+  "__errno_location": $8, 
+  "fflush": $24, 
+  "stackSave": $15, 
+  "stackRestore": $16, 
+  "stackAlloc": $17, 
+  "emscripten_stack_init": $12, 
+  "emscripten_stack_get_free": $13, 
+  "emscripten_stack_get_end": $14, 
+  "malloc": $10, 
+  "free": $11, 
   "__indirect_function_table": FUNCTION_TABLE
  };
 }
@@ -2423,7 +3042,8 @@ function setValue(ptr, value, type, noSafe) {
       case 'i8': HEAP8[((ptr)>>0)] = value; break;
       case 'i16': HEAP16[((ptr)>>1)] = value; break;
       case 'i32': HEAP32[((ptr)>>2)] = value; break;
-	  case 'float': HEAPF32[((ptr)>>2)] = value; break;
+      case 'i64': (tempI64 = [value>>>0,(tempDouble=value,(+(Math.abs(tempDouble))) >= 1.0 ? (tempDouble > 0.0 ? ((Math.min((+(Math.floor((tempDouble)/4294967296.0))), 4294967295.0))|0)>>>0 : (~~((+(Math.ceil((tempDouble - +(((~~(tempDouble)))>>>0))/4294967296.0)))))>>>0) : 0)],HEAP32[((ptr)>>2)] = tempI64[0],HEAP32[(((ptr)+(4))>>2)] = tempI64[1]); break;
+      case 'float': HEAPF32[((ptr)>>2)] = value; break;
       case 'double': HEAPF64[((ptr)>>3)] = value; break;
       default: abort('invalid type for setValue: ' + type);
     }
@@ -2544,10 +3164,6 @@ function cwrap(ident, returnType, argTypes, opts) {
 
 // We used to include malloc/free by default in the past. Show a helpful error in
 // builds with assertions.
-function _free() {
-  // Show a helpful error since we used to include free by default in the past.
-  abort("free() called but not included in the build - add '_free' to EXPORTED_FUNCTIONS");
-}
 
 var ALLOC_NORMAL = 0; // Tries to use _malloc()
 var ALLOC_STACK = 1; // Lives for the duration of the current function call
@@ -3036,7 +3652,7 @@ assert(typeof Int32Array !== 'undefined' && typeof Float64Array !== 'undefined' 
     wasmMemory = new WebAssembly.Memory({
       'initial': INITIAL_MEMORY / 65536
       ,
-      'maximum': INITIAL_MEMORY / 65536
+      'maximum': 2147483648 / 65536
     });
   }
 
@@ -3594,11 +4210,62 @@ var ASM_CONSTS = {
       return HEAPU8.length;
     }
   
-  function abortOnCannotGrowMemory(requestedSize) {
-      abort('Cannot enlarge memory arrays to size ' + requestedSize + ' bytes (OOM). Either (1) compile with  -s INITIAL_MEMORY=X  with X higher than the current value ' + HEAP8.length + ', (2) compile with  -s ALLOW_MEMORY_GROWTH=1  which allows increasing the size at runtime, or (3) if you want malloc to return NULL (0) instead of this abort, compile with  -s ABORTING_MALLOC=0 ');
+  function emscripten_realloc_buffer(size) {
+      try {
+        // round size grow request up to wasm page size (fixed 64KB per spec)
+        wasmMemory.grow((size - buffer.byteLength + 65535) >>> 16); // .grow() takes a delta compared to the previous size
+        updateGlobalBufferAndViews(wasmMemory.buffer);
+        return 1 /*success*/;
+      } catch(e) {
+        console.error('emscripten_realloc_buffer: Attempted to grow heap from ' + buffer.byteLength  + ' bytes to ' + size + ' bytes, but got error: ' + e);
+      }
+      // implicit 0 return to save code size (caller will cast "undefined" into 0
+      // anyhow)
     }
   function _emscripten_resize_heap(requestedSize) {
-      abortOnCannotGrowMemory(requestedSize);
+      var oldSize = _emscripten_get_heap_size();
+      // With pthreads, races can happen (another thread might increase the size in between), so return a failure, and let the caller retry.
+      assert(requestedSize > oldSize);
+  
+      // Memory resize rules:
+      // 1. Always increase heap size to at least the requested size, rounded up to next page multiple.
+      // 2a. If MEMORY_GROWTH_LINEAR_STEP == -1, excessively resize the heap geometrically: increase the heap size according to 
+      //                                         MEMORY_GROWTH_GEOMETRIC_STEP factor (default +20%),
+      //                                         At most overreserve by MEMORY_GROWTH_GEOMETRIC_CAP bytes (default 96MB).
+      // 2b. If MEMORY_GROWTH_LINEAR_STEP != -1, excessively resize the heap linearly: increase the heap size by at least MEMORY_GROWTH_LINEAR_STEP bytes.
+      // 3. Max size for the heap is capped at 2048MB-WASM_PAGE_SIZE, or by MAXIMUM_MEMORY, or by ASAN limit, depending on which is smallest
+      // 4. If we were unable to allocate as much memory, it may be due to over-eager decision to excessively reserve due to (3) above.
+      //    Hence if an allocation fails, cut down on the amount of excess growth, in an attempt to succeed to perform a smaller allocation.
+  
+      // A limit was set for how much we can grow. We should not exceed that
+      // (the wasm binary specifies it, so if we tried, we'd fail anyhow).
+      // In CAN_ADDRESS_2GB mode, stay one Wasm page short of 4GB: while e.g. Chrome is able to allocate full 4GB Wasm memories, the size will wrap
+      // back to 0 bytes in Wasm side for any code that deals with heap sizes, which would require special casing all heap size related code to treat
+      // 0 specially.
+      var maxHeapSize = 2147483648;
+      if (requestedSize > maxHeapSize) {
+        err('Cannot enlarge memory, asked to go up to ' + requestedSize + ' bytes, but the limit is ' + maxHeapSize + ' bytes!');
+        return false;
+      }
+  
+      // Loop through potential heap size increases. If we attempt a too eager reservation that fails, cut down on the
+      // attempted size and reserve a smaller bump instead. (max 3 times, chosen somewhat arbitrarily)
+      for(var cutDown = 1; cutDown <= 4; cutDown *= 2) {
+        var overGrownHeapSize = oldSize * (1 + 0.2 / cutDown); // ensure geometric growth
+        // but limit overreserving (default to capping at +96MB overgrowth at most)
+        overGrownHeapSize = Math.min(overGrownHeapSize, requestedSize + 100663296 );
+  
+        var newSize = Math.min(maxHeapSize, alignUp(Math.max(requestedSize, overGrownHeapSize), 65536));
+  
+        var replacement = emscripten_realloc_buffer(newSize);
+        if (replacement) {
+          err('Warning: Enlarging memory arrays, this is not fast! ' + [oldSize, newSize]);
+  
+          return true;
+        }
+      }
+      err('Failed to grow the heap from ' + oldSize + ' bytes to ' + newSize + ' bytes, not enough memory!');
+      return false;
     }
 var ASSERTIONS = true;
 
@@ -3708,22 +4375,22 @@ var asm = createWasm();
 var ___wasm_call_ctors = Module["___wasm_call_ctors"] = createExportWrapper("__wasm_call_ctors");
 
 /** @type {function(...*):?} */
-var _doubler = Module["_doubler"] = createExportWrapper("doubler");
+var _rotate180 = Module["_rotate180"] = createExportWrapper("rotate180");
 
 /** @type {function(...*):?} */
-var _rotate = Module["_rotate"] = createExportWrapper("rotate");
+var _mirror_reflection = Module["_mirror_reflection"] = createExportWrapper("mirror_reflection");
 
 /** @type {function(...*):?} */
-var _rotate2 = Module["_rotate2"] = createExportWrapper("rotate2");
+var _rotate90 = Module["_rotate90"] = createExportWrapper("rotate90");
 
 /** @type {function(...*):?} */
-var _test2 = Module["_test2"] = createExportWrapper("test2");
+var _invert = Module["_invert"] = createExportWrapper("invert");
 
 /** @type {function(...*):?} */
-var _test3 = Module["_test3"] = createExportWrapper("test3");
+var _brighten = Module["_brighten"] = createExportWrapper("brighten");
 
 /** @type {function(...*):?} */
-var _malloc = Module["_malloc"] = createExportWrapper("malloc");
+var _gray_scale = Module["_gray_scale"] = createExportWrapper("gray_scale");
 
 /** @type {function(...*):?} */
 var ___errno_location = Module["___errno_location"] = createExportWrapper("__errno_location");
@@ -3754,6 +4421,12 @@ var _emscripten_stack_get_free = Module["_emscripten_stack_get_free"] = function
 var _emscripten_stack_get_end = Module["_emscripten_stack_get_end"] = function() {
   return (_emscripten_stack_get_end = Module["_emscripten_stack_get_end"] = Module["asm"]["emscripten_stack_get_end"]).apply(null, arguments);
 };
+
+/** @type {function(...*):?} */
+var _malloc = Module["_malloc"] = createExportWrapper("malloc");
+
+/** @type {function(...*):?} */
+var _free = Module["_free"] = createExportWrapper("free");
 
 
 
@@ -3811,7 +4484,6 @@ if (!Object.getOwnPropertyDescriptor(Module, "callMain")) Module["callMain"] = f
 if (!Object.getOwnPropertyDescriptor(Module, "abort")) Module["abort"] = function() { abort("'abort' was not exported. add it to EXTRA_EXPORTED_RUNTIME_METHODS (see the FAQ)") };
 if (!Object.getOwnPropertyDescriptor(Module, "stringToNewUTF8")) Module["stringToNewUTF8"] = function() { abort("'stringToNewUTF8' was not exported. add it to EXTRA_EXPORTED_RUNTIME_METHODS (see the FAQ)") };
 if (!Object.getOwnPropertyDescriptor(Module, "setFileTime")) Module["setFileTime"] = function() { abort("'setFileTime' was not exported. add it to EXTRA_EXPORTED_RUNTIME_METHODS (see the FAQ)") };
-if (!Object.getOwnPropertyDescriptor(Module, "abortOnCannotGrowMemory")) Module["abortOnCannotGrowMemory"] = function() { abort("'abortOnCannotGrowMemory' was not exported. add it to EXTRA_EXPORTED_RUNTIME_METHODS (see the FAQ)") };
 if (!Object.getOwnPropertyDescriptor(Module, "emscripten_realloc_buffer")) Module["emscripten_realloc_buffer"] = function() { abort("'emscripten_realloc_buffer' was not exported. add it to EXTRA_EXPORTED_RUNTIME_METHODS (see the FAQ)") };
 if (!Object.getOwnPropertyDescriptor(Module, "ENV")) Module["ENV"] = function() { abort("'ENV' was not exported. add it to EXTRA_EXPORTED_RUNTIME_METHODS (see the FAQ)") };
 if (!Object.getOwnPropertyDescriptor(Module, "ERRNO_CODES")) Module["ERRNO_CODES"] = function() { abort("'ERRNO_CODES' was not exported. add it to EXTRA_EXPORTED_RUNTIME_METHODS (see the FAQ)") };
@@ -4142,7 +4814,4 @@ run();
 }
 );
 })();
-if (typeof exports === 'object' && typeof module === 'object')
-  module.exports = Module;
-else if (typeof exports === 'object')
-  exports["Module"] = Module;
+export default Module;

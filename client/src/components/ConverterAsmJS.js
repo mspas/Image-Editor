@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styles from "./styles/converter.module.sass";
 import Loader from "react-loader-spinner";
-import EditorGlue from "../editorasm.js";
+import EditorGlue from "../editorasm.mjs";
 
 function ConverterAsmJS(props) {
   const [isLoading, setIsLoading] = useState(false);
@@ -12,6 +12,7 @@ function ConverterAsmJS(props) {
   const [wasmModule, setWasmModule] = useState(null);
 
   useEffect(() => {
+    setIsModuleLoading(true);
     const mmoduleBuffer = EditorGlue({
       noInitialRun: true,
       noExitRuntime: true,
@@ -21,16 +22,13 @@ function ConverterAsmJS(props) {
     });
   }, []);
 
-  const createCanvas = (u8a) => {
+  const createCanvas = (u8a, width, height) => {
     const canvas = document.createElement("canvas");
-    canvas.width = props.imageArraySize.width;
-    canvas.height = props.imageArraySize.height;
+    canvas.height = height;
+    canvas.width = width;
 
     var context = canvas.getContext("2d");
-    var imageData = context.createImageData(
-      props.imageArraySize.width,
-      props.imageArraySize.height
-    );
+    var imageData = context.createImageData(width, height);
     imageData.data.set(u8a);
     context.putImageData(imageData, 0, 0);
 
@@ -39,7 +37,7 @@ function ConverterAsmJS(props) {
     window.scrollTo(0, document.body.scrollHeight);
   };
 
-  const imageConvertHandler = async () => {
+  const imageConvertHandler = async (option) => {
     if (!props.imageData || !wasmModule) return true;
 
     setIsLoading(true);
@@ -50,19 +48,75 @@ function ConverterAsmJS(props) {
 
     const t0 = performance.now();
     return new Promise((resolve, reject) => {
-      const memory = wasmModule._malloc(length); // Allocating WASM memory
-      wasmModule.HEAPU8.set(props.imageData, memory); // Copying JS image data to WASM memory
-      wasmModule._rotate2(memory, length, channels); // Calling WASM method
-      const filteredImageData = wasmModule.HEAPU8.subarray(
-        memory,
-        memory + length
+      const memory = wasmModule._malloc(length);
+      wasmModule.HEAPU8.set(props.imageData, memory);
+
+      let width = props.imageArraySize.width;
+      let height = props.imageArraySize.height;
+      let outputPointer = memory;
+      let memoryOutput = null;
+
+      switch (option) {
+        case "rotate180":
+          wasmModule._rotate180(memory, length, channels);
+          break;
+        case "rotate90":
+          memoryOutput = wasmModule._malloc(length);
+          wasmModule.HEAPU8.set(props.imageData, memoryOutput);
+          wasmModule._rotate90(
+            memory,
+            memoryOutput,
+            length,
+            width,
+            height,
+            channels
+          );
+          outputPointer = memoryOutput;
+          width = props.imageArraySize.height;
+          height = props.imageArraySize.width;
+          break;
+        case "mirror":
+          wasmModule._mirror_reflection(
+            memory,
+            length,
+            width,
+            height,
+            channels
+          );
+          break;
+        case "invert":
+          wasmModule._invert(memory, length, channels);
+          break;
+        case "brighten":
+          wasmModule._brighten(memory, length, props.brightnessValue, channels);
+          break;
+        case "gray":
+          wasmModule._gray_scale(memory, length, channels);
+          break;
+        default:
+          break;
+      }
+
+      const editedImage = wasmModule.HEAPU8.subarray(
+        outputPointer,
+        outputPointer + length
       );
-      resolve(filteredImageData);
+
+      const resultData = {
+        data: editedImage,
+        width: width,
+        height: height,
+      };
+
+      wasmModule._free(memory);
+      if (memoryOutput) wasmModule._free(memory);
+
+      resolve(resultData);
     })
-      .then((filteredImageData) => {
+      .then((resultData) => {
         const t1 = performance.now();
         console.log(`Call to rotate took ${t1 - t0} milliseconds.`);
-        createCanvas(filteredImageData);
+        createCanvas(resultData.data, resultData.width, resultData.height);
       })
       .then(() => {
         props.scrollBottom();
@@ -72,9 +126,44 @@ function ConverterAsmJS(props) {
   return (
     <div className={styles.resultBox} id="result">
       {!isModuleLoading ? (
-        <button className={styles.button} onClick={imageConvertHandler}>
-          Convert but wasm
-        </button>
+        <div className={styles.buttonWrap}>
+          <button
+            className={styles.button}
+            onClick={() => imageConvertHandler("rotate180")}
+          >
+            Rotate180
+          </button>
+          <button
+            className={styles.button}
+            onClick={() => imageConvertHandler("rotate90")}
+          >
+            Rotate90
+          </button>
+          <button
+            className={styles.button}
+            onClick={() => imageConvertHandler("mirror")}
+          >
+            Mirror
+          </button>
+          <button
+            className={styles.button}
+            onClick={() => imageConvertHandler("invert")}
+          >
+            Invert colors
+          </button>
+          <button
+            className={styles.button}
+            onClick={() => imageConvertHandler("brighten")}
+          >
+            Brighten
+          </button>
+          <button
+            className={styles.button}
+            onClick={() => imageConvertHandler("gray")}
+          >
+            Gray scale
+          </button>
+        </div>
       ) : (
         <Loader type="TailSpin" color="#00BFFF" height={50} width={50} />
       )}

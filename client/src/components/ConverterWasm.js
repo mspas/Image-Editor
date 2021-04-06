@@ -23,7 +23,6 @@ function ConverterWasm(props) {
   }, []);
 
   const createCanvas = (u8a, width, height) => {
-    console.log(width, height);
     const canvas = document.createElement("canvas");
     canvas.height = height;
     canvas.width = width;
