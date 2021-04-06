@@ -25,3 +25,9 @@ emcc editor.c -Os -g1 -s WASM=1 -s MALLOC=emmalloc -s ALLOW_MEMORY_GROWTH=1 -s E
 ```
 
 [With modified editor.mjs output file to fit with React environment, just like here.](https://stackoverflow.com/a/60571821/9682898)
+
+## Compiling C to ASM.JS:
+
+```
+emcc editor.c -s WASM=0 -s ENVIRONMENT=web -s EXTRA_EXPORTED_RUNTIME_METHODS="['cwrap']" -s ALLOW_MEMORY_GROWTH=1 -s MODULARIZE=1 -s EXPORTED_FUNCTIONS="['_rotate180', '_mirror_reflection', '_rotate90', '_invert', '_brighten', '_gray_scale', '_malloc', '_free']" -o editorasm.mjs
+```

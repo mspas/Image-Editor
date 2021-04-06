@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styles from "./styles/converter.module.sass";
 import Loader from "react-loader-spinner";
-import EditorGlue from "../editor.mjs";
+import EditorGlue from "../modules/editorwasm.mjs";
 
 function ConverterWasm(props) {
   const [isLoading, setIsLoading] = useState(false);

@@ -106,7 +106,7 @@ function Converter(props) {
               min="-100"
               max="100"
               defaultValue={0}
-              onChange={(e) => setBrightnessValue(e.target.value)}
+              onChange={(e) => setBrightnessValue(parseInt(e.target.value))}
             />
             {brightnessValue}
           </div>

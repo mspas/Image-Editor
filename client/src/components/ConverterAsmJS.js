@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styles from "./styles/converter.module.sass";
 import Loader from "react-loader-spinner";
-import EditorGlue from "../editorasm.mjs";
+import EditorGlue from "../modules/editorasmjs.mjs";
 
 function ConverterAsmJS(props) {
   const [isLoading, setIsLoading] = useState(false);
