@@ -44,9 +44,10 @@ function ConverterWasm(props) {
     window.scrollTo(0, document.body.scrollHeight);
 
     const channels = 4; //RGBA
-    const length = props.imageData.length;
+    let length = props.imageData.length;
 
-    const t0 = performance.now();
+    let t0 = 0,
+      t1 = 0;
     return new Promise((resolve, reject) => {
       const memory = wasmModule._malloc(length);
       wasmModule.HEAPU8.set(props.imageData, memory);
@@ -58,9 +59,13 @@ function ConverterWasm(props) {
 
       switch (option) {
         case "rotate180":
+          t0 = performance.now();
           wasmModule._rotate180(memory, length, channels);
+          t1 = performance.now();
+          console.log(`Call to ${option} took ${t1 - t0} milliseconds.`);
           break;
         case "rotate90":
+          t0 = performance.now();
           memoryOutput = wasmModule._malloc(length);
           wasmModule.HEAPU8.set(props.imageData, memoryOutput);
           wasmModule._rotate90(
@@ -74,8 +79,11 @@ function ConverterWasm(props) {
           outputPointer = memoryOutput;
           width = props.imageArraySize.height;
           height = props.imageArraySize.width;
+          t1 = performance.now();
+          console.log(`Call to ${option} took ${t1 - t0} milliseconds.`);
           break;
         case "mirror":
+          t0 = performance.now();
           wasmModule._mirror_reflection(
             memory,
             length,
@@ -83,15 +91,53 @@ function ConverterWasm(props) {
             height,
             channels
           );
+          t1 = performance.now();
+          console.log(`Call to ${option} took ${t1 - t0} milliseconds.`);
           break;
         case "invert":
+          t0 = performance.now();
           wasmModule._invert(memory, length, channels);
+          t1 = performance.now();
+          console.log(`Call to ${option} took ${t1 - t0} milliseconds.`);
           break;
         case "brighten":
+          t0 = performance.now();
           wasmModule._brighten(memory, length, props.brightnessValue, channels);
+          t1 = performance.now();
+          console.log(`Call to ${option} took ${t1 - t0} milliseconds.`);
           break;
         case "gray":
+          t0 = performance.now();
           wasmModule._gray_scale(memory, length, channels);
+          t1 = performance.now();
+          console.log(`Call to ${option} took ${t1 - t0} milliseconds.`);
+          break;
+        case "crop":
+          let top = 100,
+            left = 100,
+            nw = 5000,
+            nh = 3000;
+          t0 = performance.now();
+          memoryOutput = wasmModule._malloc(length);
+          wasmModule.HEAPU8.set(props.imageData, memoryOutput);
+          wasmModule._crop(
+            memory,
+            memoryOutput,
+            length,
+            height,
+            width,
+            top,
+            left,
+            nw,
+            nh,
+            channels
+          );
+          outputPointer = memoryOutput;
+          width = nw;
+          height = nh;
+          length = nh * nw * channels;
+          t1 = performance.now();
+          console.log(`Call to ${option} took ${t1 - t0} milliseconds.`);
           break;
         default:
           break;
@@ -109,13 +155,11 @@ function ConverterWasm(props) {
       };
 
       wasmModule._free(memory);
-      if (memoryOutput) wasmModule._free(memory);
+      if (memoryOutput) wasmModule._free(memoryOutput);
 
       resolve(resultData);
     })
       .then((resultData) => {
-        const t1 = performance.now();
-        console.log(`Call to rotate took ${t1 - t0} milliseconds.`);
         createCanvas(resultData.data, resultData.width, resultData.height);
       })
       .then(() => {
@@ -162,6 +206,12 @@ function ConverterWasm(props) {
             onClick={() => imageConvertHandler("gray")}
           >
             Gray scale
+          </button>
+          <button
+            className={styles.button}
+            onClick={() => imageConvertHandler("crop")}
+          >
+            Crop
           </button>
         </div>
       ) : (

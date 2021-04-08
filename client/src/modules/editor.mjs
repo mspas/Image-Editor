@@ -107,3 +107,37 @@ export function gray_scale(data, len, channels) {
   }
   return data;
 }
+
+export function crop(
+  data,
+  len,
+  width,
+  height,
+  top,
+  left,
+  new_width,
+  new_height,
+  channels
+) {
+  let k = 0,
+    index = 0,
+    output = new Array(new_width * new_height * channels);
+  const right_boudary = new_width + left,
+    bottom_boudary = new_height + top;
+
+  for (let i = top; i < bottom_boudary; i++) {
+    for (
+      let j = left * channels;
+      j < right_boudary * channels;
+      j += channels, k += channels
+    ) {
+      index = i * width * channels + j;
+
+      output[k] = data[index];
+      output[k + 1] = data[index + 1];
+      output[k + 2] = data[index + 2];
+      output[k + 3] = data[index + 3];
+    }
+  }
+  return output;
+}

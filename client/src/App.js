@@ -20,6 +20,10 @@ const options = [
     title: "Wasm",
     color: "#ffbdbd",
   },
+  {
+    title: "test",
+    color: "#cfb0ff",
+  },
 ];
 
 function App() {

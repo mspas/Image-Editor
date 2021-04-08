@@ -31,10 +31,11 @@ function ConverterJS(props) {
     window.scrollTo(0, document.body.scrollHeight);
 
     const channels = 4; //RGBA
-    const length = props.imageData.length;
+    let length = props.imageData.length;
     const imageData = props.imageData;
 
-    const t0 = performance.now();
+    let t0 = 0,
+      t1 = 0;
     return new Promise((resolve, reject) => {
       let width = props.imageArraySize.width;
       let height = props.imageArraySize.height;
@@ -42,9 +43,13 @@ function ConverterJS(props) {
 
       switch (option) {
         case "rotate180":
+          t0 = performance.now();
           output = EditorModule.rotate180(imageData, length, channels);
+          t1 = performance.now();
+          console.log(`Call to ${option} took ${t1 - t0} milliseconds.`);
           break;
         case "rotate90":
+          t0 = performance.now();
           output = EditorModule.rotate90(
             imageData,
             length,
@@ -54,8 +59,11 @@ function ConverterJS(props) {
           );
           width = props.imageArraySize.height;
           height = props.imageArraySize.width;
+          t1 = performance.now();
+          console.log(`Call to ${option} took ${t1 - t0} milliseconds.`);
           break;
         case "mirror":
+          t0 = performance.now();
           output = EditorModule.mirror_reflection(
             imageData,
             length,
@@ -63,20 +71,54 @@ function ConverterJS(props) {
             height,
             channels
           );
+          t1 = performance.now();
+          console.log(`Call to ${option} took ${t1 - t0} milliseconds.`);
           break;
         case "invert":
+          t0 = performance.now();
           output = EditorModule.invert(imageData, length, channels);
+          t1 = performance.now();
+          console.log(`Call to ${option} took ${t1 - t0} milliseconds.`);
           break;
         case "brighten":
+          t0 = performance.now();
           output = EditorModule.brighten(
             imageData,
             length,
             props.brightnessValue,
             channels
           );
+          t1 = performance.now();
+          console.log(`Call to ${option} took ${t1 - t0} milliseconds.`);
           break;
         case "gray":
+          t0 = performance.now();
           output = EditorModule.gray_scale(imageData, length, channels);
+          t1 = performance.now();
+          console.log(`Call to ${option} took ${t1 - t0} milliseconds.`);
+          break;
+        case "crop":
+          let top = 100,
+            left = 100,
+            nw = 5000,
+            nh = 3000;
+          t0 = performance.now();
+          output = EditorModule.crop(
+            imageData,
+            length,
+            width,
+            height,
+            top,
+            left,
+            nw,
+            nh,
+            channels
+          );
+          width = nw;
+          height = nh;
+          length = nh * nw * channels;
+          t1 = performance.now();
+          console.log(`Call to ${option} took ${t1 - t0} milliseconds.`);
           break;
         default:
           break;
@@ -91,8 +133,6 @@ function ConverterJS(props) {
       resolve(resultData);
     })
       .then((resultData) => {
-        const t1 = performance.now();
-        console.log(`Call to rotate took ${t1 - t0} milliseconds.`);
         createCanvas(resultData.data, resultData.width, resultData.height);
       })
       .then(() => {
@@ -139,6 +179,12 @@ function ConverterJS(props) {
           onClick={() => imageConvertHandler("gray")}
         >
           Gray scale
+        </button>
+        <button
+          className={styles.button}
+          onClick={() => imageConvertHandler("crop")}
+        >
+          Crop
         </button>
       </div>
       {editedImageData ? <img src={editedImageData} alt="Result" /> : ""}

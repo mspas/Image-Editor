@@ -3,6 +3,7 @@ import styles from "./styles/converter.module.sass";
 import ConverterJS from "./ConverterJS";
 import ConverterWasm from "./ConverterWasm";
 import ConverterAsmJS from "./ConverterAsmJS";
+import Test from "./Test";
 
 function Converter(props) {
   const [imageData, setImageData] = useState();
@@ -138,6 +139,17 @@ function Converter(props) {
       )}
       {props.activeOption === 2 ? (
         <ConverterWasm
+          prepareImageData={prepareImageData}
+          imageData={imageDataCanvas}
+          imageArraySize={imageArraySize}
+          brightnessValue={brightnessValue}
+          scrollBottom={scrollBottom}
+        />
+      ) : (
+        ""
+      )}
+      {props.activeOption === 3 ? (
+        <Test
           prepareImageData={prepareImageData}
           imageData={imageDataCanvas}
           imageArraySize={imageArraySize}

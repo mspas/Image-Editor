@@ -2,8 +2,8 @@
 #include <stdlib.h>
 #include <malloc.h>
 
-void rotate180(unsigned char* data, int len, int channels) 
-{	
+void rotate180(unsigned char *data, int len, int channels)
+{
 	/*char temp;
 	for (int i = 0; i < len / 2; i += channels) {
 		for (int j = 0; j < channels; j++) {
@@ -13,7 +13,8 @@ void rotate180(unsigned char* data, int len, int channels)
 		}
 	}*/
 	char r, g, b, a;
-	for (int i = 0; i < len / 2; i += channels) {
+	for (int i = 0; i < len / 2; i += channels)
+	{
 		r = data[len - 4 - i];
 		g = data[len - 3 - i];
 		b = data[len - 2 - i];
@@ -31,7 +32,7 @@ void rotate180(unsigned char* data, int len, int channels)
 	}
 }
 
-void mirror_reflection(unsigned char* data, int len, int width, int height, int channels) 
+void mirror_reflection(unsigned char *data, int len, int width, int height, int channels)
 {
 	char r, g, b, a;
 	int index_a, index_b;
@@ -61,21 +62,21 @@ void mirror_reflection(unsigned char* data, int len, int width, int height, int 
 	}
 }
 
-void rotate90(unsigned char* data, unsigned char* output, int len, int width, int height, int channels) 
+void rotate90(unsigned char *data, unsigned char *output, int len, int width, int height, int channels)
 {
 	int k = 0, index = 0;
 	int new_height = width, new_width = height;
-	
+
 	for (int i = 0; i < new_height; i++)
 	{
-		for (int j = 0, h = 0; j < new_width*channels; j += channels)
+		for (int j = 0, h = 0; j < new_width * channels; j += channels)
 		{
 			if (j % channels == 0)
 			{
 				h++;
 			}
 
-			index = (width*channels) * (height - h) + i*channels;
+			index = (width * channels) * (height - h) + i * channels;
 
 			output[k] = data[index];
 			output[k + 1] = data[index + 1];
@@ -87,7 +88,7 @@ void rotate90(unsigned char* data, unsigned char* output, int len, int width, in
 	}
 }
 
-void invert(unsigned char* data, int len, int channels) 
+void invert(unsigned char *data, int len, int channels)
 {
 	for (int i = 0; i < len; i += channels)
 	{
@@ -101,15 +102,15 @@ int validate_brightness(int value)
 {
 	if (value > 255)
 		return 255;
-    if (value < 0)
+	if (value < 0)
 		return 0;
 	else
 		return value;
 }
 
-void brighten(unsigned char* data, int len, int brightness, int channels) 
+void brighten(unsigned char *data, int len, int brightness, int channels)
 {
-	for (int i = 0; i < len; i += channels) 
+	for (int i = 0; i < len; i += channels)
 	{
 		data[i] = validate_brightness(data[i] + brightness);
 		data[i + 1] = validate_brightness(data[i + 1] + brightness);
@@ -117,7 +118,7 @@ void brighten(unsigned char* data, int len, int brightness, int channels)
 	}
 }
 
-void gray_scale(unsigned char* data, int len, int channels)
+void gray_scale(unsigned char *data, int len, int channels)
 {
 	for (int i = 0; i < len; i += channels)
 	{
@@ -131,6 +132,27 @@ void gray_scale(unsigned char* data, int len, int channels)
 	}
 }
 
-int main() {
+void crop(unsigned char *data, unsigned char *output, int len, int width, int height, int top, int left, int new_width, int new_height, int channels)
+{
+	int k = 0, index = 0;
+	int right_boudary = new_width + left;
+	int bottom_boudary = new_height + top;
+
+	for (int i = top; i < bottom_boudary; i++)
+	{
+		for (int j = left * channels; j < right_boudary * channels; j += channels, k += channels)
+		{
+			index = i * width * channels + j;
+
+			output[k] = data[index];
+			output[k + 1] = data[index + 1];
+			output[k + 2] = data[index + 2];
+			output[k + 3] = data[index + 3];
+		}
+	}
+}
+
+int main()
+{
 	return 1;
 }
