@@ -11,6 +11,9 @@ coverage
 build
 /client/.env
 /.vscode/
+/client/src/worker-js.js
+/client/src/workerSetup.js
+/client/src/components/Test.js
 
 # misc
 .DS_Store

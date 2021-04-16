@@ -63,6 +63,7 @@ function Test(props) {
         for (let i = 0; i < length; ++i) {
           heap[i] = props.imageData[i];
         }
+        //heap = props.imageData;
         wa.instance.exports.rotate180(0, length, 4);
 
         const result = [];

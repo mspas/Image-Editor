@@ -55,7 +55,7 @@ export function rotate90(data, len, width, height, channels) {
 
   for (let i = 0; i < new_height; i++) {
     for (let j = 0, h = 0; j < new_width * channels; j += channels) {
-      if (j % channels == 0) h++;
+      if (j % channels === 0) h++;
 
       index = width * channels * (height - h) + i * channels;
 

@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
 import styles from "./App.module.sass";
 import Switch from "./components/Switch";
-import Converter from "./components/Converter";
+import Editor from "./components/Editor";
 
 const options = [
   {
@@ -20,10 +20,10 @@ const options = [
     title: "Wasm",
     color: "#ffbdbd",
   },
-  {
+  /*{
     title: "test",
     color: "#cfb0ff",
-  },
+  },*/
 ];
 
 function App() {
@@ -43,7 +43,7 @@ function App() {
         onOptionClick={handleOptionClick}
       />
       <div className={styles.downloaderWrap}>
-        <Converter
+        <Editor
           activeOption={activeOption}
           data={options[activeOption]}
           key={options[activeOption].type}

@@ -1,11 +1,10 @@
 import React, { useState } from "react";
-import styles from "./styles/converter.module.sass";
-import ConverterJS from "./ConverterJS";
-import ConverterWasm from "./ConverterWasm";
-import ConverterAsmJS from "./ConverterAsmJS";
-import Test from "./Test";
+import styles from "./styles/editor.module.sass";
+import EditorJS from "./EditorJS";
+import EditorWasm from "./EditorWasm";
+import EditorAsmJS from "./EditorAsmJS";
 
-function Converter(props) {
+function Editor(props) {
   const [imageData, setImageData] = useState();
   const [imageDataCanvas, setImageDataCanvas] = useState();
   const [imageDataURL, setImageDataURL] = useState();
@@ -47,6 +46,19 @@ function Converter(props) {
       .getContext("2d")
       .drawImage(source, 0, 0, canvas.width, canvas.height);
     return canvas;
+  };
+
+  const createCanvas = (u8a, width, height) => {
+    const canvas = document.createElement("canvas");
+    canvas.height = height;
+    canvas.width = width;
+
+    var context = canvas.getContext("2d");
+    var imageData = context.createImageData(width, height);
+    imageData.data.set(u8a);
+    context.putImageData(imageData, 0, 0);
+
+    return canvas.toDataURL();
   };
 
   const onImgLoad = ({ target: img }) => {
@@ -113,11 +125,12 @@ function Converter(props) {
           </div>
         </div>
       ) : (
-        "Select image"
+        ""
       )}
       {props.activeOption === 0 ? (
-        <ConverterJS
+        <EditorJS
           prepareImageData={prepareImageData}
+          createCanvas={createCanvas}
           imageData={imageDataCanvas}
           imageArraySize={imageArraySize}
           brightnessValue={brightnessValue}
@@ -127,8 +140,9 @@ function Converter(props) {
         ""
       )}
       {props.activeOption === 1 ? (
-        <ConverterAsmJS
+        <EditorAsmJS
           prepareImageData={prepareImageData}
+          createCanvas={createCanvas}
           imageData={imageDataCanvas}
           imageArraySize={imageArraySize}
           brightnessValue={brightnessValue}
@@ -138,19 +152,9 @@ function Converter(props) {
         ""
       )}
       {props.activeOption === 2 ? (
-        <ConverterWasm
+        <EditorWasm
           prepareImageData={prepareImageData}
-          imageData={imageDataCanvas}
-          imageArraySize={imageArraySize}
-          brightnessValue={brightnessValue}
-          scrollBottom={scrollBottom}
-        />
-      ) : (
-        ""
-      )}
-      {props.activeOption === 3 ? (
-        <Test
-          prepareImageData={prepareImageData}
+          createCanvas={createCanvas}
           imageData={imageDataCanvas}
           imageArraySize={imageArraySize}
           brightnessValue={brightnessValue}
@@ -162,4 +166,4 @@ function Converter(props) {
     </div>
   );
 }
-export default Converter;
+export default Editor;

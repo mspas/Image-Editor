@@ -152,6 +152,25 @@ void crop(unsigned char *data, unsigned char *output, int len, int width, int he
 	}
 }
 
+void crop(unsigned char* data, unsigned char* output, int len, int width, int height, int top, int left, int new_width, int new_height, int channels) {
+	int k = 0, index = 0;
+	int right_boudary = new_width + left;
+	int bottom_boudary = new_height + top;
+
+	for (int i = top; i < bottom_boudary; i++)
+	{
+		for (int j = left * channels; j < right_boudary * channels; j += channels, k += channels)
+		{
+			index = i * width * channels + j;
+
+			output[k] = data[index];
+			output[k + 1] = data[index + 1];
+			output[k + 2] = data[index + 2];
+			output[k + 3] = data[index + 3];
+		}
+	}
+}
+
 int main()
 {
 	return 1;
