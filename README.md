@@ -29,5 +29,5 @@ emcc editor.c -O3 --closure 1 --profiling -s FILESYSTEM=0 -g1 -s WASM=1 -s MALLO
 ## Compiling C to ASM.JS:
 
 ```
-emcc editor.c -s WASM=0 -s ENVIRONMENT=web -s EXTRA_EXPORTED_RUNTIME_METHODS="['cwrap']" -s ALLOW_MEMORY_GROWTH=1 -s MODULARIZE=1 -s EXPORTED_FUNCTIONS="['_rotate180', '_mirror_reflection', '_rotate90', '_invert', '_brighten', '_gray_scale', '_malloc', '_free']" -o editorasm.mjs
+emcc editor.c -O3 -o editorasmjs.mjs -s WASM=0 -s SINGLE_FILE=1 -s ENVIRONMENT=web -s TOTAL_MEMORY=300MB -s MODULARIZE=1 -s EXPORTED_FUNCTIONS="['_rotate180', '_mirror_reflection', '_rotate90', '_invert', '_brighten', '_gray_scale', '_crop', '_malloc', '_free']"
 ```
