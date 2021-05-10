@@ -64,7 +64,7 @@ void mirror_reflection(unsigned char *data, int len, int width, int height, int 
 
 void rotate90(unsigned char *data, unsigned char *output, int len, int width, int height, int channels)
 {
-	int k = 0, index = 0;
+	int index = 0;
 	int new_height = width, new_width = height;
 
 	for (int i = 0; i < new_height; i++)
@@ -78,12 +78,10 @@ void rotate90(unsigned char *data, unsigned char *output, int len, int width, in
 
 			index = (width * channels) * (height - h) + i * channels;
 
-			output[k] = data[index];
-			output[k + 1] = data[index + 1];
-			output[k + 2] = data[index + 2];
-			output[k + 3] = data[index + 3];
-
-			k += channels;
+			output[j] = data[index];
+			output[j + 1] = data[index + 1];
+			output[j + 2] = data[index + 2];
+			output[j + 3] = data[index + 3];
 		}
 	}
 }
@@ -134,13 +132,13 @@ void gray_scale(unsigned char *data, int len, int channels)
 
 void crop(unsigned char *data, unsigned char *output, int len, int width, int height, int top, int left, int new_width, int new_height, int channels)
 {
-	int k = 0, index = 0;
+	int index = 0;
 	int right_boudary = new_width + left;
 	int bottom_boudary = new_height + top;
 
 	for (int i = top; i < bottom_boudary; i++)
 	{
-		for (int j = left * channels; j < right_boudary * channels; j += channels, k += channels)
+		for (int j = left * channels, k = 0; j < right_boudary * channels; j += channels, k += channels)
 		{
 			index = i * width * channels + j;
 
@@ -152,24 +150,6 @@ void crop(unsigned char *data, unsigned char *output, int len, int width, int he
 	}
 }
 
-void crop(unsigned char* data, unsigned char* output, int len, int width, int height, int top, int left, int new_width, int new_height, int channels) {
-	int k = 0, index = 0;
-	int right_boudary = new_width + left;
-	int bottom_boudary = new_height + top;
-
-	for (int i = top; i < bottom_boudary; i++)
-	{
-		for (int j = left * channels; j < right_boudary * channels; j += channels, k += channels)
-		{
-			index = i * width * channels + j;
-
-			output[k] = data[index];
-			output[k + 1] = data[index + 1];
-			output[k + 2] = data[index + 2];
-			output[k + 3] = data[index + 3];
-		}
-	}
-}
 
 int main()
 {

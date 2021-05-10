@@ -3,6 +3,7 @@ import styles from "./styles/editor.module.sass";
 import EditorJS from "./EditorJS";
 import EditorWasm from "./EditorWasm";
 import EditorAsmJS from "./EditorAsmJS";
+import Test2 from "./Test2";
 
 function Editor(props) {
   const [imageData, setImageData] = useState();
@@ -10,6 +11,19 @@ function Editor(props) {
   const [imageDataURL, setImageDataURL] = useState();
   const [imageArraySize, setImageArraySize] = useState(0);
   const [brightnessValue, setBrightnessValue] = useState(0);
+
+  const prepareImageData2 = async (file) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        resolve(new Uint8Array(event.target.result));
+      };
+      reader.onerror = (err) => {
+        reject(err);
+      };
+      reader.readAsArrayBuffer(file);
+    });
+  };
 
   const prepareImageData = async (fileData, type) => {
     const file = fileData;
@@ -75,6 +89,9 @@ function Editor(props) {
     setImageDataURL(URL.createObjectURL(file));
 
     let imageBuffer = await prepareImageData(file, "arraybuffer");
+
+    let imageBuffer2 = await prepareImageData2(file);
+
     setImageData(new Uint8Array(imageBuffer));
 
     scrollBottom();
@@ -153,6 +170,18 @@ function Editor(props) {
       )}
       {props.activeOption === 2 ? (
         <EditorWasm
+          prepareImageData={prepareImageData}
+          createCanvas={createCanvas}
+          imageData={imageDataCanvas}
+          imageArraySize={imageArraySize}
+          brightnessValue={brightnessValue}
+          scrollBottom={scrollBottom}
+        />
+      ) : (
+        ""
+      )}
+      {props.activeOption === 3 ? (
+        <Test2
           prepareImageData={prepareImageData}
           createCanvas={createCanvas}
           imageData={imageDataCanvas}

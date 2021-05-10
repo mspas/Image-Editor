@@ -50,6 +50,7 @@ function EditorWasm(props) {
           console.log(`Call to ${option} took ${t1 - t0} milliseconds.`);
           break;
         case "rotate90":
+          console.log(performance.memory);
           t0 = performance.now();
           memoryOutput = wasmModule._malloc(length);
           wasmModule.HEAPU8.set(props.imageData, memoryOutput);
@@ -66,6 +67,7 @@ function EditorWasm(props) {
           height = props.imageArraySize.width;
           t1 = performance.now();
           console.log(`Call to ${option} took ${t1 - t0} milliseconds.`);
+          console.log(performance.memory);
           break;
         case "mirror":
           t0 = performance.now();
@@ -104,7 +106,7 @@ function EditorWasm(props) {
             nh = Math.floor(height * 0.7);
           t0 = performance.now();
           memoryOutput = wasmModule._malloc(length);
-          wasmModule.HEAPU8.set(props.imageData, memoryOutput);
+          //wasmModule.HEAPU8.set([], memoryOutput);
           wasmModule._crop(
             memory,
             memoryOutput,
@@ -123,6 +125,28 @@ function EditorWasm(props) {
           length = nh * nw * channels;
           t1 = performance.now();
           console.log(`Call to ${option} took ${t1 - t0} milliseconds.`);
+          break;
+        case "test":
+          async function load() {
+            for (var i = 0; i < 10; i++) {
+              memoryOutput = wasmModule._malloc(length);
+              wasmModule.HEAPU8.set(props.imageData, memoryOutput);
+              wasmModule._rotate90(
+                memory,
+                memoryOutput,
+                length,
+                width,
+                height,
+                channels
+              );
+              outputPointer = memoryOutput;
+              width = props.imageArraySize.height;
+              height = props.imageArraySize.width;
+              console.log(i);
+              await timer(1000);
+            }
+          }
+          load();
           break;
         default:
           break;
@@ -146,12 +170,12 @@ function EditorWasm(props) {
       resolve(resultData);
     })
       .then((resultData) => {
-        let canvas = props.createCanvas(
+        /*let canvas = props.createCanvas(
           resultData.data,
           resultData.width,
           resultData.height
         );
-        setEditedImageData(canvas);
+        setEditedImageData(canvas);*/
         setIsLoading(false);
         window.scrollTo(0, document.body.scrollHeight);
       })
@@ -159,6 +183,8 @@ function EditorWasm(props) {
         props.scrollBottom();
       });
   };
+
+  const timer = (ms) => new Promise((res) => setTimeout(res, ms));
 
   const imageEditHandler = async (option) => {
     return new Promise((resolve, reject) => {

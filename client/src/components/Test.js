@@ -3,6 +3,8 @@ import styles from "./styles/converter.module.sass";
 import Loader from "react-loader-spinner";
 //import EditorGlue from "../modules/editorwasm.mjs";
 
+//test different initialization of wasm module
+
 function Test(props) {
   const [isLoading, setIsLoading] = useState(false);
   const [isModuleLoading, setIsModuleLoading] = useState(false);

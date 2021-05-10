@@ -46,6 +46,12 @@ function Buttons(props) {
       >
         Crop
       </button>
+      <button
+        className={styles.button}
+        onClick={() => props.imageEditHandler("test")}
+      >
+        Test
+      </button>
     </div>
   );
 }

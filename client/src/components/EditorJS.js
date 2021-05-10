@@ -29,12 +29,16 @@ function EditorJS(props) {
 
       switch (option) {
         case "rotate180":
+          console.log(performance);
+
           t0 = performance.now();
           output = EditorModule.rotate180(imageData, length, channels);
           t1 = performance.now();
           console.log(`Call to ${option} took ${t1 - t0} milliseconds.`);
+          console.log(performance);
           break;
         case "rotate90":
+          console.log(performance.memory);
           t0 = performance.now();
           output = EditorModule.rotate90(
             imageData,
@@ -47,6 +51,7 @@ function EditorJS(props) {
           height = props.imageArraySize.width;
           t1 = performance.now();
           console.log(`Call to ${option} took ${t1 - t0} milliseconds.`);
+          console.log(performance.memory);
           break;
         case "mirror":
           t0 = performance.now();
@@ -106,6 +111,25 @@ function EditorJS(props) {
           t1 = performance.now();
           console.log(`Call to ${option} took ${t1 - t0} milliseconds.`);
           break;
+        case "test":
+          async function load() {
+            // We need to wrap the loop into an async function for this to work
+            for (var i = 0; i < 10; i++) {
+              output = EditorModule.rotate90(
+                imageData,
+                length,
+                width,
+                height,
+                channels
+              );
+              width = props.imageArraySize.height;
+              height = props.imageArraySize.width;
+              console.log(i);
+              await timer(1000); // then the created Promise can be awaited
+            }
+          }
+          load();
+          break;
         default:
           break;
       }
@@ -121,12 +145,12 @@ function EditorJS(props) {
       resolve(resultData);
     })
       .then((resultData) => {
-        let canvas = props.createCanvas(
+        /*let canvas = props.createCanvas(
           resultData.data,
           resultData.width,
           resultData.height
         );
-        setEditedImageData(canvas);
+        setEditedImageData(canvas);*/
         setIsLoading(false);
         window.scrollTo(0, document.body.scrollHeight);
       })
@@ -134,6 +158,8 @@ function EditorJS(props) {
         props.scrollBottom();
       });
   };
+
+  const timer = (ms) => new Promise((res) => setTimeout(res, ms));
 
   const imageEditHandler = async (option) => {
     return new Promise((resolve, reject) => {
