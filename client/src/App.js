@@ -8,10 +8,6 @@ const options = [
     title: "JS",
     color: "#E6DF91",
   },
-  /*{
-    title: "Share JS-Lib",
-    color: "#cfb0ff",
-  },*/
   {
     title: "asm.js",
     color: "#BBCCFF",
@@ -22,6 +18,10 @@ const options = [
   },
   {
     title: "test",
+    color: "#cfb0ff",
+  },
+  {
+    title: "Video",
     color: "#cfb0ff",
   },
 ];

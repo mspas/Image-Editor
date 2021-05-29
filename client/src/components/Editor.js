@@ -1,16 +1,42 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./styles/editor.module.sass";
 import EditorJS from "./EditorJS";
 import EditorWasm from "./EditorWasm";
 import EditorAsmJS from "./EditorAsmJS";
 import Test2 from "./Test2";
+import Video from "./Video";
+import EditorWasmGlue from "../modules/editorwasm.mjs";
+import EditorAsmGlue from "../modules/editorasmjs.mjs";
+import * as EditorJSModule from "../modules/editor.mjs";
 
 function Editor(props) {
+  const [asmModule, setAsmModule] = useState(null);
+  const [wasmModule, setWasmModule] = useState(null);
+  const [isLoadingAsmModule, setIsLoadingAsmModule] = useState(true);
+  const [isLoadingWasmModule, setIsLoadingWasmModule] = useState(true);
   const [imageData, setImageData] = useState();
   const [imageDataCanvas, setImageDataCanvas] = useState();
   const [imageDataURL, setImageDataURL] = useState();
   const [imageArraySize, setImageArraySize] = useState(0);
   const [brightnessValue, setBrightnessValue] = useState(0);
+
+  useEffect(() => {
+    EditorWasmGlue({
+      noInitialRun: true,
+      noExitRuntime: true,
+    }).then((response) => {
+      setWasmModule(response);
+      setIsLoadingWasmModule(false);
+    });
+
+    EditorAsmGlue({
+      noInitialRun: true,
+      noExitRuntime: true,
+    }).then((response) => {
+      setAsmModule(response);
+      setIsLoadingAsmModule(false);
+    });
+  }, []);
 
   const prepareImageData2 = async (file) => {
     return new Promise((resolve, reject) => {
@@ -113,16 +139,20 @@ function Editor(props) {
       <h1 className={styles.heading}>
         {props.data.title} <span>Editor</span>
       </h1>
-      <div className={styles.box}>
-        <input
-          type="file"
-          id="inputfile"
-          onChange={(e) => imageSelectHandler(e)}
-        />
-        <label className={styles.button} htmlFor="inputfile">
-          <span>+ Select image...</span>
-        </label>
-      </div>
+      {props.activeOption != 4 ? (
+        <div className={styles.box}>
+          <input
+            type="file"
+            id="inputfile"
+            onChange={(e) => imageSelectHandler(e)}
+          />
+          <label className={styles.button} htmlFor="inputfile">
+            <span>+ Select image...</span>
+          </label>
+        </div>
+      ) : (
+        ""
+      )}
       {imageData ? (
         <div>
           <img src={imageDataURL} onLoad={onImgLoad} alt="Select" />
@@ -158,6 +188,8 @@ function Editor(props) {
       )}
       {props.activeOption === 1 ? (
         <EditorAsmJS
+          asmModule={asmModule}
+          isLoadingModule={isLoadingAsmModule}
           prepareImageData={prepareImageData}
           createCanvas={createCanvas}
           imageData={imageDataCanvas}
@@ -170,6 +202,8 @@ function Editor(props) {
       )}
       {props.activeOption === 2 ? (
         <EditorWasm
+          wasmModule={wasmModule}
+          isLoadingModule={isLoadingWasmModule}
           prepareImageData={prepareImageData}
           createCanvas={createCanvas}
           imageData={imageDataCanvas}
@@ -182,6 +216,23 @@ function Editor(props) {
       )}
       {props.activeOption === 3 ? (
         <Test2
+          prepareImageData={prepareImageData}
+          createCanvas={createCanvas}
+          imageData={imageDataCanvas}
+          imageArraySize={imageArraySize}
+          brightnessValue={brightnessValue}
+          scrollBottom={scrollBottom}
+        />
+      ) : (
+        ""
+      )}
+      {props.activeOption === 4 ? (
+        <Video
+          wasmModule={wasmModule}
+          asmModule={asmModule}
+          jsModule={EditorJSModule}
+          isLoadingAsmModule={isLoadingAsmModule}
+          isLoadingWasmModule={isLoadingWasmModule}
           prepareImageData={prepareImageData}
           createCanvas={createCanvas}
           imageData={imageDataCanvas}

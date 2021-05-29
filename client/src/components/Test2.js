@@ -35,6 +35,14 @@ function Test2(props) {
     return sum / array.length;
   };
 
+  const standardDeviation = (array) => {
+    const n = array.length;
+    const mean = array.reduce((a, b) => a + b) / n;
+    return Math.sqrt(
+      array.map((x) => Math.pow(x - mean, 2)).reduce((a, b) => a + b) / n
+    );
+  };
+
   const testRotate90 = async (iterations) => {
     return new Promise((resolve, reject) => {
       let t0,
@@ -45,17 +53,27 @@ function Test2(props) {
         imageData = props.imageData;
       let width = props.imageArraySize.width,
         height = props.imageArraySize.height;
+      let outputArray = new Array(length);
       const channels = 4;
 
       console.log("------------------------------");
 
       for (let i = 0; i < iterations; i++) {
         t0 = performance.now();
-        EditorJSModule.rotate90(imageData, length, width, height, channels);
+        EditorJSModule.rotate90(
+          imageData,
+          outputArray,
+          length,
+          width,
+          height,
+          channels
+        );
         t1 = performance.now();
         results.push(t1 - t0);
+        //console.log(i, t1 - t0);
       }
       console.log(`Avarage JS rotate90 in ${iterations} = ${mean(results)}`);
+      console.log(`STD = ${standardDeviation(results)}`);
 
       results = [];
       for (let i = 0; i < iterations; i++) {
@@ -80,8 +98,10 @@ function Test2(props) {
         results.push(t1 - t0);
         asmModule._free(memory);
         asmModule._free(memoryOutput);
+        //console.log(i, t1 - t0);
       }
       console.log(`Avarage AsmJS rotate90 in ${iterations} = ${mean(results)}`);
+      console.log(`STD = ${standardDeviation(results)}`);
 
       results = [];
       for (let i = 0; i < iterations; i++) {
@@ -106,8 +126,10 @@ function Test2(props) {
         results.push(t1 - t0);
         wasmModule._free(memory);
         wasmModule._free(memoryOutput);
+        //console.log(i, t1 - t0);
       }
       console.log(`Avarage Wasm rotate90 in ${iterations} = ${mean(results)}`);
+      console.log(`STD = ${standardDeviation(results)}`);
       resolve(true);
     });
   };
@@ -128,8 +150,10 @@ function Test2(props) {
         EditorJSModule.rotate180(imageData, length, channels);
         t1 = performance.now();
         results.push(t1 - t0);
+        //console.log(t1 - t0);
       }
       console.log(`Avarage JS rotate180 in ${iterations} = ${mean(results)}`);
+      console.log(`STD = ${standardDeviation(results)}`);
 
       results = [];
       for (let i = 0; i < iterations; i++) {
@@ -143,10 +167,12 @@ function Test2(props) {
         t1 = performance.now();
         results.push(t1 - t0);
         asmModule._free(memory);
+        //console.log(t1 - t0);
       }
       console.log(
         `Avarage AsmJS rotate180 in ${iterations} = ${mean(results)}`
       );
+      console.log(`STD = ${standardDeviation(results)}`);
 
       results = [];
       for (let i = 0; i < iterations; i++) {
@@ -160,8 +186,10 @@ function Test2(props) {
         t1 = performance.now();
         results.push(t1 - t0);
         wasmModule._free(memory);
+        //console.log(t1 - t0);
       }
       console.log(`Avarage Wasm rotate180 in ${iterations} = ${mean(results)}`);
+      console.log(`STD = ${standardDeviation(results)}`);
       resolve(true);
     });
   };
@@ -192,6 +220,7 @@ function Test2(props) {
         results.push(t1 - t0);
       }
       console.log(`Avarage JS mirror in ${iterations} = ${mean(results)}`);
+      console.log(`STD = ${standardDeviation(results)}`);
 
       results = [];
       for (let i = 0; i < iterations; i++) {
@@ -207,6 +236,7 @@ function Test2(props) {
         asmModule._free(memory);
       }
       console.log(`Avarage AsmJS mirror in ${iterations} = ${mean(results)}`);
+      console.log(`STD = ${standardDeviation(results)}`);
 
       results = [];
       for (let i = 0; i < iterations; i++) {
@@ -222,6 +252,7 @@ function Test2(props) {
         wasmModule._free(memory);
       }
       console.log(`Avarage Wasm mirror in ${iterations} = ${mean(results)}`);
+      console.log(`STD = ${standardDeviation(results)}`);
       resolve(true);
     });
   };
@@ -244,6 +275,7 @@ function Test2(props) {
         results.push(t1 - t0);
       }
       console.log(`Avarage JS invert in ${iterations} = ${mean(results)}`);
+      console.log(`STD = ${standardDeviation(results)}`);
 
       results = [];
       for (let i = 0; i < iterations; i++) {
@@ -259,6 +291,7 @@ function Test2(props) {
         asmModule._free(memory);
       }
       console.log(`Avarage AsmJS invert in ${iterations} = ${mean(results)}`);
+      console.log(`STD = ${standardDeviation(results)}`);
 
       results = [];
       for (let i = 0; i < iterations; i++) {
@@ -274,6 +307,7 @@ function Test2(props) {
         wasmModule._free(memory);
       }
       console.log(`Avarage Wasm invert in ${iterations} = ${mean(results)}`);
+      console.log(`STD = ${standardDeviation(results)}`);
       resolve(true);
     });
   };
@@ -296,6 +330,7 @@ function Test2(props) {
         results.push(t1 - t0);
       }
       console.log(`Avarage JS brighten in ${iterations} = ${mean(results)}`);
+      console.log(`STD = ${standardDeviation(results)}`);
 
       results = [];
       for (let i = 0; i < iterations; i++) {
@@ -311,6 +346,7 @@ function Test2(props) {
         asmModule._free(memory);
       }
       console.log(`Avarage AsmJS brighten in ${iterations} = ${mean(results)}`);
+      console.log(`STD = ${standardDeviation(results)}`);
 
       results = [];
       for (let i = 0; i < iterations; i++) {
@@ -326,6 +362,7 @@ function Test2(props) {
         wasmModule._free(memory);
       }
       console.log(`Avarage Wasm brighten in ${iterations} = ${mean(results)}`);
+      console.log(`STD = ${standardDeviation(results)}`);
       resolve(true);
     });
   };
@@ -348,6 +385,7 @@ function Test2(props) {
         results.push(t1 - t0);
       }
       console.log(`Avarage JS grey in ${iterations} = ${mean(results)}`);
+      console.log(`STD = ${standardDeviation(results)}`);
 
       results = [];
       for (let i = 0; i < iterations; i++) {
@@ -363,6 +401,7 @@ function Test2(props) {
         asmModule._free(memory);
       }
       console.log(`Avarage AsmJS grey in ${iterations} = ${mean(results)}`);
+      console.log(`STD = ${standardDeviation(results)}`);
 
       results = [];
       for (let i = 0; i < iterations; i++) {
@@ -378,6 +417,7 @@ function Test2(props) {
         wasmModule._free(memory);
       }
       console.log(`Avarage Wasm grey in ${iterations} = ${mean(results)}`);
+      console.log(`STD = ${standardDeviation(results)}`);
       resolve(true);
     });
   };
@@ -399,12 +439,14 @@ function Test2(props) {
         nw = Math.floor(width * 0.8),
         nh = Math.floor(height * 0.7);
 
+      let outputArray = new Array(nw * nh * channels);
       console.log("------------------------------");
 
       for (let i = 0; i < iterations; i++) {
         t0 = performance.now();
         EditorJSModule.crop(
           imageData,
+          outputArray,
           length,
           width,
           height,
@@ -416,8 +458,11 @@ function Test2(props) {
         );
         t1 = performance.now();
         results.push(t1 - t0);
+        //console.log(i, t1 - t0);
       }
+      //localStorage.setItem("js", results);
       console.log(`Avarage JS crop in ${iterations} = ${mean(results)}`);
+      console.log(`STD = ${standardDeviation(results)}`);
 
       results = [];
       for (let i = 0; i < iterations; i++) {
@@ -425,9 +470,8 @@ function Test2(props) {
 
         const memory = asmModule._malloc(length);
         asmModule.HEAPU8.set(imageData, memory);
-
         memoryOutput = asmModule._malloc(length);
-        asmModule.HEAPU8.set(imageData, memoryOutput);
+        asmModule.HEAPU8.set([], memoryOutput);
 
         asmModule._crop(
           memory,
@@ -443,11 +487,15 @@ function Test2(props) {
         );
 
         t1 = performance.now();
-        results.push(t1 - t0);
+
         asmModule._free(memory);
         asmModule._free(memoryOutput);
+        results.push(t1 - t0);
+        //console.log(i, t1 - t0);
       }
+      //localStorage.setItem("asm", results);
       console.log(`Avarage AsmJS crop in ${iterations} = ${mean(results)}`);
+      console.log(`STD = ${standardDeviation(results)}`);
 
       results = [];
       for (let i = 0; i < iterations; i++) {
@@ -457,7 +505,7 @@ function Test2(props) {
         wasmModule.HEAPU8.set(imageData, memory);
 
         memoryOutput = wasmModule._malloc(length);
-        wasmModule.HEAPU8.set(imageData, memoryOutput);
+        wasmModule.HEAPU8.set([], memoryOutput);
 
         wasmModule._crop(
           memory,
@@ -473,11 +521,15 @@ function Test2(props) {
         );
 
         t1 = performance.now();
-        results.push(t1 - t0);
+
         wasmModule._free(memory);
         wasmModule._free(memoryOutput);
+        results.push(t1 - t0);
+        //console.log(i, t1 - t0);
       }
+      //localStorage.setItem("wasm", results);
       console.log(`Avarage Wasm crop in ${iterations} = ${mean(results)}`);
+      console.log(`STD = ${standardDeviation(results)}`);
       resolve(true);
     });
   };

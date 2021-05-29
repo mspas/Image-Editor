@@ -1,29 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import styles from "./styles/editor.module.sass";
 import Loader from "react-loader-spinner";
-import EditorGlue from "../modules/editorasmjs.mjs";
 import Buttons from "./Buttons";
 
 function EditorAsmJS(props) {
   const [isLoading, setIsLoading] = useState(false);
-  const [isModuleLoading, setIsModuleLoading] = useState(false);
   const [editedImageData, setEditedImageData] = useState(null);
-  const [wasmModule, setWasmModule] = useState(null);
   const [time, setTime] = useState(0);
 
-  useEffect(() => {
-    setIsModuleLoading(true);
-    EditorGlue({
-      noInitialRun: true,
-      noExitRuntime: true,
-    }).then((response) => {
-      setWasmModule(response);
-      setIsModuleLoading(false);
-    });
-  }, []);
-
   const imageEdit = async (option) => {
-    if (!props.imageData || !wasmModule) return true;
+    if (!props.imageData || !props.asmModule) return true;
+
+    const asmModule = props.asmModule;
 
     setIsLoading(true);
     window.scrollTo(0, document.body.scrollHeight);
@@ -35,8 +23,8 @@ function EditorAsmJS(props) {
       t1 = 0;
 
     return new Promise((resolve, reject) => {
-      const memory = wasmModule._malloc(length);
-      wasmModule.HEAPU8.set(props.imageData, memory);
+      const memory = asmModule._malloc(length);
+      asmModule.HEAPU8.set(props.imageData, memory);
 
       let width = props.imageArraySize.width;
       let height = props.imageArraySize.height;
@@ -46,15 +34,16 @@ function EditorAsmJS(props) {
       switch (option) {
         case "rotate180":
           t0 = performance.now();
-          wasmModule._rotate180(memory, length, channels);
+          asmModule._rotate180(memory, length, channels);
           t1 = performance.now();
+          asmModule._free(memory);
           console.log(`Call to ${option} took ${t1 - t0} milliseconds.`);
           break;
         case "rotate90":
           t0 = performance.now();
-          memoryOutput = wasmModule._malloc(length);
-          wasmModule.HEAPU8.set(props.imageData, memoryOutput);
-          wasmModule._rotate90(
+          memoryOutput = asmModule._malloc(length);
+          asmModule.HEAPU8.set(props.imageData, memoryOutput);
+          asmModule._rotate90(
             memory,
             memoryOutput,
             length,
@@ -66,36 +55,36 @@ function EditorAsmJS(props) {
           width = props.imageArraySize.height;
           height = props.imageArraySize.width;
           t1 = performance.now();
+          asmModule._free(memory);
+          asmModule._free(memoryOutput);
           console.log(`Call to ${option} took ${t1 - t0} milliseconds.`);
           break;
         case "mirror":
           t0 = performance.now();
-          wasmModule._mirror_reflection(
-            memory,
-            length,
-            width,
-            height,
-            channels
-          );
+          asmModule._mirror_reflection(memory, length, width, height, channels);
           t1 = performance.now();
+          asmModule._free(memory);
           console.log(`Call to ${option} took ${t1 - t0} milliseconds.`);
           break;
         case "invert":
           t0 = performance.now();
-          wasmModule._invert(memory, length, channels);
+          asmModule._invert(memory, length, channels);
           t1 = performance.now();
+          asmModule._free(memory);
           console.log(`Call to ${option} took ${t1 - t0} milliseconds.`);
           break;
         case "brighten":
           t0 = performance.now();
-          wasmModule._brighten(memory, length, props.brightnessValue, channels);
+          asmModule._brighten(memory, length, props.brightnessValue, channels);
           t1 = performance.now();
+          asmModule._free(memory);
           console.log(`Call to ${option} took ${t1 - t0} milliseconds.`);
           break;
         case "gray":
           t0 = performance.now();
-          wasmModule._gray_scale(memory, length, channels);
+          asmModule._gray_scale(memory, length, channels);
           t1 = performance.now();
+          asmModule._free(memory);
           console.log(`Call to ${option} took ${t1 - t0} milliseconds.`);
           break;
         case "crop":
@@ -104,9 +93,9 @@ function EditorAsmJS(props) {
             nw = Math.floor(width * 0.8),
             nh = Math.floor(height * 0.7);
           t0 = performance.now();
-          memoryOutput = wasmModule._malloc(length);
-          wasmModule.HEAPU8.set(props.imageData, memoryOutput);
-          wasmModule._crop(
+          memoryOutput = asmModule._malloc(length);
+          asmModule.HEAPU8.set(props.imageData, memoryOutput);
+          asmModule._crop(
             memory,
             memoryOutput,
             length,
@@ -123,13 +112,15 @@ function EditorAsmJS(props) {
           height = nh;
           length = nh * nw * channels;
           t1 = performance.now();
+          asmModule._free(memory);
+          asmModule._free(memoryOutput);
           console.log(`Call to ${option} took ${t1 - t0} milliseconds.`);
           break;
         default:
           break;
       }
 
-      const editedImage = wasmModule.HEAPU8.subarray(
+      const editedImage = asmModule.HEAPU8.subarray(
         outputPointer,
         outputPointer + length
       );
@@ -140,8 +131,8 @@ function EditorAsmJS(props) {
         height: height,
       };
 
-      wasmModule._free(memory);
-      if (memoryOutput) wasmModule._free(memory);
+      asmModule._free(memory);
+      if (memoryOutput) asmModule._free(memory);
 
       setTime(t1 - t0);
       resolve(resultData);
@@ -174,7 +165,7 @@ function EditorAsmJS(props) {
 
   return (
     <div className={styles.resultBox} id="result">
-      {!isModuleLoading ? (
+      {!props.isLoadingModule ? (
         <Buttons imageEditHandler={imageEditHandler} />
       ) : (
         <Loader type="TailSpin" color="#00BFFF" height={50} width={50} />

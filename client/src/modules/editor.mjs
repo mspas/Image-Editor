@@ -46,12 +46,11 @@ export function mirror_reflection(data, len, width, height, channels) {
   return data;
 }
 
-export function rotate90(data, len, width, height, channels) {
+export function rotate90(data, output, len, width, height, channels) {
   let k = 0,
     index = 0,
     new_height = width,
-    new_width = height,
-    output = new Array(len);
+    new_width = height;
 
   for (let i = 0; i < new_height; i++) {
     for (let j = 0, h = 0; j < new_width * channels; j += channels) {
@@ -110,6 +109,7 @@ export function gray_scale(data, len, channels) {
 
 export function crop(
   data,
+  output,
   len,
   width,
   height,
@@ -120,8 +120,7 @@ export function crop(
   channels
 ) {
   let k = 0,
-    index = 0,
-    output = new Array(new_width * new_height * channels);
+    index = 0;
   const right_boudary = new_width + left,
     bottom_boudary = new_height + top;
 

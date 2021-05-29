@@ -25,7 +25,8 @@ function EditorJS(props) {
     return new Promise((resolve, reject) => {
       let width = props.imageArraySize.width;
       let height = props.imageArraySize.height;
-      let output = null;
+      let output = null,
+        outputArray = new Array(length);
 
       switch (option) {
         case "rotate180":
@@ -42,6 +43,7 @@ function EditorJS(props) {
           t0 = performance.now();
           output = EditorModule.rotate90(
             imageData,
+            outputArray,
             length,
             width,
             height,
@@ -93,9 +95,11 @@ function EditorJS(props) {
             left = Math.floor(width * 0.1),
             nw = Math.floor(width * 0.8),
             nh = Math.floor(height * 0.7);
+          outputArray = new Array(nw * nh * channels);
           t0 = performance.now();
           output = EditorModule.crop(
             imageData,
+            outputArray,
             length,
             width,
             height,
@@ -113,9 +117,9 @@ function EditorJS(props) {
           break;
         case "test":
           async function load() {
-            // We need to wrap the loop into an async function for this to work
             for (var i = 0; i < 10; i++) {
               output = EditorModule.rotate90(
+                imageData,
                 imageData,
                 length,
                 width,

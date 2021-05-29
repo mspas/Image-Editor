@@ -1,29 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import styles from "./styles/editor.module.sass";
 import Loader from "react-loader-spinner";
-import EditorGlue from "../modules/editorwasm.mjs";
 import Buttons from "./Buttons";
 
 function EditorWasm(props) {
   const [isLoading, setIsLoading] = useState(false);
-  const [isModuleLoading, setIsModuleLoading] = useState(false);
   const [editedImageData, setEditedImageData] = useState(null);
-  const [wasmModule, setWasmModule] = useState(null);
   const [time, setTime] = useState(0);
 
-  useEffect(() => {
-    setIsModuleLoading(true);
-    EditorGlue({
-      noInitialRun: true,
-      noExitRuntime: true,
-    }).then((response) => {
-      setWasmModule(response);
-      setIsModuleLoading(false);
-    });
-  }, []);
-
   const imageEdit = async (option) => {
-    if (!props.imageData || !wasmModule) return true;
+    if (!props.imageData || !props.wasmModule) return true;
+
+    const wasmModule = props.wasmModule;
 
     setIsLoading(true);
     window.scrollTo(0, document.body.scrollHeight);
@@ -47,6 +35,7 @@ function EditorWasm(props) {
           t0 = performance.now();
           wasmModule._rotate180(memory, length, channels);
           t1 = performance.now();
+          wasmModule._free(memory);
           console.log(`Call to ${option} took ${t1 - t0} milliseconds.`);
           break;
         case "rotate90":
@@ -66,6 +55,8 @@ function EditorWasm(props) {
           width = props.imageArraySize.height;
           height = props.imageArraySize.width;
           t1 = performance.now();
+          wasmModule._free(memory);
+          wasmModule._free(memoryOutput);
           console.log(`Call to ${option} took ${t1 - t0} milliseconds.`);
           console.log(performance.memory);
           break;
@@ -79,24 +70,28 @@ function EditorWasm(props) {
             channels
           );
           t1 = performance.now();
+          wasmModule._free(memory);
           console.log(`Call to ${option} took ${t1 - t0} milliseconds.`);
           break;
         case "invert":
           t0 = performance.now();
           wasmModule._invert(memory, length, channels);
           t1 = performance.now();
+          wasmModule._free(memory);
           console.log(`Call to ${option} took ${t1 - t0} milliseconds.`);
           break;
         case "brighten":
           t0 = performance.now();
           wasmModule._brighten(memory, length, props.brightnessValue, channels);
           t1 = performance.now();
+          wasmModule._free(memory);
           console.log(`Call to ${option} took ${t1 - t0} milliseconds.`);
           break;
         case "gray":
           t0 = performance.now();
           wasmModule._gray_scale(memory, length, channels);
           t1 = performance.now();
+          wasmModule._free(memory);
           console.log(`Call to ${option} took ${t1 - t0} milliseconds.`);
           break;
         case "crop":
@@ -106,7 +101,7 @@ function EditorWasm(props) {
             nh = Math.floor(height * 0.7);
           t0 = performance.now();
           memoryOutput = wasmModule._malloc(length);
-          //wasmModule.HEAPU8.set([], memoryOutput);
+          wasmModule.HEAPU8.set([], memoryOutput);
           wasmModule._crop(
             memory,
             memoryOutput,
@@ -124,6 +119,8 @@ function EditorWasm(props) {
           height = nh;
           length = nh * nw * channels;
           t1 = performance.now();
+          wasmModule._free(memory);
+          wasmModule._free(memoryOutput);
           console.log(`Call to ${option} took ${t1 - t0} milliseconds.`);
           break;
         case "test":
@@ -170,12 +167,12 @@ function EditorWasm(props) {
       resolve(resultData);
     })
       .then((resultData) => {
-        /*let canvas = props.createCanvas(
+        let canvas = props.createCanvas(
           resultData.data,
           resultData.width,
           resultData.height
         );
-        setEditedImageData(canvas);*/
+        setEditedImageData(canvas);
         setIsLoading(false);
         window.scrollTo(0, document.body.scrollHeight);
       })
@@ -199,7 +196,7 @@ function EditorWasm(props) {
 
   return (
     <div className={styles.resultBox} id="result">
-      {!isModuleLoading ? (
+      {!props.isLoadingModule ? (
         <Buttons imageEditHandler={imageEditHandler} />
       ) : (
         <Loader type="TailSpin" color="#00BFFF" height={50} width={50} />
