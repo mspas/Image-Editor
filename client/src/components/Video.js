@@ -199,6 +199,7 @@ function Video(props) {
             width="720"
             height="405"
             autoPlay
+            style={{ visibility: "hidden" }}
             ref={videoInput}
             loop={true}
             src={VideoFile}
