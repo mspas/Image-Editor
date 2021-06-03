@@ -2,18 +2,19 @@
 
 # dependencies
 node_modules
-/client/node_modules
+/src/components/EditorAsmJS.js
+/src/components/ConverterShareLib.js
 
 # testing
 coverage
 
 # production
 build
-/client/.env
+.env
 /.vscode/
-/client/src/worker-js.js
-/client/src/workerSetup.js
-/client/src/components/Test.js
+/src/worker-js.js
+/src/workerSetup.js
+/src/components/Test.js
 
 # misc
 .DS_Store

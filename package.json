@@ -1,39 +1,31 @@
 {
   "name": "image-editor",
-  "version": "1.0.0",
-  "description": "App for thesis about JS and WebAssembly",
-  "author": {
-    "name": "mspas",
-    "url": "https://github.com/mspas"
-  },
+  "version": "0.1.0",
   "license": "MIT",
-  "scripts": {
-    "client": "cd client && npm start",
-    "server": "nodemon server.js",
-    "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\"",
-    "dev:server": "cd client && npm build && cd .. && npm start",
-    "start": "node server.js",
-    "heroku-postbuild": "cd client && npm install && npm install --only=dev --no-shrinkwrap && npm run build"
-  },
   "dependencies": {
-    "body-parser": "^1.19.0",
-    "express": "^4.17.1",
-    "jimp": "^0.16.1",
-    "sharp": "^0.27.1"
+    "node-sass": "^4.14.1",
+    "react": "^16.13.1",
+    "react-app-rewired": "^2.1.8",
+    "react-dom": "^16.13.1",
+    "react-loader-spinner": "^3.1.14",
+    "react-scripts": "3.4.1"
   },
-  "devDependencies": {
-    "concurrently": "^5.1.0"
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/mspas/Image-Editor.git"
-  },
-  "bugs": {
-    "url": "https://github.com/mspas/Image-Editor/issues"
-  },
-  "keywords": [
-    "node",
-    "express",
-    "create-react-app"
+  "development": [
+    "ie 11",
+    "last 1 chrome version",
+    "last 1 firefox version",
+    "last 1 safari version"
+  ],
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
   ]
 }
