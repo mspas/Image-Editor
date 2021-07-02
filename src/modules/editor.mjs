@@ -47,7 +47,8 @@ export function mirror_reflection(data, len, width, height, channels) {
 }
 
 export function rotate90(data, output, len, width, height, channels) {
-  let index = 0,
+  let k = 0,
+    index = 0,
     new_height = width,
     new_width = height;
 
@@ -57,10 +58,12 @@ export function rotate90(data, output, len, width, height, channels) {
 
       index = width * channels * (height - h) + i * channels;
 
-      output[j] = data[index];
-      output[j + 1] = data[index + 1];
-      output[j + 2] = data[index + 2];
-      output[j + 3] = data[index + 3];
+      output[k] = data[index];
+      output[k + 1] = data[index + 1];
+      output[k + 2] = data[index + 2];
+      output[k + 3] = data[index + 3];
+
+      k += channels;
     }
   }
   return output;

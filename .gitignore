@@ -2,9 +2,6 @@
 
 # dependencies
 node_modules
-/src/media/
-/src/components/EditorAsmJS.js
-/src/components/ConverterShareLib.js
 
 # testing
 coverage
@@ -13,9 +10,11 @@ coverage
 build
 .env
 /.vscode/
-/src/worker-js.js
-/src/workerSetup.js
 /src/components/Test.js
+/src/media/
+/src/components/EditorAsmJS.js
+/src/components/ConverterShareLib.js
+/src/benchmark.worker.js
 
 # misc
 .DS_Store

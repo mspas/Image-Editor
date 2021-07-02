@@ -178,12 +178,12 @@ function Editor(props) {
       resolve(resultData);
     })
       .then((resultData) => {
-        /*let canvas = props.createCanvas(
+        let canvas = props.createCanvas(
           resultData.data,
           resultData.width,
           resultData.height
         );
-        setEditedImageData(canvas);*/
+        setEditedImageData(canvas);
         setIsLoading(false);
         window.scrollTo(0, document.body.scrollHeight);
       })

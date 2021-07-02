@@ -28,6 +28,7 @@ function Home(props) {
 
   useEffect(() => {
     const worker = new WebWorker();
+    worker.postMessage({ option: "init" });
     setWorker(worker);
 
     EditorWasmGlue({
@@ -186,6 +187,7 @@ function Home(props) {
       {props.activeOption === 0 ? (
         <EditorJS
           worker={worker}
+          tech={0}
           prepareImageData={prepareImageData}
           createCanvas={createCanvas}
           imageData={imageDataCanvas}
@@ -197,10 +199,9 @@ function Home(props) {
         ""
       )}
       {props.activeOption === 1 ? (
-        <Editor
+        <EditorJS
           worker={worker}
-          module={asmModule}
-          isLoadingModule={isLoadingAsmModule}
+          tech={1}
           prepareImageData={prepareImageData}
           createCanvas={createCanvas}
           imageData={imageDataCanvas}
@@ -212,10 +213,9 @@ function Home(props) {
         ""
       )}
       {props.activeOption === 2 ? (
-        <Editor
+        <EditorJS
           worker={worker}
-          module={wasmModule}
-          isLoadingModule={isLoadingWasmModule}
+          tech={2}
           prepareImageData={prepareImageData}
           createCanvas={createCanvas}
           imageData={imageDataCanvas}
