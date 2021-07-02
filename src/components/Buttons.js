@@ -46,13 +46,14 @@ function Buttons(props) {
       >
         Crop
       </button>
+    </div>
+  );
+  /*
       <button
         className={styles.button}
         onClick={() => props.imageEditHandler("test")}
       >
         Test
-      </button>
-    </div>
-  );
+      </button>*/
 }
 export default Buttons;

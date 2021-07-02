@@ -31,12 +31,13 @@ function Editor(props) {
       let memoryOutput = null;
 
       console.log(performance.memory);
+      //t0 = performance.memory.usedJSHeapSize;
       switch (option) {
         case "rotate180":
-          t0 = performance.now();
+          //t0 = performance.now();
           module._rotate180(memory, length, channels);
-          t1 = performance.now();
-          console.log(performance.memory);
+          //t1 = performance.now();
+          //console.log(performance.memory);
           module._free(memory);
           console.log(`Call to ${option} took ${t1 - t0} milliseconds.`);
           break;
@@ -56,40 +57,50 @@ function Editor(props) {
           width = props.imageArraySize.height;
           height = props.imageArraySize.width;
           t1 = performance.now();
-          console.log(performance.memory);
+          //t1 = performance.memory.usedJSHeapSize;
+
+          //console.log(performance.memory);
           module._free(memory);
           module._free(memoryOutput);
           console.log(`Call to ${option} took ${t1 - t0} milliseconds.`);
           break;
         case "mirror":
-          t0 = performance.now();
+          //t0 = performance.now();
           module._mirror_reflection(memory, length, width, height, channels);
-          t1 = performance.now();
-          console.log(performance.memory);
+          //t1 = performance.now();
+          //t1 = performance.memory.usedJSHeapSize;
+
+          //console.log(performance.memory);
           module._free(memory);
           console.log(`Call to ${option} took ${t1 - t0} milliseconds.`);
           break;
         case "invert":
-          t0 = performance.now();
+          //t0 = performance.now();
           module._invert(memory, length, channels);
-          t1 = performance.now();
-          console.log(performance.memory);
+          //t1 = performance.now();
+          //t1 = performance.memory.usedJSHeapSize;
+
+          //console.log(performance.memory);
           module._free(memory);
           console.log(`Call to ${option} took ${t1 - t0} milliseconds.`);
           break;
         case "brighten":
-          t0 = performance.now();
+          //t0 = performance.now();
           module._brighten(memory, length, props.brightnessValue, channels);
-          t1 = performance.now();
-          console.log(performance.memory);
+          //t1 = performance.now();
+          //t1 = performance.memory.usedJSHeapSize;
+
+          //console.log(performance.memory);
           module._free(memory);
           console.log(`Call to ${option} took ${t1 - t0} milliseconds.`);
           break;
         case "gray":
-          t0 = performance.now();
+          //t0 = performance.now();
           module._gray_scale(memory, length, channels);
-          t1 = performance.now();
-          console.log(performance.memory);
+          //t1 = performance.now();
+          //t1 = performance.memory.usedJSHeapSize;
+
+          //console.log(performance.memory);
           module._free(memory);
           console.log(`Call to ${option} took ${t1 - t0} milliseconds.`);
           break;
@@ -98,7 +109,7 @@ function Editor(props) {
             left = Math.floor(0),
             nw = Math.floor(width * 0.8),
             nh = Math.floor(height * 0.7);
-          t0 = performance.now();
+          //t0 = performance.now();
           memoryOutput = module._malloc(length);
           module.HEAPU8.set(props.imageData, memoryOutput);
           module._crop(
@@ -117,8 +128,10 @@ function Editor(props) {
           width = nw;
           height = nh;
           length = nh * nw * channels;
-          t1 = performance.now();
-          console.log(performance.memory);
+          //t1 = performance.now();
+          //console.log(performance.memory);
+          module._free(memory);
+          module._free(memoryOutput);
           console.log(`Call to ${option} took ${t1 - t0} milliseconds.`);
           break;
         case "test":
@@ -152,9 +165,6 @@ function Editor(props) {
         outputPointer + length
       );
 
-      console.log(props.imageData);
-      console.log(editedImage);
-
       const resultData = {
         data: editedImage,
         width: width,
@@ -168,12 +178,12 @@ function Editor(props) {
       resolve(resultData);
     })
       .then((resultData) => {
-        let canvas = props.createCanvas(
+        /*let canvas = props.createCanvas(
           resultData.data,
           resultData.width,
           resultData.height
         );
-        setEditedImageData(canvas);
+        setEditedImageData(canvas);*/
         setIsLoading(false);
         window.scrollTo(0, document.body.scrollHeight);
       })

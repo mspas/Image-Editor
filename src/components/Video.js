@@ -91,6 +91,21 @@ function Video(props) {
     return sum / array.length;
   };
 
+  const updateTimer = (context, times, testTimer) => {
+    //window.requestAnimationFrame(() => {
+    const now = performance.now();
+    if (times.length > 0 && times[0] <= now - 1000) {
+      times.shift();
+    }
+    times.push(now);
+    let fps = times.length;
+    context.font = "40px Arial";
+    context.fillText(fps, 10, 40);
+    testTimer.push(fps);
+    //});
+    return { times: times, testTimer: testTimer };
+  };
+
   const draw = (context, channels, times, testTimer) => {
     let width = canvasOutput.current.width;
     let height = canvasOutput.current.height;
@@ -99,7 +114,9 @@ function Video(props) {
     if (videoInput.current.paused) return false;
     let length = height * width * channels;
 
-    window.requestAnimationFrame(() => {
+    let fpsData = updateTimer(context, times, testTimer);
+
+    /*window.requestAnimationFrame(() => {
       const now = performance.now();
       while (times.length > 0 && times[0] <= now - 1000) {
         times.shift();
@@ -109,13 +126,13 @@ function Video(props) {
       context.font = "40px Arial";
       context.fillText(fps, 10, 40);
       testTimer.push(fps);
-    });
+    });*/
 
     context.drawImage(videoInput.current, 0, 0, width, height);
     let frame = context.getImageData(0, 0, width, height);
 
-    //let output = processFrame(frame.data, width, height, length, channels);
-    //frame.data.set(output);
+    let output = processFrame(frame.data, width, height, length, channels);
+    frame.data.set(output);
 
     /*crop*/
     /*let nw = Math.floor(videoInput.current.width * 0.1),
@@ -129,7 +146,10 @@ function Video(props) {
 
     context.putImageData(frame, 0, 0);
     console.log(mean(testTimer));
-    setTimeout(() => draw(context, channels, times, testTimer), 0);
+    setTimeout(
+      () => draw(context, channels, fpsData.times, fpsData.testTimer),
+      0
+    );
   };
 
   const processFrame = (frameData, width, height, length, channels) => {
@@ -138,9 +158,9 @@ function Video(props) {
     if (activeEditor === 0) {
       const module = props.jsModule;
 
-      //return module.rotate180(frameData, length, channels);
+      return module.rotate180(frameData, length, channels);
 
-      let outputArray = new Array(length);
+      /*let outputArray = new Array(length);
       return module.rotate90(
         frameData,
         outputArray,
@@ -148,7 +168,7 @@ function Video(props) {
         width,
         height,
         channels
-      );
+      );*/
 
       //return module.invert(frameData, length, channels);
 
@@ -187,12 +207,12 @@ function Video(props) {
       let memOut = memory;
       module.HEAPU8.set(frameData, memory);
 
-      //module._rotate180(memory, length, channels);
+      module._rotate180(memory, length, channels);
 
-      const memoryOutput = module._malloc(length);
+      /*const memoryOutput = module._malloc(length);
       module.HEAPU8.set(frameData, memoryOutput);
       module._rotate90(memory, memoryOutput, length, width, height, channels);
-      memOut = memoryOutput;
+      memOut = memoryOutput;*/
 
       //module._invert(memory, length, channels);
 
@@ -225,7 +245,7 @@ function Video(props) {
 
       let frameOutputData = module.HEAPU8.subarray(memOut, memOut + length);
       module._free(memory);
-      module._free(memoryOutput);
+      //module._free(memoryOutput);
       return frameOutputData;
     }
   };

@@ -1,13 +1,17 @@
 import React, { useState, useEffect } from "react";
 import styles from "./styles/editor.module.sass";
+import WebWorker from "../editor.worker.js";
+//import WebWorkerAsmJs from "../editorasmjs.worker.js";
+//import WebWorkerWasm from "../editorwasm.worker.js";
+//import WebWorker from "../setup.worker";
 import EditorJS from "./EditorJS";
 import Editor from "./Editor";
-import Test2 from "./Test2";
+import Test3 from "./Test3";
 import Video from "./Video";
-//import EditorWasmGlue from "../modules/editorwasm.mjs";
-//import EditorAsmGlue from "../modules/editorasmjs.mjs";
-import EditorWasmGlue from "../modules/editorWasmDyn.mjs";
-import EditorAsmGlue from "../modules/editorAsmjsDyn.mjs";
+import EditorWasmGlue from "../modules/editorwasm.mjs";
+import EditorAsmGlue from "../modules/editorasmjs.mjs";
+//import EditorWasmGlue from "../modules/editorWasmDyn.mjs";
+//import EditorAsmGlue from "../modules/editorAsmjsDyn.mjs";
 import * as EditorJSModule from "../modules/editor.mjs";
 
 function Home(props) {
@@ -20,8 +24,12 @@ function Home(props) {
   const [imageDataURL, setImageDataURL] = useState();
   const [imageArraySize, setImageArraySize] = useState(0);
   const [brightnessValue, setBrightnessValue] = useState(0);
+  const [worker, setWorker] = useState(null);
 
   useEffect(() => {
+    const worker = new WebWorker();
+    setWorker(worker);
+
     EditorWasmGlue({
       noInitialRun: true,
       noExitRuntime: true,
@@ -94,7 +102,6 @@ function Home(props) {
     canvas.height = height;
     canvas.width = width;
 
-    console.log(u8a.length, width, height);
     var context = canvas.getContext("2d");
     var imageData = context.createImageData(width, height);
     imageData.data.set(u8a);
@@ -178,6 +185,7 @@ function Home(props) {
       )}
       {props.activeOption === 0 ? (
         <EditorJS
+          worker={worker}
           prepareImageData={prepareImageData}
           createCanvas={createCanvas}
           imageData={imageDataCanvas}
@@ -190,6 +198,7 @@ function Home(props) {
       )}
       {props.activeOption === 1 ? (
         <Editor
+          worker={worker}
           module={asmModule}
           isLoadingModule={isLoadingAsmModule}
           prepareImageData={prepareImageData}
@@ -204,6 +213,7 @@ function Home(props) {
       )}
       {props.activeOption === 2 ? (
         <Editor
+          worker={worker}
           module={wasmModule}
           isLoadingModule={isLoadingWasmModule}
           prepareImageData={prepareImageData}
@@ -217,7 +227,10 @@ function Home(props) {
         ""
       )}
       {props.activeOption === 3 ? (
-        <Test2
+        <Test3
+          wasmModule={wasmModule}
+          asmModule={asmModule}
+          jsModule={EditorJSModule}
           prepareImageData={prepareImageData}
           createCanvas={createCanvas}
           imageData={imageDataCanvas}

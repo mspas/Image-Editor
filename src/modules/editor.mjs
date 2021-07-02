@@ -47,8 +47,7 @@ export function mirror_reflection(data, len, width, height, channels) {
 }
 
 export function rotate90(data, output, len, width, height, channels) {
-  let k = 0,
-    index = 0,
+  let index = 0,
     new_height = width,
     new_width = height;
 
@@ -58,12 +57,10 @@ export function rotate90(data, output, len, width, height, channels) {
 
       index = width * channels * (height - h) + i * channels;
 
-      output[k] = data[index];
-      output[k + 1] = data[index + 1];
-      output[k + 2] = data[index + 2];
-      output[k + 3] = data[index + 3];
-
-      k += channels;
+      output[j] = data[index];
+      output[j + 1] = data[index + 1];
+      output[j + 2] = data[index + 2];
+      output[j + 3] = data[index + 3];
     }
   }
   return output;
@@ -105,6 +102,10 @@ export function gray_scale(data, len, channels) {
     data[i + 3] = a;
   }
   return data;
+}
+
+export function dupa(data) {
+  console.log(data);
 }
 
 export function crop(
