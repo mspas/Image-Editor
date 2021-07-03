@@ -6,7 +6,7 @@ import WebWorker from "../editor.worker.js";
 //import WebWorker from "../setup.worker";
 import EditorJS from "./EditorJS";
 import Editor from "./Editor";
-import Test3 from "./Test3";
+import Benchmark from "./Benchmark";
 import Video from "./Video";
 import EditorWasmGlue from "../modules/editorwasm.mjs";
 import EditorAsmGlue from "../modules/editorasmjs.mjs";
@@ -116,6 +116,7 @@ function Home(props) {
     let ctx = canvas.getContext("2d");
     ctx.globalAlpha = 1.0;
     let dataImg = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    console.log(dataImg.data);
     setImageDataCanvas(dataImg.data);
     setImageArraySize({ height: dataImg.height, width: dataImg.width });
   };
@@ -125,8 +126,6 @@ function Home(props) {
     setImageDataURL(URL.createObjectURL(file));
 
     let imageBuffer = await prepareImageData(file, "arraybuffer");
-
-    let imageBuffer2 = await prepareImageData2(file);
 
     setImageData(new Uint8Array(imageBuffer));
 
@@ -149,7 +148,7 @@ function Home(props) {
       <h1 className={styles.heading}>
         {props.data.title} <span>Editor</span>
       </h1>
-      {props.activeOption != 4 ? (
+      {props.activeOption < 3 ? (
         <div className={styles.box}>
           <input
             type="file"
@@ -227,15 +226,9 @@ function Home(props) {
         ""
       )}
       {props.activeOption === 3 ? (
-        <Test3
-          wasmModule={wasmModule}
-          asmModule={asmModule}
-          jsModule={EditorJSModule}
+        <Benchmark
           prepareImageData={prepareImageData}
-          createCanvas={createCanvas}
-          imageData={imageDataCanvas}
-          imageArraySize={imageArraySize}
-          brightnessValue={brightnessValue}
+          toCanvas={toCanvas}
           scrollBottom={scrollBottom}
         />
       ) : (

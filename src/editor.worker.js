@@ -29,7 +29,7 @@ function messageHandler(event) {
     let result = null;
     switch (event.data.tech) {
       case 0:
-        result = functionHandlerJS(event);
+        result = funcHandlerJS(event);
         console.log(result);
         break;
 
@@ -48,7 +48,7 @@ function messageHandler(event) {
   }
 }
 
-function functionHandlerJS(event) {
+function funcHandlerJS(event) {
   const imageData = event.data.imageData;
   const channels = event.data.channels;
   let width = event.data.width;
