@@ -1,15 +1,26 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./styles/editor.module.sass";
 import Loader from "react-loader-spinner";
 
 function Benchmark(props) {
   const [isLoading, setIsLoading] = useState(true);
   const [message, setMessage] = useState("Loading images...");
-  const [time, setTime] = useState(0);
   const [imagesData, setImagesData] = useState([]);
   const [imagesSizes, setImagesSizes] = useState([]);
   const [imagesCount, setImagesCount] = useState(0);
   const [imagesFoundCount, setImagesFoundCount] = useState(-1);
+  const [benchmarkResults, setBenchmarkResults] = useState(null);
+
+  const funcNames = [
+    "rotate180",
+    "rotate90",
+    "mirror",
+    "invert",
+    "brighten",
+    "gray",
+    "crop",
+  ];
+  const techNames = ["JavaScript", "asm.js", "WebAssembly"];
 
   useEffect(() => {
     const images = importAll(
@@ -28,6 +39,31 @@ function Benchmark(props) {
       setMessage(`${imagesCount} images loaded`);
     }
   }, [imagesCount]);
+
+  useEffect(() => {
+    if (props.worker)
+      props.worker.onmessage = (event) => {
+        console.log(event);
+        if (event.data.results) {
+          console.log(event.data.results);
+          setBenchmarkResults(event.data.results);
+          if (event.data.nextImage) {
+            setMessage(`Now testing for ${event.data.nextImage} image...`);
+          } else {
+            setIsLoading(false);
+            setMessage(`Tests done!`);
+          }
+
+          /*setTime(event.data.time);
+          setLoadingMessage("Preparing image preview...");
+          setOutputData({
+            imageData: event.data.imageData,
+            width: event.data.width,
+            height: event.data.height,
+          });*/
+        }
+      };
+  }, [props.worker]);
 
   const loadImages = (parent, images) => {
     return new Promise((resolve, reject) => {
@@ -73,31 +109,38 @@ function Benchmark(props) {
     return images;
   };
 
-  const mean = (array) => {
-    let sum = 0;
-    for (let i = 0; i < array.length; i++) {
-      sum += array[i];
-    }
-    return sum / array.length;
-  };
-
-  const standardDeviation = (array) => {
-    const n = array.length;
-    const mean = array.reduce((a, b) => a + b) / n;
-    return Math.sqrt(
-      array.map((x) => Math.pow(x - mean, 2)).reduce((a, b) => a + b) / n
-    );
-  };
-
   const testHandler = async () => {
-    console.log(imagesData);
+    const iterations = 10;
+    const channels = 4; //RGBA
 
-    const iterations = 1;
-
+    setMessage(`Starting tests for ${imagesCount} images...`);
     setIsLoading(true);
-    let dupa = new Uint8ClampedArray();
 
-    setIsLoading(false);
+    window.scrollTo(0, document.body.scrollHeight);
+
+    let imagesDataSet = [];
+    for (let i = 0; i < imagesData.length; i++) {
+      const imageData = imagesData[i];
+
+      let data = {
+        data: imageData,
+        name: imagesSizes[i].name,
+        width: imagesSizes[i].width,
+        height: imagesSizes[i].height,
+        length: imageData.length,
+      };
+
+      imagesDataSet.push(data);
+    }
+    console.log(imagesDataSet);
+
+    props.worker.postMessage({
+      tech: -1,
+      imagesData: imagesDataSet,
+      channels: channels,
+      iterations: iterations,
+      brightnessValue: 40,
+    });
   };
 
   return (
@@ -109,13 +152,6 @@ function Benchmark(props) {
       ) : (
         ""
       )}
-      {time > 0 ? (
-        <div className={styles.alert}>
-          Execution of this task took {time} ms.
-        </div>
-      ) : (
-        ""
-      )}
       <p>{message}</p>
       {isLoading ? (
         <div>
@@ -124,7 +160,30 @@ function Benchmark(props) {
       ) : (
         ""
       )}
+      <p>Results:</p>funcNames
     </div>
   );
 }
 export default Benchmark;
+
+/*
+        {benchmarkResults.map((image, index) => (
+        <table>
+            <thead>
+                <th>{image}</th>
+                {benchmarkResults.map((image) => (
+                    <th>{image.name}</th>
+                ))}
+            </thead>
+            <tbody>
+                {techNames.map((tech, index) => (
+                    <tr>
+                        <td>{tech}</td>
+                        {benchmarkResults.map((image) => (
+                            <td>{image.name}</td>
+                        ))}
+                    </tr>
+                ))}
+            </tbody>
+        </table>
+        ))}*/

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styles from "./styles/editor.module.sass";
 import WebWorker from "../editor.worker.js";
+//import WebWorkerBenchmark from "../benchmark.worker.js";
 //import WebWorkerAsmJs from "../editorasmjs.worker.js";
 //import WebWorkerWasm from "../editorwasm.worker.js";
 //import WebWorker from "../setup.worker";
@@ -162,7 +163,7 @@ function Home(props) {
       ) : (
         ""
       )}
-      {imageData ? (
+      {imageData && props.activeOption < 3 ? (
         <div>
           <img src={imageDataURL} onLoad={onImgLoad} alt="Select" />
           <div className={styles.rangeInput}>
@@ -227,6 +228,7 @@ function Home(props) {
       )}
       {props.activeOption === 3 ? (
         <Benchmark
+          worker={worker}
           prepareImageData={prepareImageData}
           toCanvas={toCanvas}
           scrollBottom={scrollBottom}
