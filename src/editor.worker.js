@@ -319,8 +319,10 @@ const testFunction = async (
     resTemp = {
       tech: 0,
       func: option,
-      time: mean(localResults),
-      std: standardDeviation(localResults),
+      time: Math.round((mean(localResults) + Number.EPSILON) * 100) / 100,
+      std:
+        Math.round((standardDeviation(localResults) + Number.EPSILON) * 100) /
+        100,
     };
     results.push(resTemp);
     localResults = [];
@@ -385,8 +387,10 @@ const testFunction = async (
     resTemp = {
       tech: 1,
       func: option,
-      time: mean(localResults),
-      std: standardDeviation(localResults),
+      time: Math.round((mean(localResults) + Number.EPSILON) * 100) / 100,
+      std:
+        Math.round((standardDeviation(localResults) + Number.EPSILON) * 100) /
+        100,
     };
     results.push(resTemp);
     localResults = [];
@@ -451,8 +455,10 @@ const testFunction = async (
     resTemp = {
       tech: 2,
       func: option,
-      time: mean(localResults),
-      std: standardDeviation(localResults),
+      time: Math.round((mean(localResults) + Number.EPSILON) * 100) / 100,
+      std:
+        Math.round((standardDeviation(localResults) + Number.EPSILON) * 100) /
+        100,
     };
     results.push(resTemp);
 

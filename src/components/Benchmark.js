@@ -9,7 +9,7 @@ function Benchmark(props) {
   const [imagesSizes, setImagesSizes] = useState([]);
   const [imagesCount, setImagesCount] = useState(0);
   const [imagesFoundCount, setImagesFoundCount] = useState(-1);
-  const [benchmarkResults, setBenchmarkResults] = useState(null);
+  const [benchmarkResults, setBenchmarkResults] = useState([]);
 
   const funcNames = [
     "rotate180",
@@ -143,6 +143,16 @@ function Benchmark(props) {
     });
   };
 
+  const getResult = (imageResultData, indexTech, funcName) => {
+    for (let i = 0; i < imageResultData.results.length; i++) {
+      const resSet = imageResultData.results[i];
+      for (let j = 0; j < resSet.length; j++) {
+        if (resSet[j].tech === indexTech && resSet[j].func === funcName)
+          return `${resSet[j].time}ms (std = ${resSet[j].std})`;
+      }
+    }
+  };
+
   return (
     <div className={styles.resultBox} id="resultdupa">
       {!isLoading && imagesCount === imagesFoundCount ? (
@@ -160,30 +170,32 @@ function Benchmark(props) {
       ) : (
         ""
       )}
-      <p>Results:</p>funcNames
+      <p>Results:</p>
+      {benchmarkResults.map((image, index) => (
+        <table key={`${image.name}${index}`}>
+          <thead>
+            <tr>
+              <td>{image.name}</td>
+              {funcNames.map((func) => (
+                <td key={func}>{func}</td>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {techNames.map((tech, index1) => (
+              <tr key={`${tech}${index1}`}>
+                <td>{tech}</td>
+                {funcNames.map((func) => (
+                  <td key={`${tech}${func}`}>
+                    {getResult(image, index1, func)}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      ))}
     </div>
   );
 }
 export default Benchmark;
-
-/*
-        {benchmarkResults.map((image, index) => (
-        <table>
-            <thead>
-                <th>{image}</th>
-                {benchmarkResults.map((image) => (
-                    <th>{image.name}</th>
-                ))}
-            </thead>
-            <tbody>
-                {techNames.map((tech, index) => (
-                    <tr>
-                        <td>{tech}</td>
-                        {benchmarkResults.map((image) => (
-                            <td>{image.name}</td>
-                        ))}
-                    </tr>
-                ))}
-            </tbody>
-        </table>
-        ))}*/
