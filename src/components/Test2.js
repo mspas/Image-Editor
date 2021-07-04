@@ -56,7 +56,7 @@ function Test2(props) {
       let outputArray = new Array(length);
       const channels = 4;
 
-      console.log("------------------------------");
+      //console.log("------------------------------");
 
       for (let i = 0; i < iterations; i++) {
         t0 = performance.now();
@@ -72,8 +72,8 @@ function Test2(props) {
         results.push(t1 - t0);
         //console.log(i, t1 - t0);
       }
-      console.log(`Avarage JS rotate90 in ${iterations} = ${mean(results)}`);
-      console.log(`STD = ${standardDeviation(results)}`);
+      /*console.log(`Avarage JS rotate90 in ${iterations} = ${mean(results)}`);
+      console.log(`STD = ${standardDeviation(results)}`);*/
 
       results = [];
       for (let i = 0; i < iterations; i++) {

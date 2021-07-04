@@ -4,6 +4,7 @@ import Loader from "react-loader-spinner";
 
 function Benchmark(props) {
   const [isLoading, setIsLoading] = useState(true);
+  const [testClicked, setTestClicked] = useState(false);
   const [message, setMessage] = useState("Loading images...");
   const [imagesData, setImagesData] = useState([]);
   const [imagesSizes, setImagesSizes] = useState([]);
@@ -43,9 +44,8 @@ function Benchmark(props) {
   useEffect(() => {
     if (props.worker)
       props.worker.onmessage = (event) => {
-        console.log(event);
         if (event.data.results) {
-          console.log(event.data.results);
+          //console.log(event.data.results);
           setBenchmarkResults(event.data.results);
           if (event.data.nextImage) {
             setMessage(`Now testing for ${event.data.nextImage} image...`);
@@ -53,14 +53,6 @@ function Benchmark(props) {
             setIsLoading(false);
             setMessage(`Tests done!`);
           }
-
-          /*setTime(event.data.time);
-          setLoadingMessage("Preparing image preview...");
-          setOutputData({
-            imageData: event.data.imageData,
-            width: event.data.width,
-            height: event.data.height,
-          });*/
         }
       };
   }, [props.worker]);
@@ -80,19 +72,16 @@ function Benchmark(props) {
   };
 
   const onImgLoad = ({ target: img }) => {
-    var canvas = props.toCanvas(img);
-    let ctx = canvas.getContext("2d");
-    ctx.globalAlpha = 1.0;
-    let dataImg = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    const res = props.imgToCanvas(img);
 
     let data = imagesData;
     let sizes = imagesSizes;
 
-    data.push(dataImg.data);
+    data.push(res.data);
     sizes.push({
-      name: img.value,
-      width: dataImg.width,
-      height: dataImg.height,
+      name: img.value ? img.value : "",
+      width: res.width,
+      height: res.height,
     });
 
     setImagesData(data);
@@ -115,6 +104,7 @@ function Benchmark(props) {
 
     setMessage(`Starting tests for ${imagesCount} images...`);
     setIsLoading(true);
+    setTestClicked(true);
 
     window.scrollTo(0, document.body.scrollHeight);
 
@@ -132,7 +122,6 @@ function Benchmark(props) {
 
       imagesDataSet.push(data);
     }
-    console.log(imagesDataSet);
 
     props.worker.postMessage({
       tech: -1,
@@ -148,7 +137,7 @@ function Benchmark(props) {
       const resSet = imageResultData.results[i];
       for (let j = 0; j < resSet.length; j++) {
         if (resSet[j].tech === indexTech && resSet[j].func === funcName)
-          return `${resSet[j].time}ms (std = ${resSet[j].std})`;
+          return { time: resSet[j].time, std: resSet[j].std };
       }
     }
   };
@@ -162,7 +151,10 @@ function Benchmark(props) {
       ) : (
         ""
       )}
-      <p>{message}</p>
+      <p>
+        {message}
+        {testClicked ? ` (${benchmarkResults.length}/${imagesFoundCount})` : ""}
+      </p>
       {isLoading ? (
         <div>
           <Loader type="TailSpin" color="#00BFFF" height={50} width={50} />
@@ -172,7 +164,7 @@ function Benchmark(props) {
       )}
       <p>Results:</p>
       {benchmarkResults.map((image, index) => (
-        <table key={`${image.name}${index}`}>
+        <table className={styles.tableResults} key={`${image.name}${index}`}>
           <thead>
             <tr>
               <td>{image.name}</td>
@@ -184,10 +176,17 @@ function Benchmark(props) {
           <tbody>
             {techNames.map((tech, index1) => (
               <tr key={`${tech}${index1}`}>
-                <td>{tech}</td>
+                <td className={styles.techTitle}>{tech}</td>
                 {funcNames.map((func) => (
                   <td key={`${tech}${func}`}>
-                    {getResult(image, index1, func)}
+                    <div>
+                      <p className={styles.resultTime}>
+                        {getResult(image, index1, func).time} ms
+                      </p>
+                      <span className={styles.resultSTD}>
+                        STD = {getResult(image, index1, func).std}
+                      </span>
+                    </div>
                   </td>
                 ))}
               </tr>

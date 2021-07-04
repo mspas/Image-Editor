@@ -17,7 +17,11 @@ const options = [
     color: "#ffbdbd",
   },
   {
-    title: "test",
+    title: "Benchmark",
+    color: "#cfb0ff",
+  },
+  {
+    title: "One",
     color: "#cfb0ff",
   },
   {

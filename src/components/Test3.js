@@ -1,627 +1,675 @@
 import React, { useState, useEffect } from "react";
 import styles from "./styles/editor.module.sass";
 import Loader from "react-loader-spinner";
-import * as EditorJSModule from "../modules/editor.mjs";
+import * as EditorJS from "../modules/editor.mjs";
+import EditorWasmGlue from "../modules/editorwasm.mjs";
+import EditorAsmGlue from "../modules/editorasmjs.mjs";
 
 function Test3(props) {
   const [isLoading, setIsLoading] = useState(false);
   const [time, setTime] = useState(0);
   const [asmModule, setAsmModule] = useState(null);
   const [wasmModule, setWasmModule] = useState(null);
+  const [message, setMessage] = useState("Loading images...");
+  const [imagesData, setImagesData] = useState([]);
+  const [imagesSizes, setImagesSizes] = useState([]);
+  const [imagesCount, setImagesCount] = useState(0);
+  const [imagesFoundCount, setImagesFoundCount] = useState(-1);
+  const [benchmarkResults, setBenchmarkResults] = useState([]);
+
+  const funcNames = [
+    "rotate180",
+    "rotate90",
+    "mirror",
+    "invert",
+    "brighten",
+    "gray",
+    "crop",
+  ];
+  const techNames = ["JavaScript", "asm.js", "WebAssembly"];
 
   useEffect(() => {
-    setWasmModule(props.wasmModule);
-    setAsmModule(props.asmModule);
-  }, [props.wasmModule, props.asmModule]);
+    EditorWasmGlue({
+      noInitialRun: true,
+      noExitRuntime: true,
+    }).then((response) => {
+      setWasmModule(response);
+    });
 
-  const mean = (array) => {
+    EditorAsmGlue({
+      noInitialRun: true,
+      noExitRuntime: true,
+    }).then((response) => {
+      setAsmModule(response);
+    });
+
+    const images = importAll(
+      require.context("../media", false, /\.(png|jpe?g|svg)$/)
+    );
+    setImagesFoundCount(images.length);
+
+    let e = document.getElementById("resultdupa");
+
+    loadImages(e, images);
+  }, []);
+
+  useEffect(() => {
+    if (imagesCount === imagesFoundCount) {
+      setIsLoading(false);
+      setMessage(`${imagesCount} images loaded`);
+    }
+  }, [imagesCount]);
+
+  const importAll = (r) => {
+    let images = [];
+    r.keys().map((item, index) => {
+      let name = item.replace("./", "");
+      images.push({ name: name.replace(".jpg", ""), url: r(item) });
+    });
+    return images;
+  };
+
+  const loadImages = (parent, images) => {
+    return new Promise((resolve, reject) => {
+      for (let i = 0; i < images.length; i++) {
+        const img = document.createElement("img");
+        img.onload = onImgLoad;
+        img.src = images[i].url;
+        img.value = images[i].name;
+        parent.appendChild(img);
+        parent.removeChild(img);
+        if (i === images.length - 1) resolve(true);
+      }
+    });
+  };
+
+  const onImgLoad = ({ target: img }) => {
+    const res = props.imgToCanvas(img);
+
+    let data = imagesData;
+    let sizes = imagesSizes;
+
+    data.push(res.data);
+    sizes.push({
+      name: img.value ? img.value : "",
+      width: res.width,
+      height: res.height,
+    });
+
+    setImagesData(data);
+    setImagesSizes(sizes);
+    setImagesCount(data.length);
+  };
+
+  const testAllFunctions = async (iterations) => {
+    let resultsData = [];
+
+    for (let j = 0; j < imagesData.length; j++) {
+      const imageData = imagesData[j];
+      const channels = 4;
+      let width = imagesSizes[j].width,
+        height = imagesSizes[j].height,
+        length = imageData.length;
+
+      /*postMessage({
+        results: resultsData,
+        nextImage: imagesData[j].name,
+      });*/
+
+      let resultsImage = [];
+      for (let i = 0; i < funcNames.length; i++) {
+        let res = await testFunction(
+          imageData,
+          length,
+          width,
+          height,
+          40,
+          channels,
+          iterations,
+          funcNames[i]
+        );
+        resultsImage.push(res);
+      }
+      resultsData.push({ name: imagesSizes[j].name, results: resultsImage });
+    }
+
+    return { results: resultsData };
+  };
+
+  const testFunction = async (
+    imageData,
+    length,
+    width,
+    height,
+    brightnessValue,
+    channels,
+    iterations,
+    option
+  ) => {
+    return new Promise((resolve, reject) => {
+      let results = [],
+        localResults = [],
+        resTemp = null,
+        output = null,
+        time = 0;
+      for (let i = 0; i < iterations; i++) {
+        switch (option) {
+          case "rotate180":
+            output = rotate180JS(imageData, length, channels);
+            break;
+          case "rotate90":
+            output = rotate90JS(imageData, length, width, height, channels);
+            break;
+          case "mirror":
+            output = mirrorJS(imageData, length, width, height, channels);
+            break;
+          case "invert":
+            output = invertJS(imageData, length, channels);
+            break;
+          case "brighten":
+            output = brightenJS(imageData, length, brightnessValue, channels);
+            break;
+          case "gray":
+            output = grayscaleJS(imageData, length, channels);
+            break;
+          case "crop":
+            output = cropJS(imageData, length, width, height, channels);
+            break;
+          default:
+            break;
+        }
+        localResults.push(output.time);
+      }
+      resTemp = {
+        tech: 0,
+        func: option,
+        time: Math.round((mean(localResults) + Number.EPSILON) * 100) / 100,
+        std:
+          Math.round((standardDeviation(localResults) + Number.EPSILON) * 100) /
+          100,
+      };
+      results.push(resTemp);
+      localResults = [];
+
+      for (let i = 0; i < iterations; i++) {
+        switch (option) {
+          case "rotate180":
+            time = rotate180Measure(asmModule, imageData, length, channels);
+            break;
+          case "rotate90":
+            time = rotate90Measure(
+              asmModule,
+              imageData,
+              length,
+              width,
+              height,
+              channels
+            );
+            break;
+          case "mirror":
+            time = mirrorMeasure(
+              asmModule,
+              imageData,
+              length,
+              width,
+              height,
+              channels
+            );
+            break;
+          case "invert":
+            time = invertMeasure(asmModule, imageData, length, channels);
+            break;
+          case "brighten":
+            time = brightenMeasure(
+              asmModule,
+              imageData,
+              length,
+              brightnessValue,
+              channels
+            );
+            break;
+          case "gray":
+            time = grayscaleMeasure(asmModule, imageData, length, channels);
+            break;
+          case "crop":
+            time = cropMeasure(
+              asmModule,
+              imageData,
+              length,
+              width,
+              height,
+              channels
+            );
+            break;
+          default:
+            break;
+        }
+        localResults.push(time);
+      }
+      resTemp = {
+        tech: 1,
+        func: option,
+        time: Math.round((mean(localResults) + Number.EPSILON) * 100) / 100,
+        std:
+          Math.round((standardDeviation(localResults) + Number.EPSILON) * 100) /
+          100,
+      };
+      results.push(resTemp);
+      localResults = [];
+
+      for (let i = 0; i < iterations; i++) {
+        switch (option) {
+          case "rotate180":
+            time = rotate180Measure(wasmModule, imageData, length, channels);
+            break;
+          case "rotate90":
+            time = rotate90Measure(
+              wasmModule,
+              imageData,
+              length,
+              width,
+              height,
+              channels
+            );
+            break;
+          case "mirror":
+            time = mirrorMeasure(
+              wasmModule,
+              imageData,
+              length,
+              width,
+              height,
+              channels
+            );
+            break;
+          case "invert":
+            time = invertMeasure(wasmModule, imageData, length, channels);
+            break;
+          case "brighten":
+            time = brightenMeasure(
+              wasmModule,
+              imageData,
+              length,
+              brightnessValue,
+              channels
+            );
+            break;
+          case "gray":
+            time = grayscaleMeasure(wasmModule, imageData, length, channels);
+            break;
+          case "crop":
+            time = cropMeasure(
+              wasmModule,
+              imageData,
+              length,
+              width,
+              height,
+              channels
+            );
+            break;
+          default:
+            break;
+        }
+        localResults.push(time);
+      }
+      resTemp = {
+        tech: 2,
+        func: option,
+        time: Math.round((mean(localResults) + Number.EPSILON) * 100) / 100,
+        std:
+          Math.round((standardDeviation(localResults) + Number.EPSILON) * 100) /
+          100,
+      };
+      results.push(resTemp);
+
+      resolve(results);
+    });
+  };
+
+  function mean(array) {
     let sum = 0;
     for (let i = 0; i < array.length; i++) {
       sum += array[i];
     }
     return sum / array.length;
-  };
+  }
 
-  const standardDeviation = (array) => {
+  function standardDeviation(array) {
     const n = array.length;
     const mean = array.reduce((a, b) => a + b) / n;
     return Math.sqrt(
       array.map((x) => Math.pow(x - mean, 2)).reduce((a, b) => a + b) / n
     );
+  }
+
+  const rotate180JS = (imageData, length, channels) => {
+    let t0, t1, output;
+    t0 = performance.now();
+    output = EditorJS.rotate180(imageData, length, channels);
+    t1 = performance.now();
+    return { data: output, time: t1 - t0 };
   };
 
-  const testRotate90 = async (iterations) => {
-    return new Promise((resolve, reject) => {
-      let t0,
-        t1,
-        memoryOutput,
-        results = [];
-      let length = props.imageData.length,
-        imageData = props.imageData;
-      let width = props.imageArraySize.width,
-        height = props.imageArraySize.height;
-      let outputArray = new Array(length);
-      const channels = 4;
+  const rotate90JS = (imageData, length, width, height, channels) => {
+    let t0,
+      t1,
+      output,
+      outputArray = new Uint8Array(length);
+    t0 = performance.now();
+    output = EditorJS.rotate90(
+      imageData,
+      outputArray,
+      length,
+      width,
+      height,
+      channels
+    );
+    let temp = width;
+    width = height;
+    height = temp;
 
-      console.log("------------------------------");
-
-      for (let i = 0; i < iterations; i++) {
-        //t0 = performance.now();
-        t0 = performance.memory.usedJSHeapSize;
-
-        EditorJSModule.rotate90(
-          imageData,
-          outputArray,
-          length,
-          width,
-          height,
-          channels
-        );
-        //t1 = performance.now();
-        t1 = performance.memory.usedJSHeapSize;
-        results.push(t1 - t0);
-        //console.log(i, t1 - t0);
-      }
-      console.log(`Avarage JS rotate90 in ${iterations} = ${mean(results)}`);
-      console.log(`STD = ${standardDeviation(results)}`);
-
-      results = [];
-      for (let i = 0; i < iterations; i++) {
-        //t0 = performance.now();
-        t0 = performance.memory.usedJSHeapSize;
-
-        const memory = asmModule._malloc(length);
-        asmModule.HEAPU8.set(imageData, memory);
-
-        memoryOutput = asmModule._malloc(length);
-        asmModule.HEAPU8.set(imageData, memoryOutput);
-
-        asmModule._rotate90(
-          memory,
-          memoryOutput,
-          length,
-          width,
-          height,
-          channels
-        );
-
-        //t1 = performance.now();
-        t1 = performance.memory.usedJSHeapSize;
-        results.push(t1 - t0);
-        asmModule._free(memory);
-        asmModule._free(memoryOutput);
-        //console.log(i, t1 - t0);
-      }
-      console.log(`Avarage AsmJS rotate90 in ${iterations} = ${mean(results)}`);
-      console.log(`STD = ${standardDeviation(results)}`);
-
-      results = [];
-      for (let i = 0; i < iterations; i++) {
-        //t0 = performance.now();
-        t0 = performance.memory.usedJSHeapSize;
-
-        const memory = wasmModule._malloc(length);
-        wasmModule.HEAPU8.set(imageData, memory);
-
-        memoryOutput = wasmModule._malloc(length);
-        wasmModule.HEAPU8.set(imageData, memoryOutput);
-
-        wasmModule._rotate90(
-          memory,
-          memoryOutput,
-          length,
-          width,
-          height,
-          channels
-        );
-
-        //t1 = performance.now();
-        t1 = performance.memory.usedJSHeapSize;
-        results.push(t1 - t0);
-        wasmModule._free(memory);
-        wasmModule._free(memoryOutput);
-        //console.log(i, t1 - t0);
-      }
-      console.log(`Avarage Wasm rotate90 in ${iterations} = ${mean(results)}`);
-      console.log(`STD = ${standardDeviation(results)}`);
-      resolve(true);
-    });
+    t1 = performance.now();
+    console.log("r90", output);
+    return { data: output, time: t1 - t0, width: width, height: height };
   };
 
-  const testRotate180 = async (iterations) => {
-    return new Promise((resolve, reject) => {
-      let t0,
-        t1,
-        results = [];
-      let length = props.imageData.length,
-        imageData = props.imageData;
-      const channels = 4;
-
-      console.log("------------------------------");
-
-      for (let i = 0; i < iterations; i++) {
-        t0 = performance.memory.usedJSHeapSize;
-        //t0 = performance.now();
-        EditorJSModule.rotate180(imageData, length, channels);
-        //t1 = performance.now();
-        t1 = performance.memory.usedJSHeapSize;
-        results.push(t1 - t0);
-        //console.log(t1 - t0);
-      }
-      console.log(`Avarage JS rotate180 in ${iterations} = ${mean(results)}`);
-      console.log(`STD = ${standardDeviation(results)}`);
-
-      results = [];
-      for (let i = 0; i < iterations; i++) {
-        //t0 = performance.now();
-        t0 = performance.memory.usedJSHeapSize;
-
-        const memory = asmModule._malloc(length);
-        asmModule.HEAPU8.set(imageData, memory);
-
-        asmModule._rotate180(memory, length, channels);
-
-        //t1 = performance.now();
-        t1 = performance.memory.usedJSHeapSize;
-        results.push(t1 - t0);
-        asmModule._free(memory);
-        //console.log(t1 - t0);
-      }
-      console.log(
-        `Avarage AsmJS rotate180 in ${iterations} = ${mean(results)}`
-      );
-      console.log(`STD = ${standardDeviation(results)}`);
-
-      results = [];
-      for (let i = 0; i < iterations; i++) {
-        //t0 = performance.now();
-        t0 = performance.memory.usedJSHeapSize;
-
-        const memory = wasmModule._malloc(length);
-        wasmModule.HEAPU8.set(imageData, memory);
-
-        wasmModule._rotate180(memory, length, channels);
-
-        //t1 = performance.now();
-        t1 = performance.memory.usedJSHeapSize;
-        results.push(t1 - t0);
-        wasmModule._free(memory);
-        //console.log(t1 - t0);
-      }
-      console.log(`Avarage Wasm rotate180 in ${iterations} = ${mean(results)}`);
-      console.log(`STD = ${standardDeviation(results)}`);
-      resolve(true);
-    });
+  const mirrorJS = (imageData, length, width, height, channels) => {
+    let t0, t1, output;
+    t0 = performance.now();
+    output = EditorJS.mirror_reflection(
+      imageData,
+      length,
+      width,
+      height,
+      channels
+    );
+    t1 = performance.now();
+    return { data: output, time: t1 - t0 };
   };
 
-  const testMirror = async (iterations) => {
-    return new Promise((resolve, reject) => {
-      let t0,
-        t1,
-        results = [];
-      let imageData = props.imageData,
-        length = props.imageData.length;
-      let width = props.imageArraySize.width,
-        height = props.imageArraySize.height;
-      const channels = 4;
-
-      console.log("------------------------------");
-
-      for (let i = 0; i < iterations; i++) {
-        //t0 = performance.now();
-        t0 = performance.memory.usedJSHeapSize;
-
-        EditorJSModule.mirror_reflection(
-          imageData,
-          length,
-          width,
-          height,
-          channels
-        );
-
-        //t1 = performance.now();
-        t1 = performance.memory.usedJSHeapSize;
-        results.push(t1 - t0);
-      }
-      console.log(`Avarage JS mirror in ${iterations} = ${mean(results)}`);
-      console.log(`STD = ${standardDeviation(results)}`);
-
-      results = [];
-      for (let i = 0; i < iterations; i++) {
-        //t0 = performance.now();
-        t0 = performance.memory.usedJSHeapSize;
-
-        const memory = asmModule._malloc(length);
-        asmModule.HEAPU8.set(imageData, memory);
-
-        asmModule._rotate180(memory, length, channels);
-
-        //t1 = performance.now();
-        t1 = performance.memory.usedJSHeapSize;
-        results.push(t1 - t0);
-        asmModule._free(memory);
-      }
-      console.log(`Avarage AsmJS mirror in ${iterations} = ${mean(results)}`);
-      console.log(`STD = ${standardDeviation(results)}`);
-
-      results = [];
-      for (let i = 0; i < iterations; i++) {
-        //t0 = performance.now();
-        t0 = performance.memory.usedJSHeapSize;
-
-        const memory = wasmModule._malloc(length);
-        wasmModule.HEAPU8.set(imageData, memory);
-
-        wasmModule._rotate180(memory, length, channels);
-
-        //t1 = performance.now();
-        t1 = performance.memory.usedJSHeapSize;
-        results.push(t1 - t0);
-        wasmModule._free(memory);
-      }
-      console.log(`Avarage Wasm mirror in ${iterations} = ${mean(results)}`);
-      console.log(`STD = ${standardDeviation(results)}`);
-      resolve(true);
-    });
+  const invertJS = (imageData, length, channels) => {
+    let t0, t1, output;
+    t0 = performance.now();
+    output = EditorJS.invert(imageData, length, channels);
+    t1 = performance.now();
+    return { data: output, time: t1 - t0 };
   };
 
-  const testInvert = async (iterations) => {
-    return new Promise((resolve, reject) => {
-      let t0,
-        t1,
-        results = [];
-      let imageData = props.imageData,
-        length = props.imageData.length;
-      const channels = 4;
-
-      console.log("------------------------------");
-
-      for (let i = 0; i < iterations; i++) {
-        //t0 = performance.now();
-        t0 = performance.memory.usedJSHeapSize;
-
-        EditorJSModule.invert(imageData, length, channels);
-
-        //t1 = performance.now();
-        t1 = performance.memory.usedJSHeapSize;
-        results.push(t1 - t0);
-      }
-      console.log(`Avarage JS invert in ${iterations} = ${mean(results)}`);
-      console.log(`STD = ${standardDeviation(results)}`);
-
-      results = [];
-      for (let i = 0; i < iterations; i++) {
-        //t0 = performance.now();
-        t0 = performance.memory.usedJSHeapSize;
-
-        const memory = asmModule._malloc(length);
-        asmModule.HEAPU8.set(imageData, memory);
-
-        asmModule._invert(memory, length, channels);
-
-        //t1 = performance.now();
-        t1 = performance.memory.usedJSHeapSize;
-        results.push(t1 - t0);
-        asmModule._free(memory);
-      }
-      console.log(`Avarage AsmJS invert in ${iterations} = ${mean(results)}`);
-      console.log(`STD = ${standardDeviation(results)}`);
-
-      results = [];
-      for (let i = 0; i < iterations; i++) {
-        //t0 = performance.now();
-        t0 = performance.memory.usedJSHeapSize;
-
-        const memory = wasmModule._malloc(length);
-        wasmModule.HEAPU8.set(imageData, memory);
-
-        wasmModule._invert(memory, length, channels);
-
-        //t1 = performance.now();
-        t1 = performance.memory.usedJSHeapSize;
-        results.push(t1 - t0);
-        wasmModule._free(memory);
-      }
-      console.log(`Avarage Wasm invert in ${iterations} = ${mean(results)}`);
-      console.log(`STD = ${standardDeviation(results)}`);
-      resolve(true);
-    });
+  const brightenJS = (imageData, length, brightnessValue, channels) => {
+    let t0, t1, output;
+    t0 = performance.now();
+    output = EditorJS.brighten(imageData, length, brightnessValue, channels);
+    t1 = performance.now();
+    return { data: output, time: t1 - t0 };
   };
 
-  const testBrighten = async (iterations) => {
-    return new Promise((resolve, reject) => {
-      let t0,
-        t1,
-        results = [];
-      let imageData = props.imageData,
-        length = props.imageData.length;
-      const channels = 4;
-
-      console.log("------------------------------");
-
-      for (let i = 0; i < iterations; i++) {
-        //t0 = performance.now();
-        t0 = performance.memory.usedJSHeapSize;
-
-        EditorJSModule.brighten(imageData, length, 50, channels);
-
-        //t1 = performance.now();
-        t1 = performance.memory.usedJSHeapSize;
-        results.push(t1 - t0);
-      }
-      console.log(`Avarage JS brighten in ${iterations} = ${mean(results)}`);
-      console.log(`STD = ${standardDeviation(results)}`);
-
-      results = [];
-      for (let i = 0; i < iterations; i++) {
-        //t0 = performance.now();
-        t0 = performance.memory.usedJSHeapSize;
-
-        const memory = asmModule._malloc(length);
-        asmModule.HEAPU8.set(imageData, memory);
-
-        asmModule._brighten(memory, length, 50, channels);
-
-        //t1 = performance.now();
-        t1 = performance.memory.usedJSHeapSize;
-        results.push(t1 - t0);
-        asmModule._free(memory);
-      }
-      console.log(`Avarage AsmJS brighten in ${iterations} = ${mean(results)}`);
-      console.log(`STD = ${standardDeviation(results)}`);
-
-      results = [];
-      for (let i = 0; i < iterations; i++) {
-        //t0 = performance.now();
-        t0 = performance.memory.usedJSHeapSize;
-
-        const memory = wasmModule._malloc(length);
-        wasmModule.HEAPU8.set(imageData, memory);
-
-        wasmModule._brighten(memory, length, 50, channels);
-
-        //t1 = performance.now();
-        t1 = performance.memory.usedJSHeapSize;
-        results.push(t1 - t0);
-        wasmModule._free(memory);
-      }
-      console.log(`Avarage Wasm brighten in ${iterations} = ${mean(results)}`);
-      console.log(`STD = ${standardDeviation(results)}`);
-      resolve(true);
-    });
+  const grayscaleJS = (imageData, length, channels) => {
+    let t0, t1, output;
+    t0 = performance.now();
+    output = EditorJS.gray_scale(imageData, length, channels);
+    t1 = performance.now();
+    return { data: output, time: t1 - t0 };
   };
 
-  const testGrey = async (iterations) => {
-    return new Promise((resolve, reject) => {
-      let t0,
-        t1,
-        results = [];
-      let imageData = props.imageData,
-        length = props.imageData.length;
-      const channels = 4;
+  const cropJS = (imageData, length, width, height, channels) => {
+    let t0, t1, output;
+    let top = Math.floor(height * 0.1),
+      left = Math.floor(width * 0.1),
+      nw = Math.floor(width * 0.8),
+      nh = Math.floor(height * 0.7);
+    let outputArray = new Uint8Array(nw * nh * channels);
 
-      console.log("------------------------------");
+    t0 = performance.now();
+    output = EditorJS.crop(
+      imageData,
+      outputArray,
+      length,
+      width,
+      height,
+      top,
+      left,
+      nw,
+      nh,
+      channels
+    );
+    width = nw;
+    height = nh;
+    length = nh * nw * channels;
 
-      for (let i = 0; i < iterations; i++) {
-        //t0 = performance.now();
-        t0 = performance.memory.usedJSHeapSize;
-
-        EditorJSModule.gray_scale(imageData, length, channels);
-
-        //t1 = performance.now();
-        t1 = performance.memory.usedJSHeapSize;
-        results.push(t1 - t0);
-      }
-      console.log(`Avarage JS grey in ${iterations} = ${mean(results)}`);
-      console.log(`STD = ${standardDeviation(results)}`);
-
-      results = [];
-      for (let i = 0; i < iterations; i++) {
-        //t0 = performance.now();
-        t0 = performance.memory.usedJSHeapSize;
-
-        const memory = asmModule._malloc(length);
-        asmModule.HEAPU8.set(imageData, memory);
-
-        asmModule._gray_scale(memory, length, channels);
-
-        //t1 = performance.now();
-        t1 = performance.memory.usedJSHeapSize;
-        results.push(t1 - t0);
-        asmModule._free(memory);
-      }
-      console.log(`Avarage AsmJS grey in ${iterations} = ${mean(results)}`);
-      console.log(`STD = ${standardDeviation(results)}`);
-
-      results = [];
-      for (let i = 0; i < iterations; i++) {
-        //t0 = performance.now();
-        t0 = performance.memory.usedJSHeapSize;
-
-        const memory = wasmModule._malloc(length);
-        wasmModule.HEAPU8.set(imageData, memory);
-
-        wasmModule._gray_scale(memory, length, channels);
-
-        //t1 = performance.now();
-        t1 = performance.memory.usedJSHeapSize;
-        results.push(t1 - t0);
-        wasmModule._free(memory);
-      }
-      console.log(`Avarage Wasm grey in ${iterations} = ${mean(results)}`);
-      console.log(`STD = ${standardDeviation(results)}`);
-      resolve(true);
-    });
+    t1 = performance.now();
+    console.log(output);
+    return {
+      data: output,
+      time: t1 - t0,
+      width: width,
+      height: height,
+      length: length,
+    };
   };
 
-  const testCrop = async (iterations) => {
-    return new Promise((resolve, reject) => {
-      let t0,
-        t1,
-        memoryOutput,
-        results = [];
-      let length = props.imageData.length,
-        imageData = props.imageData;
-      let width = props.imageArraySize.width,
-        height = props.imageArraySize.height;
-      const channels = 4;
+  const rotate180Measure = (module, imageData, length, channels) => {
+    let t0, t1;
+    t0 = performance.now();
 
-      let top = Math.floor(height * 0.1),
-        left = Math.floor(width * 0.1),
-        nw = Math.floor(width * 0.8),
-        nh = Math.floor(height * 0.7);
+    const memory = module._malloc(length);
+    module.HEAPU8.set(imageData, memory);
+    module._rotate180(memory, length, channels);
 
-      let outputArray = new Array(nw * nh * channels);
-      console.log("------------------------------");
+    t1 = performance.now();
+    module._free(memory);
+    return t1 - t0;
+  };
 
-      for (let i = 0; i < iterations; i++) {
-        //t0 = performance.now();
-        t0 = performance.memory.usedJSHeapSize;
+  const rotate90Measure = (
+    module,
+    imageData,
+    length,
+    width,
+    height,
+    channels
+  ) => {
+    let t0,
+      t1,
+      temp = width;
 
-        EditorJSModule.crop(
-          imageData,
-          outputArray,
-          length,
-          width,
-          height,
-          top,
-          left,
-          nw,
-          nh,
-          channels
-        );
+    t0 = performance.now();
 
-        //t1 = performance.now();
-        t1 = performance.memory.usedJSHeapSize;
-        results.push(t1 - t0);
-        //console.log(i, t1 - t0);
-      }
-      //localStorage.setItem("js", results);
-      console.log(`Avarage JS crop in ${iterations} = ${mean(results)}`);
-      console.log(`STD = ${standardDeviation(results)}`);
+    const memory = module._malloc(length);
+    module.HEAPU8.set(imageData, memory);
+    const memoryOutput = module._malloc(length);
+    module.HEAPU8.set(imageData, memoryOutput);
+    module._rotate90(memory, memoryOutput, length, width, height, channels);
 
-      results = [];
-      for (let i = 0; i < iterations; i++) {
-        //t0 = performance.now();
-        t0 = performance.memory.usedJSHeapSize;
+    width = height;
+    height = temp;
+    t1 = performance.now();
 
-        let u8a = new Uint8ClampedArray();
+    module._free(memory);
+    module._free(memoryOutput);
+    return t1 - t0;
+  };
 
-        const memory = asmModule._malloc(length);
-        asmModule.HEAPU8.set(imageData, memory);
-        memoryOutput = asmModule._malloc(length);
-        asmModule.HEAPU8.set(u8a, memoryOutput);
+  const mirrorMeasure = (
+    module,
+    imageData,
+    length,
+    width,
+    height,
+    channels
+  ) => {
+    let t0, t1;
+    t0 = performance.now();
 
-        asmModule._crop(
-          memory,
-          memoryOutput,
-          length,
-          height,
-          width,
-          top,
-          left,
-          nw,
-          nh,
-          channels
-        );
+    const memory = module._malloc(length);
+    module.HEAPU8.set(imageData, memory);
+    module._mirror_reflection(memory, length, width, height, channels);
 
-        //t1 = performance.now();
-        t1 = performance.memory.usedJSHeapSize;
+    t1 = performance.now();
 
-        asmModule._free(memory);
-        asmModule._free(memoryOutput);
-        results.push(t1 - t0);
-        //console.log(i, t1 - t0);
-      }
-      //localStorage.setItem("asm", results);
-      console.log(`Avarage AsmJS crop in ${iterations} = ${mean(results)}`);
-      console.log(`STD = ${standardDeviation(results)}`);
+    module._free(memory);
+    return t1 - t0;
+  };
 
-      results = [];
-      for (let i = 0; i < iterations; i++) {
-        //t0 = performance.now();
-        t0 = performance.memory.usedJSHeapSize;
+  const invertMeasure = (module, imageData, length, channels) => {
+    let t0, t1;
+    t0 = performance.now();
 
-        let u8a = new Uint8ClampedArray();
+    const memory = module._malloc(length);
+    module.HEAPU8.set(imageData, memory);
+    module._invert(memory, length, channels);
 
-        const memory = wasmModule._malloc(length);
-        wasmModule.HEAPU8.set(imageData, memory);
+    t1 = performance.now();
 
-        memoryOutput = wasmModule._malloc(length);
-        wasmModule.HEAPU8.set(u8a, memoryOutput);
+    module._free(memory);
+    return t1 - t0;
+  };
 
-        wasmModule._crop(
-          memory,
-          memoryOutput,
-          length,
-          height,
-          width,
-          top,
-          left,
-          nw,
-          nh,
-          channels
-        );
+  const brightenMeasure = (
+    module,
+    imageData,
+    length,
+    brightnessValue,
+    channels
+  ) => {
+    let t0, t1;
+    t0 = performance.now();
 
-        //t1 = performance.now();
-        t1 = performance.memory.usedJSHeapSize;
+    const memory = module._malloc(length);
+    module.HEAPU8.set(imageData, memory);
+    module._brighten(memory, length, brightnessValue, channels);
 
-        wasmModule._free(memory);
-        wasmModule._free(memoryOutput);
-        results.push(t1 - t0);
-        //console.log(i, t1 - t0);
-      }
-      //localStorage.setItem("wasm", results);
-      console.log(`Avarage Wasm crop in ${iterations} = ${mean(results)}`);
-      console.log(`STD = ${standardDeviation(results)}`);
-      resolve(true);
-    });
+    t1 = performance.now();
+
+    module._free(memory);
+    return t1 - t0;
+  };
+
+  const grayscaleMeasure = (module, imageData, length, channels) => {
+    let t0, t1;
+    t0 = performance.now();
+
+    const memory = module._malloc(length);
+    module.HEAPU8.set(imageData, memory);
+    module._gray_scale(memory, length, channels);
+
+    t1 = performance.now();
+
+    module._free(memory);
+    return t1 - t0;
+  };
+
+  const cropMeasure = (module, imageData, length, width, height, channels) => {
+    let t0, t1;
+    let top = Math.floor(height * 0.1),
+      left = Math.floor(width * 0.1),
+      nw = Math.floor(width * 0.8),
+      nh = Math.floor(height * 0.7);
+
+    t0 = performance.now();
+
+    const memory = module._malloc(length);
+    module.HEAPU8.set(imageData, memory);
+    const memoryOutput = module._malloc(length);
+    module.HEAPU8.set(imageData, memoryOutput);
+    module._crop(
+      memory,
+      memoryOutput,
+      length,
+      width,
+      height,
+      top,
+      left,
+      nw,
+      nh,
+      channels
+    );
+    width = nw;
+    height = nh;
+    length = nh * nw * channels;
+
+    t1 = performance.now();
+
+    module._free(memory);
+    module._free(memoryOutput);
+    return t1 - t0;
   };
 
   const testHandler = async () => {
-    if (!props.imageData) {
-      alert("image ffs!");
-      return;
-    }
+    const iterations = 10;
 
-    const iterations = 1;
-
+    setMessage(`Testing all functions for ${imagesCount} images...`);
     setIsLoading(true);
-    console.log(props.imageData);
-    let dupa = new Uint8ClampedArray();
-    console.log(dupa);
 
-    await testRotate180(iterations);
-    await testRotate90(iterations);
-    await testInvert(iterations);
-    await testGrey(iterations);
-    await testMirror(iterations);
-    await testBrighten(iterations);
-    await testCrop(iterations);
+    let resultsData = await testAllFunctions(iterations);
 
-    setIsLoading(false);
+    setBenchmarkResults(resultsData.results);
+    if (resultsData.nextImage) {
+      setMessage(`Now testing for ${resultsData.nextImage} image...`);
+    } else {
+      setIsLoading(false);
+      setMessage(`Tests done!`);
+    }
+  };
+
+  const getResult = (imageResultData, indexTech, funcName) => {
+    for (let i = 0; i < imageResultData.results.length; i++) {
+      const resSet = imageResultData.results[i];
+      for (let j = 0; j < resSet.length; j++) {
+        if (resSet[j].tech === indexTech && resSet[j].func === funcName)
+          return { time: resSet[j].time, std: resSet[j].std };
+      }
+    }
   };
 
   return (
-    <div className={styles.resultBox} id="result">
-      <button className={styles.button} onClick={testHandler}>
-        Test2
-      </button>
-      {time > 0 ? (
-        <div className={styles.alert}>
-          Execution of this task took {time} ms.
-        </div>
+    <div className={styles.resultBox} id="resultdupa">
+      {!isLoading && imagesCount === imagesFoundCount ? (
+        <button className={styles.button} onClick={testHandler}>
+          Test
+        </button>
       ) : (
         ""
       )}
+      <p>{message}</p>
       {isLoading ? (
         <div>
           <Loader type="TailSpin" color="#00BFFF" height={50} width={50} />
-          <p>Loading modified image...</p>
         </div>
       ) : (
         ""
       )}
+      <p>Results:</p>
+      {benchmarkResults.map((image, index) => (
+        <table className={styles.tableResults} key={`${image.name}${index}`}>
+          <thead>
+            <tr>
+              <td>{image.name}</td>
+              {funcNames.map((func) => (
+                <td key={func}>{func}</td>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {techNames.map((tech, index1) => (
+              <tr key={`${tech}${index1}`}>
+                <td className={styles.techTitle}>{tech}</td>
+                {funcNames.map((func) => (
+                  <td key={`${tech}${func}`}>
+                    <div>
+                      <p className={styles.resultTime}>
+                        {getResult(image, index1, func).time} ms
+                      </p>
+                      <span className={styles.resultSTD}>
+                        STD = {getResult(image, index1, func).std}
+                      </span>
+                    </div>
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      ))}
     </div>
   );
 }

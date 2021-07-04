@@ -17,6 +17,7 @@ function EditorJS(props) {
     if (props.worker)
       props.worker.onmessage = (event) => {
         if (event.data.imageData) {
+          console.log("dupa", event.data.imageData);
           setTime(event.data.time);
           setLoadingMessage("Preparing image preview...");
           setOutputData({
@@ -30,12 +31,12 @@ function EditorJS(props) {
 
   useEffect(() => {
     if (outputData) {
-      let canvas = props.createCanvas(
+      /*let canvas = props.createCanvas(
         outputData.imageData,
         outputData.width,
         outputData.height
       );
-      setEditedImageData(canvas);
+      setEditedImageData(canvas);*/
       setIsLoading(false);
 
       window.scrollTo(0, document.body.scrollHeight);

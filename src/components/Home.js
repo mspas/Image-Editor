@@ -9,6 +9,7 @@ import EditorJS from "./EditorJS";
 import Editor from "./Editor";
 import Benchmark from "./Benchmark";
 import Video from "./Video";
+import Test3 from "./Test3";
 import EditorWasmGlue from "../modules/editorwasm.mjs";
 import EditorAsmGlue from "../modules/editorasmjs.mjs";
 //import EditorWasmGlue from "../modules/editorWasmDyn.mjs";
@@ -112,14 +113,25 @@ function Home(props) {
     return canvas.toDataURL();
   };
 
-  const onImgLoad = ({ target: img }) => {
+  const imgToCanvas = (img) => {
     var canvas = toCanvas(img);
     let ctx = canvas.getContext("2d");
     ctx.globalAlpha = 1.0;
     let dataImg = ctx.getImageData(0, 0, canvas.width, canvas.height);
-    console.log(dataImg.data);
-    setImageDataCanvas(dataImg.data);
-    setImageArraySize({ height: dataImg.height, width: dataImg.width });
+
+    return {
+      data: dataImg.data,
+      name: img.value,
+      width: dataImg.width,
+      height: dataImg.height,
+    };
+  };
+
+  const onImgLoad = ({ target: img }) => {
+    const res = imgToCanvas(img);
+
+    setImageDataCanvas(res.data);
+    setImageArraySize({ height: res.height, width: res.width });
   };
 
   const imageSelectHandler = async (event) => {
@@ -230,13 +242,23 @@ function Home(props) {
         <Benchmark
           worker={worker}
           prepareImageData={prepareImageData}
-          toCanvas={toCanvas}
+          imgToCanvas={imgToCanvas}
           scrollBottom={scrollBottom}
         />
       ) : (
         ""
       )}
       {props.activeOption === 4 ? (
+        <Test3
+          prepareImageData={prepareImageData}
+          createCanvas={createCanvas}
+          imgToCanvas={imgToCanvas}
+          scrollBottom={scrollBottom}
+        />
+      ) : (
+        ""
+      )}
+      {props.activeOption === 5 ? (
         <Video
           wasmModule={wasmModule}
           asmModule={asmModule}

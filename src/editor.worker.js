@@ -122,28 +122,36 @@ function functionHandlerModule(module, event) {
   let t0 = 0,
     t1 = 0;
 
-  const memory = module._malloc(length);
-  module.HEAPU8.set(imageData, memory);
-
-  let outputPointer = memory;
-  let memoryOutput = null;
+  let memory = null,
+    outputPointer = null,
+    memoryOutput = null;
 
   switch (event.data.option) {
     case "rotate180":
       t0 = performance.now();
+
+      memory = module._malloc(length);
+      module.HEAPU8.set(imageData, memory);
+      outputPointer = memory;
       module._rotate180(memory, length, channels);
+
       t1 = performance.now();
       module._free(memory);
       break;
 
     case "rotate90":
       t0 = performance.now();
+
+      memory = module._malloc(length);
+      module.HEAPU8.set(imageData, memory);
+      outputPointer = memory;
       memoryOutput = module._malloc(length);
       module.HEAPU8.set(imageData, memoryOutput);
       module._rotate90(memory, memoryOutput, length, width, height, channels);
       outputPointer = memoryOutput;
       width = event.data.height;
       height = event.data.width;
+
       t1 = performance.now();
 
       module._free(memory);
@@ -152,7 +160,12 @@ function functionHandlerModule(module, event) {
 
     case "mirror":
       t0 = performance.now();
+
+      memory = module._malloc(length);
+      module.HEAPU8.set(imageData, memory);
+      outputPointer = memory;
       module._mirror_reflection(memory, length, width, height, channels);
+
       t1 = performance.now();
 
       module._free(memory);
@@ -160,7 +173,12 @@ function functionHandlerModule(module, event) {
 
     case "invert":
       t0 = performance.now();
+
+      memory = module._malloc(length);
+      module.HEAPU8.set(imageData, memory);
+      outputPointer = memory;
       module._invert(memory, length, channels);
+
       t1 = performance.now();
 
       module._free(memory);
@@ -168,7 +186,12 @@ function functionHandlerModule(module, event) {
 
     case "brighten":
       t0 = performance.now();
+
+      memory = module._malloc(length);
+      module.HEAPU8.set(imageData, memory);
+      outputPointer = memory;
       module._brighten(memory, length, event.data.brightnessValue, channels);
+
       t1 = performance.now();
 
       module._free(memory);
@@ -176,7 +199,12 @@ function functionHandlerModule(module, event) {
 
     case "gray":
       t0 = performance.now();
+
+      memory = module._malloc(length);
+      module.HEAPU8.set(imageData, memory);
+      outputPointer = memory;
       module._gray_scale(memory, length, channels);
+
       t1 = performance.now();
 
       module._free(memory);
@@ -188,6 +216,10 @@ function functionHandlerModule(module, event) {
         nw = Math.floor(width * 0.8),
         nh = Math.floor(height * 0.7);
       t0 = performance.now();
+
+      memory = module._malloc(length);
+      module.HEAPU8.set(imageData, memory);
+      outputPointer = memory;
       memoryOutput = module._malloc(length);
       module.HEAPU8.set(props.imageData, memoryOutput);
       module._crop(
@@ -206,6 +238,7 @@ function functionHandlerModule(module, event) {
       width = nw;
       height = nh;
       length = nh * nw * channels;
+
       t1 = performance.now();
 
       module._free(memory);
@@ -238,17 +271,14 @@ async function testAllFunctions(event) {
       length = imagesData[j].length,
       iterations = event.data.iterations;
 
-    const memoryAsmJS = moduleAsmJS._malloc(length);
-    moduleAsmJS.HEAPU8.set(imageData, memoryAsmJS);
-
-    const memoryWasm = moduleWasm._malloc(length);
-    moduleWasm.HEAPU8.set(imageData, memoryWasm);
+    postMessage({
+      results: resultsData,
+      nextImage: imagesData[j].name,
+    });
 
     let resultsImage = [];
     for (let i = 0; i < funcNames.length; i++) {
       let res = await testFunction(
-        memoryAsmJS,
-        memoryWasm,
         imageData,
         length,
         width,
@@ -261,18 +291,12 @@ async function testAllFunctions(event) {
       resultsImage.push(res);
     }
     resultsData.push({ name: imagesData[j].name, results: resultsImage });
-    postMessage({
-      results: resultsData,
-      nextImage: j + 1 < imagesData.length ? imagesData[j + 1].name : null,
-    });
   }
 
   return { results: resultsData };
 }
 
 const testFunction = async (
-  memoryAsmJS,
-  memoryWasm,
   imageData,
   length,
   width,
@@ -330,12 +354,11 @@ const testFunction = async (
     for (let i = 0; i < iterations; i++) {
       switch (option) {
         case "rotate180":
-          time = rotate180Measure(moduleAsmJS, memoryAsmJS, length, channels);
+          time = rotate180Measure(moduleAsmJS, imageData, length, channels);
           break;
         case "rotate90":
           time = rotate90Measure(
             moduleAsmJS,
-            memoryAsmJS,
             imageData,
             length,
             width,
@@ -346,7 +369,7 @@ const testFunction = async (
         case "mirror":
           time = mirrorMeasure(
             moduleAsmJS,
-            memoryAsmJS,
+            imageData,
             length,
             width,
             height,
@@ -354,24 +377,23 @@ const testFunction = async (
           );
           break;
         case "invert":
-          time = invertMeasure(moduleAsmJS, memoryAsmJS, length, channels);
+          time = invertMeasure(moduleAsmJS, imageData, length, channels);
           break;
         case "brighten":
           time = brightenMeasure(
             moduleAsmJS,
-            memoryAsmJS,
+            imageData,
             length,
             brightnessValue,
             channels
           );
           break;
         case "gray":
-          time = grayscaleMeasure(moduleWasm, memoryWasm, length, channels);
+          time = grayscaleMeasure(moduleAsmJS, imageData, length, channels);
           break;
         case "crop":
           time = cropMeasure(
             moduleAsmJS,
-            memoryAsmJS,
             imageData,
             length,
             width,
@@ -398,12 +420,11 @@ const testFunction = async (
     for (let i = 0; i < iterations; i++) {
       switch (option) {
         case "rotate180":
-          time = rotate180Measure(moduleWasm, memoryWasm, length, channels);
+          time = rotate180Measure(moduleWasm, imageData, length, channels);
           break;
         case "rotate90":
           time = rotate90Measure(
             moduleWasm,
-            memoryWasm,
             imageData,
             length,
             width,
@@ -414,7 +435,7 @@ const testFunction = async (
         case "mirror":
           time = mirrorMeasure(
             moduleWasm,
-            memoryWasm,
+            imageData,
             length,
             width,
             height,
@@ -422,24 +443,23 @@ const testFunction = async (
           );
           break;
         case "invert":
-          time = invertMeasure(moduleWasm, memoryWasm, length, channels);
+          time = invertMeasure(moduleWasm, imageData, length, channels);
           break;
         case "brighten":
           time = brightenMeasure(
             moduleWasm,
-            memoryWasm,
+            imageData,
             length,
             brightnessValue,
             channels
           );
           break;
         case "gray":
-          time = grayscaleMeasure(moduleWasm, memoryWasm, length, channels);
+          time = grayscaleMeasure(moduleWasm, imageData, length, channels);
           break;
         case "crop":
           time = cropMeasure(
             moduleWasm,
-            memoryWasm,
             imageData,
             length,
             width,
@@ -585,31 +605,29 @@ function cropJS(imageData, length, width, height, channels) {
   };
 }
 
-function rotate180Measure(module, memory, length, channels) {
+function rotate180Measure(module, imageData, length, channels) {
   let t0, t1;
   t0 = performance.now();
+
+  const memory = module._malloc(length);
+  module.HEAPU8.set(imageData, memory);
   module._rotate180(memory, length, channels);
+
   t1 = performance.now();
   module._free(memory);
   return t1 - t0;
 }
 
-function rotate90Measure(
-  module,
-  memory,
-  imageData,
-  length,
-  width,
-  height,
-  channels
-) {
+function rotate90Measure(module, imageData, length, width, height, channels) {
   let t0,
     t1,
-    memoryOutput = null,
     temp = width;
 
   t0 = performance.now();
-  memoryOutput = module._malloc(length);
+
+  const memory = module._malloc(length);
+  module.HEAPU8.set(imageData, memory);
+  const memoryOutput = module._malloc(length);
   module.HEAPU8.set(imageData, memoryOutput);
   module._rotate90(memory, memoryOutput, length, width, height, channels);
 
@@ -622,64 +640,74 @@ function rotate90Measure(
   return t1 - t0;
 }
 
-function mirrorMeasure(module, memory, length, width, height, channels) {
+function mirrorMeasure(module, imageData, length, width, height, channels) {
   let t0, t1;
   t0 = performance.now();
+
+  const memory = module._malloc(length);
+  module.HEAPU8.set(imageData, memory);
   module._mirror_reflection(memory, length, width, height, channels);
+
   t1 = performance.now();
 
   module._free(memory);
   return t1 - t0;
 }
 
-function invertMeasure(module, memory, length, channels) {
+function invertMeasure(module, imageData, length, channels) {
   let t0, t1;
   t0 = performance.now();
+
+  const memory = module._malloc(length);
+  module.HEAPU8.set(imageData, memory);
   module._invert(memory, length, channels);
+
   t1 = performance.now();
 
   module._free(memory);
   return t1 - t0;
 }
 
-function brightenMeasure(module, memory, length, brightnessValue, channels) {
+function brightenMeasure(module, imageData, length, brightnessValue, channels) {
   let t0, t1;
   t0 = performance.now();
+
+  const memory = module._malloc(length);
+  module.HEAPU8.set(imageData, memory);
   module._brighten(memory, length, brightnessValue, channels);
+
   t1 = performance.now();
 
   module._free(memory);
   return t1 - t0;
 }
 
-function grayscaleMeasure(module, memory, length, channels) {
+function grayscaleMeasure(module, imageData, length, channels) {
   let t0, t1;
   t0 = performance.now();
+
+  const memory = module._malloc(length);
+  module.HEAPU8.set(imageData, memory);
   module._gray_scale(memory, length, channels);
+
   t1 = performance.now();
 
   module._free(memory);
   return t1 - t0;
 }
 
-function cropMeasure(
-  module,
-  memory,
-  imageData,
-  length,
-  width,
-  height,
-  channels
-) {
+function cropMeasure(module, imageData, length, width, height, channels) {
   let t0, t1;
   let top = Math.floor(height * 0.1),
     left = Math.floor(width * 0.1),
     nw = Math.floor(width * 0.8),
-    nh = Math.floor(height * 0.7),
-    memoryOutput = null;
+    nh = Math.floor(height * 0.7);
 
   t0 = performance.now();
-  memoryOutput = module._malloc(length);
+
+  const memory = module._malloc(length);
+  module.HEAPU8.set(imageData, memory);
+  const memoryOutput = module._malloc(length);
   module.HEAPU8.set(imageData, memoryOutput);
   module._crop(
     memory,
@@ -696,6 +724,7 @@ function cropMeasure(
   width = nw;
   height = nh;
   length = nh * nw * channels;
+
   t1 = performance.now();
 
   module._free(memory);
