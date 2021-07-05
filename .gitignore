@@ -11,6 +11,8 @@ build
 .env
 /.vscode/
 /src/components/Test.js
+/src/components/Test2.js
+/src/components/Editor1.js
 /src/media/
 /src/components/EditorAsmJS.js
 /src/components/ConverterShareLib.js

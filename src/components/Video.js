@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import styles from "./styles/editor.module.sass";
 import Loader from "react-loader-spinner";
+import Buttons from "./Buttons";
 import VideoFile from "../media/video2.mp4";
 
 function Video(props) {
@@ -11,6 +12,7 @@ function Video(props) {
   const [activeEditorName, setActiveEditorName] = useState("JavaScript");
   const [resolution, setResolution] = useState({ width: 720, height: 480 });
   const [isPaused, setIsPaused] = useState(false);
+  const [selectedFunction, setSelectedFunction] = useState("rotate180");
 
   useEffect(() => {
     if (videoInput.current) startVideo();
@@ -47,16 +49,45 @@ function Video(props) {
     changeVideoSize(width, height);
   };
 
+  const handleChangeFunction = async (option) => {
+    if (!videoInput.current.paused) videoInput.current.pause();
+
+    let width = resolution.width,
+      height = resolution.height;
+
+    let e = document.getElementById("btnVideo");
+    e.setAttribute("value", option);
+
+    setSelectedFunction(option);
+
+    const canvas = canvasOutput.current;
+    if (option === "rotate90") {
+      canvas.setAttribute("width", height);
+      canvas.setAttribute("height", width);
+    } else if (option === "crop") {
+      let nw = Math.floor(width * 0.8),
+        nh = Math.floor(height * 0.7);
+      canvas.setAttribute("width", nw);
+      canvas.setAttribute("height", nh);
+    } else {
+      changeCanvasSize(resolution.width, resolution.height);
+    }
+  };
+
   const changeCanvasSize = (width, height) => {
     const canvas = canvasOutput.current;
-    canvas.setAttribute("height", height);
     canvas.setAttribute("width", width);
+    canvas.setAttribute("height", height);
+    setResolution({
+      width: width,
+      height: height,
+    });
   };
 
   const changeVideoSize = (width, height) => {
     const video = videoInput.current;
-    video.setAttribute("height", height);
     video.setAttribute("width", width);
+    video.setAttribute("height", height);
   };
 
   const hanldeStartVideo = () => {
@@ -73,22 +104,14 @@ function Video(props) {
     const canvas = canvasOutput.current;
     const channels = 4;
 
-    canvas.setAttribute("height", resolution.height);
-    canvas.setAttribute("width", resolution.width);
+    //canvas.setAttribute("height", resolution.height);
+    //canvas.setAttribute("width", resolution.width);
 
     const context = canvas.getContext("2d");
 
     videoInput.current.addEventListener("play", () => {
       draw(context, channels, [], []);
     });
-  };
-
-  const mean = (array) => {
-    let sum = 0;
-    for (let i = 0; i < array.length; i++) {
-      sum += array[i];
-    }
-    return sum / array.length;
   };
 
   const updateTimer = (context, times, testTimer) => {
@@ -116,7 +139,7 @@ function Video(props) {
 
     let fpsData = updateTimer(context, times, testTimer);
 
-    /*window.requestAnimationFrame(() => {
+    window.requestAnimationFrame(() => {
       const now = performance.now();
       while (times.length > 0 && times[0] <= now - 1000) {
         times.shift();
@@ -126,26 +149,28 @@ function Video(props) {
       context.font = "40px Arial";
       context.fillText(fps, 10, 40);
       testTimer.push(fps);
-    });*/
+    });
 
     context.drawImage(videoInput.current, 0, 0, width, height);
     let frame = context.getImageData(0, 0, width, height);
 
     let output = processFrame(frame.data, width, height, length, channels);
-    frame.data.set(output);
 
-    /*crop*/
-    /*let nw = Math.floor(videoInput.current.width * 0.1),
-      nh = Math.floor(videoInput.current.height * 0.1);
-    console.log(output.length, nw, nh, nw * nh * channels);
-    changeCanvasSize(nw, nh);
-    var imageData = context.createImageData(nw, nh);
-    imageData.data.set(output);
-    context.putImageData(imageData, 0, 0);*/
-    /*crop*/
+    if (output.width && output.height) {
+      const canvas = canvasOutput.current;
+      const selectedFunction = document.getElementById("btnVideo").value;
 
-    context.putImageData(frame, 0, 0);
-    console.log(mean(testTimer));
+      let nw = selectedFunction === "rotate90" ? output.height : output.width;
+      let nh = selectedFunction === "rotate90" ? output.width : output.height;
+
+      let imageData = context.createImageData(nw, nh);
+      imageData.data.set(output.data);
+      context.putImageData(imageData, 0, 0);
+    } else {
+      frame.data.set(output.data);
+      context.putImageData(frame, 0, 0);
+    }
+
     setTimeout(
       () => draw(context, channels, fpsData.times, fpsData.testTimer),
       0
@@ -154,100 +179,337 @@ function Video(props) {
 
   const processFrame = (frameData, width, height, length, channels) => {
     const activeEditor = parseInt(videoInput.current.getAttribute("value"));
-    //console.log(activeEditor);
+    const selectedFunction = document.getElementById("btnVideo").value;
+    let output = null;
+
     if (activeEditor === 0) {
-      const module = props.jsModule;
-
-      return module.rotate180(frameData, length, channels);
-
-      /*let outputArray = new Array(length);
-      return module.rotate90(
-        frameData,
-        outputArray,
-        length,
-        width,
-        height,
-        channels
-      );*/
-
-      //return module.invert(frameData, length, channels);
-
-      //return module.gray_scale(frameData, length, channels);
-
-      /*return module.mirror_reflection(
-        frameData,
-        length,
-        width,
-        height,
-        channels
-      );*/
-
-      //return module.brighten(frameData, length, 50, channels);
-
-      /*let top = Math.floor(0),
-        left = Math.floor(0),
-        nw = Math.floor(videoInput.current.width * 0.8),
-        nh = Math.floor(videoInput.current.height * 0.8);
-      let outputArray = new Array(nw * nh * channels);
-      return module.crop(
-        frameData,
-        outputArray,
-        length,
-        width,
-        height,
-        top,
-        left,
-        nw,
-        nh,
-        channels
-      );*/
+      const moduleJS = props.jsModule;
+      switch (selectedFunction) {
+        case "rotate180":
+          output = rotate180JS(moduleJS, frameData, length, channels);
+          break;
+        case "rotate90":
+          output = rotate90JS(
+            moduleJS,
+            frameData,
+            length,
+            width,
+            height,
+            channels
+          );
+          break;
+        case "mirror":
+          output = mirrorJS(
+            moduleJS,
+            frameData,
+            length,
+            width,
+            height,
+            channels
+          );
+          break;
+        case "invert":
+          output = invertJS(moduleJS, frameData, length, channels);
+          break;
+        case "brighten":
+          output = brightenJS(moduleJS, frameData, length, 40, channels);
+          break;
+        case "gray":
+          output = grayscaleJS(moduleJS, frameData, length, channels);
+          break;
+        case "crop":
+          console.log(width, height, resolution.width, resolution.height);
+          output = cropJS(
+            moduleJS,
+            frameData,
+            length,
+            resolution.width,
+            resolution.height,
+            channels
+          );
+          break;
+        default:
+          break;
+      }
     } else {
       const module = activeEditor === 1 ? props.asmModule : props.wasmModule;
-      const memory = module._malloc(length);
-      let memOut = memory;
-      module.HEAPU8.set(frameData, memory);
-
-      module._rotate180(memory, length, channels);
-
-      /*const memoryOutput = module._malloc(length);
-      module.HEAPU8.set(frameData, memoryOutput);
-      module._rotate90(memory, memoryOutput, length, width, height, channels);
-      memOut = memoryOutput;*/
-
-      //module._invert(memory, length, channels);
-
-      //module._gray_scale(memory, length, channels);
-
-      //module._mirror_reflection(memory, length, width, height, channels);
-
-      //module._brighten(memory, length, 50, channels);
-
-      /*let top = Math.floor(0),
-        left = Math.floor(0),
-        nw = Math.floor(videoInput.current.width * 0.8),
-        nh = Math.floor(videoInput.current.height * 0.8);
-      const memoryOutput = module._malloc(length);
-      module.HEAPU8.set(frameData, memoryOutput);
-      module._crop(
-        memory,
-        memoryOutput,
-        length,
-        width,
-        height,
-        top,
-        left,
-        nw,
-        nh,
-        channels
-      );
-      memOut = memoryOutput;
-      length = nh * nw * channels;*/
-
-      let frameOutputData = module.HEAPU8.subarray(memOut, memOut + length);
-      module._free(memory);
-      //module._free(memoryOutput);
-      return frameOutputData;
+      switch (selectedFunction) {
+        case "rotate180":
+          output = rotate180Measure(module, frameData, length, channels);
+          break;
+        case "rotate90":
+          output = rotate90Measure(
+            module,
+            frameData,
+            length,
+            width,
+            height,
+            channels
+          );
+          break;
+        case "mirror":
+          output = mirrorMeasure(
+            module,
+            frameData,
+            length,
+            width,
+            height,
+            channels
+          );
+          break;
+        case "invert":
+          output = invertMeasure(module, frameData, length, channels);
+          break;
+        case "brighten":
+          output = brightenMeasure(module, frameData, length, 40, channels);
+          break;
+        case "gray":
+          output = grayscaleMeasure(module, frameData, length, channels);
+          break;
+        case "crop":
+          output = cropMeasure(
+            module,
+            frameData,
+            length,
+            width,
+            height,
+            channels
+          );
+          break;
+        default:
+          break;
+      }
     }
+    return output;
+  };
+
+  const rotate180JS = (module, imageData, length, channels) => {
+    let output;
+    output = module.rotate180(imageData, length, channels);
+    return { data: output };
+  };
+
+  const rotate90JS = (module, imageData, length, width, height, channels) => {
+    let output,
+      outputArray = new Uint8Array(length);
+    output = module.rotate90(
+      imageData,
+      outputArray,
+      length,
+      width,
+      height,
+      channels
+    );
+    let temp = width;
+    width = height;
+    height = temp;
+
+    return { data: output, width: width, height: height };
+  };
+
+  const mirrorJS = (module, imageData, length, width, height, channels) => {
+    let output;
+    output = module.mirror_reflection(
+      imageData,
+      length,
+      width,
+      height,
+      channels
+    );
+    return { data: output };
+  };
+
+  const invertJS = (module, imageData, length, channels) => {
+    let output;
+    output = module.invert(imageData, length, channels);
+    return { data: output };
+  };
+
+  const brightenJS = (module, imageData, length, brightnessValue, channels) => {
+    let output;
+    output = module.brighten(imageData, length, brightnessValue, channels);
+    return { data: output };
+  };
+
+  const grayscaleJS = (module, imageData, length, channels) => {
+    let output;
+    output = module.gray_scale(imageData, length, channels);
+    return { data: output };
+  };
+
+  const cropJS = (module, imageData, length, width, height, channels) => {
+    let output;
+    let top = Math.floor(height * 0.1),
+      left = Math.floor(width * 0.1),
+      nw = Math.floor(width * 0.8),
+      nh = Math.floor(height * 0.7);
+    let outputArray = new Uint8Array(nw * nh * channels);
+
+    output = module.crop(
+      imageData,
+      outputArray,
+      length,
+      width,
+      height,
+      top,
+      left,
+      nw,
+      nh,
+      channels
+    );
+    width = nw;
+    height = nh;
+    length = nh * nw * channels;
+
+    console.log(output.length);
+
+    return {
+      data: output,
+      width: width,
+      height: height,
+      length: length,
+    };
+  };
+
+  const rotate180Measure = (module, imageData, length, channels) => {
+    const memory = module._malloc(length);
+    module.HEAPU8.set(imageData, memory);
+    module._rotate180(memory, length, channels);
+
+    const output = new Uint8Array(
+      module.HEAPU8.subarray(memory, memory + length)
+    );
+
+    module._free(memory);
+    return { data: output };
+  };
+
+  const rotate90Measure = (
+    module,
+    imageData,
+    length,
+    width,
+    height,
+    channels
+  ) => {
+    let temp = width;
+
+    const memory = module._malloc(length);
+    module.HEAPU8.set(imageData, memory);
+    const memoryOutput = module._malloc(length);
+    module.HEAPU8.set(imageData, memoryOutput);
+    module._rotate90(memory, memoryOutput, length, width, height, channels);
+
+    width = height;
+    height = temp;
+
+    const output = new Uint8Array(
+      module.HEAPU8.subarray(memoryOutput, memoryOutput + length)
+    );
+
+    module._free(memory);
+    module._free(memoryOutput);
+    return { data: output, width: width, height: height };
+  };
+
+  const mirrorMeasure = (
+    module,
+    imageData,
+    length,
+    width,
+    height,
+    channels
+  ) => {
+    const memory = module._malloc(length);
+    module.HEAPU8.set(imageData, memory);
+    module._mirror_reflection(memory, length, width, height, channels);
+
+    const output = new Uint8Array(
+      module.HEAPU8.subarray(memory, memory + length)
+    );
+
+    module._free(memory);
+    return { data: output };
+  };
+
+  const invertMeasure = (module, imageData, length, channels) => {
+    const memory = module._malloc(length);
+    module.HEAPU8.set(imageData, memory);
+    module._invert(memory, length, channels);
+
+    const output = new Uint8Array(
+      module.HEAPU8.subarray(memory, memory + length)
+    );
+
+    module._free(memory);
+    return { data: output };
+  };
+
+  const brightenMeasure = (
+    module,
+    imageData,
+    length,
+    brightnessValue,
+    channels
+  ) => {
+    const memory = module._malloc(length);
+    module.HEAPU8.set(imageData, memory);
+    module._brighten(memory, length, brightnessValue, channels);
+
+    const output = new Uint8Array(
+      module.HEAPU8.subarray(memory, memory + length)
+    );
+
+    module._free(memory);
+    return { data: output };
+  };
+
+  const grayscaleMeasure = (module, imageData, length, channels) => {
+    const memory = module._malloc(length);
+    module.HEAPU8.set(imageData, memory);
+    module._gray_scale(memory, length, channels);
+
+    const output = new Uint8Array(
+      module.HEAPU8.subarray(memory, memory + length)
+    );
+
+    module._free(memory);
+    return { data: output };
+  };
+
+  const cropMeasure = (module, imageData, length, width, height, channels) => {
+    let top = Math.floor(height * 0.1),
+      left = Math.floor(width * 0.1),
+      nw = Math.floor(width * 0.8),
+      nh = Math.floor(height * 0.7);
+
+    const memory = module._malloc(length);
+    module.HEAPU8.set(imageData, memory);
+    const memoryOutput = module._malloc(length);
+    module.HEAPU8.set(imageData, memoryOutput);
+    module._crop(
+      memory,
+      memoryOutput,
+      length,
+      width,
+      height,
+      top,
+      left,
+      nw,
+      nh,
+      channels
+    );
+    width = nw;
+    height = nh;
+    length = nh * nw * channels;
+
+    const output = new Uint8Array(
+      module.HEAPU8.subarray(memoryOutput, memoryOutput + length)
+    );
+
+    module._free(memory);
+    module._free(memoryOutput);
+    return { data: output, width: width, height: height };
   };
 
   return (
@@ -303,10 +565,13 @@ function Video(props) {
               Wasm
             </button>
           </div>
+          <Buttons imageEditHandler={handleChangeFunction} />
           <div className={styles.buttonWrap}>
             <button
               className={styles.button}
               onClick={() => hanldeStartVideo()}
+              id="btnVideo"
+              value={selectedFunction}
             >
               Start/Stop
             </button>

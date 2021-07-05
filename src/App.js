@@ -6,26 +6,32 @@ import Home from "./components/Home";
 const options = [
   {
     title: "JS",
+    subtitle: "Editor",
     color: "#E6DF91",
   },
   {
     title: "asm.js",
+    subtitle: "Editor",
     color: "#BBCCFF",
   },
   {
     title: "Wasm",
+    subtitle: "Editor",
     color: "#ffbdbd",
   },
   {
     title: "Benchmark",
-    color: "#cfb0ff",
+    subtitle: "Multi-thread",
+    color: "#bbffd4",
   },
   {
-    title: "One",
-    color: "#cfb0ff",
+    title: "Benchmark",
+    subtitle: "One thread",
+    color: "#ffbbf3",
   },
   {
     title: "Video",
+    subtitle: "Editor",
     color: "#cfb0ff",
   },
 ];

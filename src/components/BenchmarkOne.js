@@ -5,9 +5,8 @@ import * as EditorJS from "../modules/editor.mjs";
 import EditorWasmGlue from "../modules/editorwasm.mjs";
 import EditorAsmGlue from "../modules/editorasmjs.mjs";
 
-function Test3(props) {
+function BenchmarkOne(props) {
   const [isLoading, setIsLoading] = useState(false);
-  const [time, setTime] = useState(0);
   const [asmModule, setAsmModule] = useState(null);
   const [wasmModule, setWasmModule] = useState(null);
   const [message, setMessage] = useState("Loading images...");
@@ -137,7 +136,7 @@ function Test3(props) {
   };
 
   const testFunction = async (
-    imageData,
+    imageData1,
     length,
     width,
     height,
@@ -151,8 +150,10 @@ function Test3(props) {
         localResults = [],
         resTemp = null,
         output = null,
+        imageData = imageData1,
         time = 0;
       for (let i = 0; i < iterations; i++) {
+        //console.log("js", JSON.stringify(imageData));
         switch (option) {
           case "rotate180":
             output = rotate180JS(imageData, length, channels);
@@ -179,6 +180,7 @@ function Test3(props) {
             break;
         }
         localResults.push(output.time);
+        //console.log("js crop po ", JSON.stringify(output.data));
       }
       resTemp = {
         tech: 0,
@@ -369,7 +371,6 @@ function Test3(props) {
     height = temp;
 
     t1 = performance.now();
-    console.log("r90", output);
     return { data: output, time: t1 - t0, width: width, height: height };
   };
 
@@ -437,7 +438,7 @@ function Test3(props) {
     length = nh * nw * channels;
 
     t1 = performance.now();
-    console.log(output);
+
     return {
       data: output,
       time: t1 - t0,
@@ -673,4 +674,4 @@ function Test3(props) {
     </div>
   );
 }
-export default Test3;
+export default BenchmarkOne;

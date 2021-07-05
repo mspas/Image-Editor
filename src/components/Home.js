@@ -1,15 +1,10 @@
 import React, { useState, useEffect } from "react";
 import styles from "./styles/editor.module.sass";
 import WebWorker from "../editor.worker.js";
-//import WebWorkerBenchmark from "../benchmark.worker.js";
-//import WebWorkerAsmJs from "../editorasmjs.worker.js";
-//import WebWorkerWasm from "../editorwasm.worker.js";
-//import WebWorker from "../setup.worker";
-import EditorJS from "./EditorJS";
 import Editor from "./Editor";
 import Benchmark from "./Benchmark";
 import Video from "./Video";
-import Test3 from "./Test3";
+import BenchmarkOne from "./BenchmarkOne";
 import EditorWasmGlue from "../modules/editorwasm.mjs";
 import EditorAsmGlue from "../modules/editorasmjs.mjs";
 //import EditorWasmGlue from "../modules/editorWasmDyn.mjs";
@@ -49,19 +44,6 @@ function Home(props) {
       setIsLoadingAsmModule(false);
     });
   }, []);
-
-  const prepareImageData2 = async (file) => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        resolve(new Uint8Array(event.target.result));
-      };
-      reader.onerror = (err) => {
-        reject(err);
-      };
-      reader.readAsArrayBuffer(file);
-    });
-  };
 
   const prepareImageData = async (fileData, type) => {
     const file = fileData;
@@ -159,7 +141,7 @@ function Home(props) {
   return (
     <div className={styles.downloaderContainer}>
       <h1 className={styles.heading}>
-        {props.data.title} <span>Editor</span>
+        {props.data.title} <span>{props.data.subtitle}</span>
       </h1>
       {props.activeOption < 3 ? (
         <div className={styles.box}>
@@ -197,7 +179,7 @@ function Home(props) {
         ""
       )}
       {props.activeOption === 0 ? (
-        <EditorJS
+        <Editor
           worker={worker}
           tech={0}
           prepareImageData={prepareImageData}
@@ -211,7 +193,7 @@ function Home(props) {
         ""
       )}
       {props.activeOption === 1 ? (
-        <EditorJS
+        <Editor
           worker={worker}
           tech={1}
           prepareImageData={prepareImageData}
@@ -225,7 +207,7 @@ function Home(props) {
         ""
       )}
       {props.activeOption === 2 ? (
-        <EditorJS
+        <Editor
           worker={worker}
           tech={2}
           prepareImageData={prepareImageData}
@@ -249,7 +231,7 @@ function Home(props) {
         ""
       )}
       {props.activeOption === 4 ? (
-        <Test3
+        <BenchmarkOne
           prepareImageData={prepareImageData}
           createCanvas={createCanvas}
           imgToCanvas={imgToCanvas}

@@ -15,7 +15,7 @@ function Switch(props) {
       >
         <div className={styles.switchOptionContent}>
           <span className={styles.title}>{data.title}</span>
-          <span className={styles.titleSm}>Editor</span>
+          <span className={styles.titleSm}>{data.subtitle}</span>
         </div>
       </div>
     );
