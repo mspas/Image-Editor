@@ -230,7 +230,7 @@ function Home(props) {
       ) : (
         ""
       )}
-      {props.activeOption === 4 ? (
+      {props.activeOption === 5 ? (
         <BenchmarkOne
           prepareImageData={prepareImageData}
           createCanvas={createCanvas}
@@ -240,7 +240,7 @@ function Home(props) {
       ) : (
         ""
       )}
-      {props.activeOption === 5 ? (
+      {props.activeOption === 4 ? (
         <Video
           wasmModule={wasmModule}
           asmModule={asmModule}

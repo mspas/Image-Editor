@@ -24,11 +24,11 @@ const options = [
     subtitle: "Multi-thread",
     color: "#bbffd4",
   },
-  {
+  /*{
     title: "Benchmark",
     subtitle: "One thread",
     color: "#ffbbf3",
-  },
+  },*/
   {
     title: "Video",
     subtitle: "Editor",

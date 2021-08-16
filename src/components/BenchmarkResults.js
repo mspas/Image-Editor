@@ -94,7 +94,9 @@ function BenchmarkResults({
 
   return (
     <div id="results">
-      <p>Results - relative gain:</p>
+      <h1>
+        <span>Results - relative gain:</span>
+      </h1>
       {allResultsReady ? (
         <table className={styles.tableResults} id="results-table">
           <thead>
@@ -124,7 +126,9 @@ function BenchmarkResults({
         ""
       )}
 
-      <p>Results - detailed:</p>
+      <h1>
+        <span>Results - detailed:</span>
+      </h1>
       {allResultsReady ? (
         <ReactHTMLTableToExcel
           id="test-table-xls-button"
