@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import styles from "./styles/editor.module.sass";
 import Loader from "react-loader-spinner";
+import ImagePicker from "./ImagePicker";
+import BenchmarkResults from "./BenchmarkResults";
 
 function Benchmark(props) {
   const [isLoading, setIsLoading] = useState(true);
@@ -9,6 +11,7 @@ function Benchmark(props) {
   const [imagesData, setImagesData] = useState([]);
   const [imagesSizes, setImagesSizes] = useState([]);
   const [imagesCount, setImagesCount] = useState(0);
+  const [selectedImagesCount, setSelectedImagesCount] = useState(0);
   const [imagesFoundCount, setImagesFoundCount] = useState(-1);
   const [benchmarkResults, setBenchmarkResults] = useState([]);
 
@@ -29,7 +32,7 @@ function Benchmark(props) {
     );
     setImagesFoundCount(images.length);
 
-    let e = document.getElementById("resultdupa");
+    let e = document.getElementById("main-container");
 
     loadImages(e, images);
   }, []);
@@ -52,6 +55,7 @@ function Benchmark(props) {
           } else {
             setIsLoading(false);
             setMessage(`Tests done!`);
+            console.log(event.data.results);
           }
         }
       };
@@ -82,6 +86,7 @@ function Benchmark(props) {
       name: img.value ? img.value : "",
       width: res.width,
       height: res.height,
+      selected: true,
     });
 
     setImagesData(data);
@@ -98,6 +103,14 @@ function Benchmark(props) {
     return images;
   };
 
+  const imagePickerHandler = (index, value) => {
+    let data = imagesSizes;
+
+    data[index].selected = value;
+
+    setImagesSizes(data);
+  };
+
   const testHandler = async () => {
     const iterations = 10;
     const channels = 4; //RGBA
@@ -108,9 +121,12 @@ function Benchmark(props) {
 
     window.scrollTo(0, document.body.scrollHeight);
 
-    let imagesDataSet = [];
+    let imagesDataSet = [],
+      selectedCount = 0;
     for (let i = 0; i < imagesData.length; i++) {
       const imageData = imagesData[i];
+
+      if (!imagesSizes[i].selected) continue;
 
       let data = {
         data: imageData,
@@ -120,8 +136,11 @@ function Benchmark(props) {
         length: imageData.length,
       };
 
+      selectedCount++;
       imagesDataSet.push(data);
     }
+
+    setSelectedImagesCount(selectedCount);
 
     props.worker.postMessage({
       tech: -1,
@@ -132,28 +151,27 @@ function Benchmark(props) {
     });
   };
 
-  const getResult = (imageResultData, indexTech, funcName) => {
-    for (let i = 0; i < imageResultData.results.length; i++) {
-      const resSet = imageResultData.results[i];
-      for (let j = 0; j < resSet.length; j++) {
-        if (resSet[j].tech === indexTech && resSet[j].func === funcName)
-          return { time: resSet[j].time, std: resSet[j].std };
-      }
-    }
-  };
-
   return (
-    <div className={styles.resultBox} id="resultdupa">
+    <div className={styles.resultBox} id="main-container">
       {!isLoading && imagesCount === imagesFoundCount ? (
-        <button className={styles.button} onClick={testHandler}>
-          Test
-        </button>
+        <div>
+          {!testClicked ? <p>{message}</p> : ""}
+          <ImagePicker
+            imagesSizes={imagesSizes}
+            imagePickerHandler={imagePickerHandler}
+          />
+          <button className={styles.button} onClick={testHandler}>
+            Test
+          </button>
+        </div>
       ) : (
         ""
       )}
       <p>
-        {message}
-        {testClicked ? ` (${benchmarkResults.length}/${imagesFoundCount})` : ""}
+        {testClicked ? message : ""}
+        {testClicked
+          ? ` (${benchmarkResults.length}/${selectedImagesCount})`
+          : ""}
       </p>
       {isLoading ? (
         <div>
@@ -162,38 +180,13 @@ function Benchmark(props) {
       ) : (
         ""
       )}
-      <p>Results:</p>
-      {benchmarkResults.map((image, index) => (
-        <table className={styles.tableResults} key={`${image.name}${index}`}>
-          <thead>
-            <tr>
-              <td>{image.name}</td>
-              {funcNames.map((func) => (
-                <td key={func}>{func}</td>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {techNames.map((tech, index1) => (
-              <tr key={`${tech}${index1}`}>
-                <td className={styles.techTitle}>{tech}</td>
-                {funcNames.map((func) => (
-                  <td key={`${tech}${func}`}>
-                    <div>
-                      <p className={styles.resultTime}>
-                        {getResult(image, index1, func).time} ms
-                      </p>
-                      <span className={styles.resultSTD}>
-                        STD = {getResult(image, index1, func).std}
-                      </span>
-                    </div>
-                  </td>
-                ))}
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      ))}
+
+      <BenchmarkResults
+        benchmarkResults={benchmarkResults}
+        techNames={techNames}
+        funcNames={funcNames}
+        allResultsReady={!isLoading && testClicked ? true : false}
+      />
     </div>
   );
 }
