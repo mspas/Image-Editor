@@ -98,30 +98,40 @@ function BenchmarkResults({
         <span>Results - relative gain:</span>
       </h1>
       {allResultsReady ? (
-        <table className={styles.tableResults} id="results-table">
-          <thead>
-            <tr>
-              <td>%</td>
-              {funcNames.map((func) => (
-                <td key={func}>{func}</td>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {techNamesResults.map((tech, indexTech) => (
-              <tr key={`${tech}${indexTech}`}>
-                <td className={styles.techTitle}>{tech}</td>
-                {funcNames.map((func, indexFunc) => (
-                  <td key={`${tech}${func}`}>
-                    <p className={styles.resultTime}>
-                      {getRelativeGain(indexTech, indexFunc)}
-                    </p>
-                  </td>
+        <div>
+          <ReactHTMLTableToExcel
+            id="results-xls-button"
+            className={styles.button}
+            table="results-table"
+            filename="results"
+            sheet="results"
+            buttonText="Download as XLS"
+          />
+          <table className={styles.tableResults} id="results-table">
+            <thead>
+              <tr>
+                <td>%</td>
+                {funcNames.map((func) => (
+                  <td key={func}>{func}</td>
                 ))}
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {techNamesResults.map((tech, indexTech) => (
+                <tr key={`${tech}${indexTech}`}>
+                  <td className={styles.techTitle}>{tech}</td>
+                  {funcNames.map((func, indexFunc) => (
+                    <td key={`${tech}${func}`}>
+                      <p className={styles.resultTime}>
+                        {getRelativeGain(indexTech, indexFunc)}
+                      </p>
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       ) : (
         ""
       )}
@@ -131,7 +141,7 @@ function BenchmarkResults({
       </h1>
       {allResultsReady ? (
         <ReactHTMLTableToExcel
-          id="test-table-xls-button"
+          id="detailed-results-xls-button"
           className={styles.button}
           table="detailed-results-table"
           filename="detailed-results"

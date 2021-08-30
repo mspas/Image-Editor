@@ -25,6 +25,7 @@ function Benchmark(props) {
     "crop",
   ];
   const techNames = ["JavaScript", "asm.js", "WebAssembly"];
+  const iterations = 100;
 
   useEffect(() => {
     const images = importAll(
@@ -112,7 +113,6 @@ function Benchmark(props) {
   };
 
   const testHandler = async () => {
-    const iterations = 10;
     const channels = 4; //RGBA
 
     setMessage(`Starting tests for ${imagesCount} images...`);
@@ -168,7 +168,9 @@ function Benchmark(props) {
         ""
       )}
       <p>
-        {testClicked ? message : ""}
+        {testClicked
+          ? `Number of iterations: ${iterations}. ${message}`
+          : `Number of iterations: ${iterations}`}
         {testClicked
           ? ` (${benchmarkResults.length}/${selectedImagesCount})`
           : ""}
