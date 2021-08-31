@@ -40,7 +40,7 @@ function App() {
   const [activeOption, setActiveOption] = useState(0);
   const mainRef = useRef(null);
 
-  const handleOptionClick = (data, index) => {
+  const onOptionClick = (data, index) => {
     setActiveOption(index);
     mainRef.current.style.backgroundColor = options[index].color;
   };
@@ -50,7 +50,7 @@ function App() {
       <Switch
         activeOption={activeOption}
         options={options}
-        onOptionClick={handleOptionClick}
+        onOptionClick={onOptionClick}
       />
       <div className={styles.downloaderWrap}>
         <Home

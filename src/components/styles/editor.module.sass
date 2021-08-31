@@ -29,10 +29,7 @@
     cursor: pointer
     outline: none
     display: block
-    margin-left: auto
-    margin-right: auto
-    margin-top: 20px
-    margin-bottom: 50px
+    margin: 20px auto 50px auto
     letter-spacing: 2px
     font-family: Roobert, "Helvetica Neue", Helvetica, Arial, sans-serif
     font-weight: 700
@@ -43,8 +40,10 @@
     background: rgba(68, 68, 68, 0.644)
     color: aliceblue
     transition: all 0.3s cubic-bezier(0.65, -0.25, 0.25, 1.95)
-  .button:hover
-    letter-spacing: 4px
+    &:hover
+      letter-spacing: 4px
+    @media screen and (max-width: 550px)
+      font-size: 11px
   .alert
     margin: 10px auto
     width: 30%
@@ -64,6 +63,8 @@
     margin-top: 20px
     .button
       margin: 10px
+      @media screen and (max-width: 550px)
+        margin: 5px 10px
   .rangeInput
     display: block
     margin: auto
@@ -102,36 +103,6 @@
 
   100%
     opacity: 1
-
-.resultBox
-  padding-bottom: 20px
-
-.tableResults
-  margin: 25px auto
-  thead
-    font-weight: bold
-    td
-      padding: 5px
-      background-color: #00000015
-      .resultTime
-        margin: 0
-        font-size: 12px
-      .resultSTD
-        font-size: 10px
-  tbody
-    tr
-      td
-        padding: 5px
-        background-color: #0000000a
-        .resultTime
-          margin: 5px
-        .resultSTD
-          font-size: 12px
-      .techTitle
-        padding: 5px 10px
-        background-color: #00000015
-        font-weight: bold
-        font-style: italic
 
 .picker
   list-style-type: none

@@ -1,38 +1,93 @@
-.switchContainer
-  display: inline-grid
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr
-  width: 99.9vw
-  height: 125px
-  @media screen and (max-width: 300px)
-    grid-template-columns: none
-    height: auto
-  .switchOption
-    display: flex
-    justify-content: center
-    align-items: center
-    cursor: pointer
-    text-align: center
-    min-height: 100%
-    color: rgba(0, 0, 0, 0.55)
-    background: rgba(255, 255, 255, 0.068)
-    border-left: 1px solid rgba(255, 255, 255, 0.192)
-    border-right: 1px solid rgba(255, 255, 255, 0.192)
-    &:first-child
-      border-left: none
-    &:last-child
-      border-right: none
-    &:hover
-      background: rgba(255, 255, 255, 0.192)
-    .switchOptionContent
-      .title, .titleSm
-        display: block
-      .title
-        font-size: 3em
-        margin: 0
-        @media screen and (max-width: 550px)
-          font-size: 2em
-      .titleSm
-        letter-spacing: 3px
+.navContainer
+  .switchContainer
+    position: relative
+    display: inline-grid
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr
+    width: 99.9vw
+    height: 125px
+    @media screen and (max-width: 550px)
+      height: 75px
+    @media screen and (max-width: 300px)
+      grid-template-columns: none
+      height: auto
+    @media screen and (max-width: 400px)
+      display: none
+    .switchOption
+      display: flex
+      justify-content: center
+      align-items: center
+      cursor: pointer
+      text-align: center
+      min-height: 100%
+      color: rgba(0, 0, 0, 0.55)
+      background: rgba(255, 255, 255, 0.068)
+      border-left: 1px solid rgba(255, 255, 255, 0.192)
+      border-right: 1px solid rgba(255, 255, 255, 0.192)
+      &:first-child
+        border-left: none
+      &:last-child
+        border-right: none
+      &:hover
+        background: rgba(255, 255, 255, 0.192)
+      .switchOptionContent
+        .title, .titleSm
+          display: block
+        .title
+          font-size: 3em
+          margin: 0
+          @media screen and (max-width: 1000px)
+            font-size: 2em
+          @media screen and (max-width: 550px)
+            font-size: 1.0em
+        .titleSm
+          letter-spacing: 3px
+          @media screen and (max-width: 550px)
+            letter-spacing: 1px
+            font-size: 0.7em
+
+  .mobileContainer
+    @media screen and (min-width: 400px)
+      display: none
+    .mobileNavBtn
+      position: absolute
+      top: 5px
+      right: 5px
+      padding: 4px 20px
+      font-size: 1.8em
+      z-index: 2
+      background: transparent
+      border: none
+    .mobileNav
+      position: absolute
+      list-style: none
+      top: 0
+      right: 0
+      width: 100%
+      height: 225px
+      background: rgba(68, 68, 68, 0.877)
+      animation: slideInDown 0.5s ease-out forwards
+      box-shadow: 0 9px 14px -4px rgba(0, 0, 0, 0.459)
+      z-index: 1
+      ul
+        position: absolute
+        left: 10%
+        bottom: 0
+        padding: 0
+        li
+          display: block
+          text-transform: uppercase
+          margin-top: 10px
+          .switchOptionMobileContent
+            position: relative
+            padding: 5px
+            text-decoration: none
+            span
+              position: relative
+              z-index: 2
+              color: white
+              margin-right: 10px
+            .titleSm
+              font-size: 12px
 
 .active
   cursor: default !important
@@ -54,3 +109,11 @@
 
   100%
     transform: translate(3px, 1px) rotate(-1deg)
+
+@keyframes slideInDown
+  0%
+    opacity: 0
+    transform: translate(0, -100px)
+  100%
+    opacity: 1
+    transform: translate(0, 0)

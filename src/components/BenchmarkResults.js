@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import styles from "./styles/editor.module.sass";
+import stylesEditor from "./styles/editor.module.sass";
+import styles from "./styles/results.module.sass";
 import ReactHTMLTableToExcel from "react-html-table-to-excel";
 
 function BenchmarkResults({
@@ -101,7 +102,7 @@ function BenchmarkResults({
         <div>
           <ReactHTMLTableToExcel
             id="results-xls-button"
-            className={styles.button}
+            className={stylesEditor.button}
             table="results-table"
             filename="results"
             sheet="results"
@@ -142,7 +143,7 @@ function BenchmarkResults({
       {allResultsReady ? (
         <ReactHTMLTableToExcel
           id="detailed-results-xls-button"
-          className={styles.button}
+          className={stylesEditor.button}
           table="detailed-results-table"
           filename="detailed-results"
           sheet="detailed-results"
