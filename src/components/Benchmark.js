@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styles from "./styles/editor.module.sass";
 import Loader from "react-loader-spinner";
-import ImagePicker from "./ImagePicker";
+import OptionSelector from "./OptionSelector";
 import BenchmarkResults from "./BenchmarkResults";
 
 function Benchmark(props) {
@@ -41,7 +41,7 @@ function Benchmark(props) {
   useEffect(() => {
     if (imagesCount === imagesFoundCount) {
       setIsLoading(false);
-      setMessage(`${imagesCount} images loaded`);
+      setMessage(`${imagesCount} images loaded:`);
     }
   }, [imagesCount]);
 
@@ -155,10 +155,11 @@ function Benchmark(props) {
     <div className={styles.resultBox} id="main-container">
       {!isLoading && imagesCount === imagesFoundCount ? (
         <div>
-          {!testClicked ? <p>{message}</p> : ""}
-          <ImagePicker
-            imagesSizes={imagesSizes}
-            imagePickerHandler={imagePickerHandler}
+          <p>{message}</p>
+          <OptionSelector
+            options={imagesSizes}
+            clickHandler={imagePickerHandler}
+            selectorType={"checkbox"}
           />
           <button className={styles.button} onClick={testHandler}>
             Test

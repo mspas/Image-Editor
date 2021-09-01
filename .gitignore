@@ -13,6 +13,7 @@ build
 /src/components/Test.js
 /src/components/Test2.js
 /src/components/Editor1.js
+/src/components/VideoOld.js
 /src/media/
 /src/components/EditorAsmJS.js
 /src/components/ConverterShareLib.js

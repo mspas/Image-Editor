@@ -4,7 +4,6 @@ import WebWorker from "../editor.worker.js";
 import Editor from "./Editor";
 import Benchmark from "./Benchmark";
 import Video from "./Video";
-import BenchmarkOne from "./BenchmarkOne";
 import EditorWasmGlue from "../modules/editorwasm.mjs";
 import EditorAsmGlue from "../modules/editorasmjs.mjs";
 //import EditorWasmGlue from "../modules/editorWasmDyn.mjs";
@@ -143,6 +142,7 @@ function Home(props) {
       <h1 className={styles.heading}>
         {props.data.title} <span>{props.data.subtitle}</span>
       </h1>
+      <p className={styles.description}>{props.data.description}</p>
       {props.activeOption < 3 ? (
         <div className={styles.box}>
           <input
@@ -224,16 +224,6 @@ function Home(props) {
         <Benchmark
           worker={worker}
           prepareImageData={prepareImageData}
-          imgToCanvas={imgToCanvas}
-          scrollBottom={scrollBottom}
-        />
-      ) : (
-        ""
-      )}
-      {props.activeOption === 5 ? (
-        <BenchmarkOne
-          prepareImageData={prepareImageData}
-          createCanvas={createCanvas}
           imgToCanvas={imgToCanvas}
           scrollBottom={scrollBottom}
         />
