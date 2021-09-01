@@ -16,6 +16,7 @@ build
 /src/media/
 /src/components/EditorAsmJS.js
 /src/components/ConverterShareLib.js
+/src/components/BenchmarkOne.js
 /src/benchmark.worker.js
 
 # misc

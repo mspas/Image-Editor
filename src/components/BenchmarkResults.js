@@ -108,30 +108,32 @@ function BenchmarkResults({
             sheet="results"
             buttonText="Download as XLS"
           />
-          <table className={styles.tableResults} id="results-table">
-            <thead>
-              <tr>
-                <td>%</td>
-                {funcNames.map((func) => (
-                  <td key={func}>{func}</td>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {techNamesResults.map((tech, indexTech) => (
-                <tr key={`${tech}${indexTech}`}>
-                  <td className={styles.techTitle}>{tech}</td>
-                  {funcNames.map((func, indexFunc) => (
-                    <td key={`${tech}${func}`}>
-                      <p className={styles.resultTime}>
-                        {getRelativeGain(indexTech, indexFunc)}
-                      </p>
-                    </td>
+          <div className={styles.tableWrap}>
+            <table className={styles.tableResults} id="results-table">
+              <thead>
+                <tr>
+                  <td>%</td>
+                  {funcNames.map((func) => (
+                    <td key={func}>{func}</td>
                   ))}
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {techNamesResults.map((tech, indexTech) => (
+                  <tr key={`${tech}${indexTech}`}>
+                    <td className={styles.techTitle}>{tech}</td>
+                    {funcNames.map((func, indexFunc) => (
+                      <td key={`${tech}${func}`}>
+                        <p className={styles.resultTime}>
+                          {getRelativeGain(indexTech, indexFunc)}
+                        </p>
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       ) : (
         ""
@@ -152,44 +154,46 @@ function BenchmarkResults({
       ) : (
         ""
       )}
-      <table className={styles.tableResults} id="detailed-results-table">
-        <thead>
-          <tr>
-            <td>
-              <p className={styles.resultTime}>[ms]</p>
-              <span className={styles.resultSTD}>STD</span>
-            </td>
-            {funcNames.map((func) => (
-              <td key={func}>{func}</td>
-            ))}
-          </tr>
-        </thead>
-        {benchmarkResults.map((image, index) => (
-          <tbody key={`${image.name}${index}`}>
+      <div className={styles.tableWrap}>
+        <table className={styles.tableResults} id="detailed-results-table">
+          <thead>
             <tr>
-              <td>{image.name}</td>
+              <td>
+                <p className={styles.resultTime}>[ms]</p>
+                <span className={styles.resultSTD}>STD</span>
+              </td>
               {funcNames.map((func) => (
-                <td key={`${func}${index}`}></td>
+                <td key={func}>{func}</td>
               ))}
             </tr>
-            {techNames.map((tech, index1) => (
-              <tr key={`${tech}${index1}`}>
-                <td className={styles.techTitle}>{tech}</td>
+          </thead>
+          {benchmarkResults.map((image, index) => (
+            <tbody key={`${image.name}${index}`}>
+              <tr>
+                <td>{image.name}</td>
                 {funcNames.map((func) => (
-                  <td key={`${tech}${func}`}>
-                    <p className={styles.resultTime}>
-                      {getResult(image, index1, func).time}
-                    </p>
-                    <span className={styles.resultSTD}>
-                      {getResult(image, index1, func).std}
-                    </span>
-                  </td>
+                  <td key={`${func}${index}`}></td>
                 ))}
               </tr>
-            ))}
-          </tbody>
-        ))}
-      </table>
+              {techNames.map((tech, index1) => (
+                <tr key={`${tech}${index1}`}>
+                  <td className={styles.techTitle}>{tech}</td>
+                  {funcNames.map((func) => (
+                    <td key={`${tech}${func}`}>
+                      <p className={styles.resultTime}>
+                        {getResult(image, index1, func).time}
+                      </p>
+                      <span className={styles.resultSTD}>
+                        {getResult(image, index1, func).std}
+                      </span>
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          ))}
+        </table>
+      </div>
     </div>
   );
 }

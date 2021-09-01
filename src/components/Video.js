@@ -7,7 +7,6 @@ import VideoFile from "../media/video2.mp4";
 function Video(props) {
   const videoInput = useRef(null);
   const canvasOutput = useRef(null);
-  const [time, setTime] = useState(0);
   const [activeEditor, setActiveEditor] = useState(0);
   const [activeEditorName, setActiveEditorName] = useState("JavaScript");
   const [resolution, setResolution] = useState({ width: 720, height: 480 });
@@ -157,7 +156,6 @@ function Video(props) {
     let output = processFrame(frame.data, width, height, length, channels);
 
     if (output.width && output.height) {
-      const canvas = canvasOutput.current;
       const selectedFunction = document.getElementById("btnVideo").value;
 
       let nw = selectedFunction === "rotate90" ? output.height : output.width;
@@ -515,7 +513,8 @@ function Video(props) {
   return (
     <div className={styles.resultBox} id="result">
       <h4>
-        {resolution.width}x{resolution.height} {activeEditorName}
+        {resolution.width}x{resolution.height} {activeEditorName} -{" "}
+        {selectedFunction}
       </h4>
       {!props.isLoadingAsmModule && !props.isLoadingWasmModule ? (
         <div>
@@ -588,13 +587,6 @@ function Video(props) {
             muted
             controls
           ></video>
-          {time > 0 ? (
-            <div className={styles.alert}>
-              Execution of this task took {time} ms.
-            </div>
-          ) : (
-            ""
-          )}
         </div>
       ) : (
         <Loader type="TailSpin" color="#00BFFF" height={50} width={50} />

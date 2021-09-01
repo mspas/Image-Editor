@@ -32,7 +32,7 @@ async function messageHandler(event) {
       moduleWasm = response;
     });
 
-    console.log("Modules initialized!");
+    console.log("Worker modules initialized!");
     postMessage("ok");
   } else {
     let results = null;

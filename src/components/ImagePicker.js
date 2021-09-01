@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import styles from "./styles/editor.module.sass";
-import Loader from "react-loader-spinner";
 
 function ImagePicker({ imagesSizes, imagePickerHandler }) {
   return (
