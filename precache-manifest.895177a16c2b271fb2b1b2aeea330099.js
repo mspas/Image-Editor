@@ -1,10 +1,10 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "5632e630852841692115265f650f1775",
+    "revision": "d57a9833130a5a241197866bcded34a2",
     "url": "/Image-Editor/index.html"
   },
   {
-    "revision": "5cd64a80a176b5ef7e9c",
+    "revision": "e45e3d1a6c9e028c2e96",
     "url": "/Image-Editor/static/css/main.6c8ab027.chunk.css"
   },
   {
@@ -16,12 +16,12 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/Image-Editor/static/js/2.5cf1c828.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "c98b46b27bd90a9b11020e9f43f1f1e9",
-    "url": "/Image-Editor/static/js/editor.worker.0a0281e8.worker.js"
+    "revision": "d09088f7bd2184e2838fad7ada4ad35d",
+    "url": "/Image-Editor/static/js/editor.worker.5395b8e3.worker.js"
   },
   {
-    "revision": "5cd64a80a176b5ef7e9c",
-    "url": "/Image-Editor/static/js/main.79a02b0c.chunk.js"
+    "revision": "e45e3d1a6c9e028c2e96",
+    "url": "/Image-Editor/static/js/main.7be32544.chunk.js"
   },
   {
     "revision": "da91f233d6cfecd6f357",
