@@ -2,6 +2,8 @@ import * as EditorJS from "./modules/editor.mjs";
 import EditorAsmGlue from "./modules/editorasmjs.mjs";
 import EditorWasmGlue from "./modules/editorwasm.mjs";
 
+/* eslint-disable */
+
 self.addEventListener("message", messageHandler);
 
 var moduleAsmJS = null;

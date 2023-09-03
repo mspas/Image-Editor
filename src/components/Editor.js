@@ -16,7 +16,6 @@ function Editor(props) {
     if (props.worker)
       props.worker.onmessage = (event) => {
         if (event.data.imageData) {
-          console.log("dupa", event.data.imageData);
           setTime(event.data.time);
           setLoadingMessage("Preparing image preview...");
           setOutputData({

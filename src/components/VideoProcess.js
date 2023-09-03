@@ -9,7 +9,6 @@ function VideoProcess(props) {
   }, []);
 
   const hanldeStartVideo = () => {
-    console.log();
     if (props.videoInput.current.paused) {
       props.videoInput.current.play();
     } else {
@@ -100,8 +99,6 @@ function VideoProcess(props) {
     const selectedFunction = document.getElementById("btnVideo").value;
     let output = null;
 
-    console.log(selectedFunction);
-
     if (activeEditor === 0) {
       const moduleJS = props.jsModule;
       switch (selectedFunction) {
@@ -138,12 +135,6 @@ function VideoProcess(props) {
           output = grayscaleJS(moduleJS, frameData, length, channels);
           break;
         case "crop":
-          console.log(
-            width,
-            height,
-            props.resolution.width,
-            props.resolution.height
-          );
           output = cropJS(
             moduleJS,
             frameData,
@@ -285,8 +276,6 @@ function VideoProcess(props) {
     width = nw;
     height = nh;
     length = nh * nw * channels;
-
-    console.log(output.length);
 
     return {
       data: output,

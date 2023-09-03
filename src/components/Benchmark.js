@@ -49,14 +49,12 @@ function Benchmark(props) {
     if (props.worker)
       props.worker.onmessage = (event) => {
         if (event.data.results) {
-          //console.log(event.data.results);
           setBenchmarkResults(event.data.results);
           if (event.data.nextImage) {
             setMessage(`Now testing for ${event.data.nextImage} image...`);
           } else {
             setIsLoading(false);
             setMessage(`Tests done!`);
-            console.log(event.data.results);
           }
         }
       };

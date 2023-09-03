@@ -107,10 +107,6 @@ export function gray_scale(data, len, channels) {
   return data;
 }
 
-export function dupa(data) {
-  console.log(data);
-}
-
 export function crop(
   data,
   output,

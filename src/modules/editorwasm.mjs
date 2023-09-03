@@ -1,6 +1,7 @@
 /* eslint-disable */ 
 var Editor = (function() {
-  var _scriptDir = '/editor.wasm';
+  var _scriptDir = '/Image-Editor/editor.wasm';
+  //var _scriptDir = '/editor.wasm';
   
   return (
 function(Editor) {
